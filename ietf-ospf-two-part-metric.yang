@@ -47,7 +47,7 @@ module ietf-ospf-two-part-metric {
 
   reference "RFC XXXX";
 
-  revision 2019-08-06 {
+  revision 2019-08-13 {
     description
       "Initial version";
     reference

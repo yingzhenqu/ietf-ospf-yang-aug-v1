@@ -60,7 +60,7 @@ module ietf-ospfv3-te {
 
   reference "RFC XXXX";
 
-  revision 2019-08-08 {
+  revision 2019-08-13 {
     description
       "Initial version";
     reference
@@ -172,7 +172,7 @@ module ietf-ospfv3-te {
 
       description "OSPFv3 Intra-Area-TE-LSA.";
       reference "RFC 5329: Traffic Engineering Extensions to OSPF 
-                 Version 3.";
+              :   Version 3.";
     }
   }
 

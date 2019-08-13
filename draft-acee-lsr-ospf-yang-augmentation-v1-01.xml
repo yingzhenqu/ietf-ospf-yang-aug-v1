@@ -1,0 +1,1117 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+    <!ENTITY RFC2119 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
+    <!ENTITY RFC3688 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3688.xml'>
+    <!ENTITY RFC5246 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml'>
+    <!ENTITY RFC5329 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5329.xml'>
+    <!ENTITY RFC6020 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6020.xml'>
+    <!ENTITY RFC6241 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6241.xml'>
+    <!ENTITY RFC6242 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6242.xml'>
+    <!ENTITY RFC6536 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6536.xml'>
+    <!ENTITY RFC7950 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7950.xml'>
+    <!ENTITY RFC8022 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8022.xml'>
+    <!ENTITY RFC8040 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8040.xml'>
+    <!ENTITY RFC8042 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8042.xml'>
+    <!ENTITY RFC8349 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8349.xml'>
+    <!ENTITY RFC8379 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8379.xml'>
+    <!ENTITY RFC8510 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8510.xml'>
+    <!ENTITY I-D.ietf-ospf-yang PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.ietf-ospf-yang'>
+    ]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="no" ?>
+<?rfc toc="yes" ?>
+<?rfc symrefs="yes" ?>
+<?rfc sortrefs="yes"?>
+
+<?rfc rfcedstyle="yes" ?>
+<?rfc subcompact="no" ?>
+
+<rfc category="info" docName="draft-acee-lsr-ospf-yang-augmentation-v1-01" ipr="trust200902">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+         full title is longer than 39 characters -->
+
+  <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
+
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+    <!-- Another author who claims to be an editor -->
+
+    <author fullname="Acee Lindem" initials="A." surname="Lindem">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+          <street>301 Midenhall Way</street>
+          <city>Cary, NC 27513</city>
+        </postal>
+        <email>acee@cisco.com</email>
+      </address>
+    </author>
+    <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
+      <organization>Futurewei</organization>
+      <address>
+        <postal>
+          <street>2330 Central Expressway</street>
+          <city>Santa Clara</city>
+          <region>CA</region>
+          <code>95050</code>
+          <country>USA</country>
+        </postal>
+        <phone></phone>
+        <email>yingzhen.qu@futurewei.com</email>
+      </address>
+    </author>
+    <date/>
+
+    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+         in the current day for you. If only the current year is specified, xml2rfc will fill 
+   in the current day and month for you. If the year is not the current one, it is 
+   necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+   purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+   specify just the year. -->
+
+    <!-- Meta-data Declarations -->
+
+    <area>General</area>
+
+    <workgroup>Internet</workgroup>
+
+    <!-- WG name at the upperleft corner of the doc,
+         IETF is fine for individual submissions.  
+   If this element is not present, the default is "Network Working Group",
+         which is used by the RFC Editor as a nod to the history of the IETF. -->
+
+    <!-- Keywords will be incorporated into HTML output
+         files in a meta tag but they have no effect on text or nroff
+         output. If you submit your draft to the RFC Editor, the
+         keywords will be used for the search engine. -->
+
+    <abstract>
+      <t>This document defines YANG data modules augmenting the IETF OSPF YANG
+      model to provide support for Traffic Engineering Extensions to OSPF
+      Version 3 as defined in RF 5329, OSPF Two-Part Metric as defined in RFC 8042,
+      OSPF Graceful Link Shutdown as defined in RFC 8379 and OSPF Link-Local
+      Signaling (LLS) Extensions for Local Interface ID Advertisement as defined
+      in RFC 8510. </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Overview">
+      <t>YANG <xref target="RFC6020"></xref>  <xref target="RFC7950"></xref> is a 
+      data definition language 
+      used to define the contents of a conceptual data store 
+      that allows networked devices to be managed using NETCONF 
+      <xref target="RFC6241"/>.  YANG is proving relevant beyond its 
+      initial confines, as bindings to other interfaces (e.g., ReST) and 
+      encodings other than XML (e.g., JSON) are being defined.  Furthermore, 
+      YANG data models can be used as the basis for implementation of other 
+      interfaces, such as CLI and programmatic APIs.</t>
+
+      <t>This document defines YANG data modules augmenting the IETF OSPF 
+      YANG model <xref target="I-D.ietf-ospf-yang"/>, which itself augments 
+      <xref target="RFC8349"/>, to provide support for configuration and
+      operational state for the following OSPF features:
+        <list style="hanging">
+        <t hangText="RFC5329:">Traffic Engineering Extensions to OSPF Version 3 <xref target="RFC5329"/>.</t> 
+        <t hangText="RFC8042:">OSPF Two-Part Metric <xref target="RFC8042"/>.</t>
+        <t hangText="RFC8379:">OSPF Graceful Link Shutdown <xref target="RFC8379"/>.</t>
+        <t hangText="RFC8510:">OSPF Link-Local Signaling (LLS) Extensions for 
+          Local Interface ID Advertisement<xref target="RFC8510"/>.</t>
+        </list>
+      </t>
+  
+      <t>The augmentations defined in this document requires support for the 
+        OSPF base model<xref target="I-D.ietf-ospf-yang"></xref> which defines 
+        basic OSPF configuration and state. The OSPF YANG model augments the 
+        ietf-routing YANG model defined in <xref target="RFC8022"/>.
+      </t>
+               
+      <section title="Requirements Language">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in <xref target="RFC2119"></xref>.</t>
+      </section>
+    </section>
+  
+  <section title="YANG Module for Traffic Engineering Extesions to OSPF Version 3">
+    <t>This document defines a YANG module for Traffic Engineering Extersions to OSPF
+      Version 3 as defined in <xref target="RFC5329"/>. It is an augmentation of the OSPF 
+      base model. </t>
+
+    <figure align="left">
+      <artwork align="left">  
+module: ietf-ospfv3-te
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body:
+    +--ro ospfv3-intra-area-te
+       +--ro router-address-tlv
+       |  +--ro router-address?   inet:ipv6-address
+       +--ro link-tlv
+          +--ro link-type                   ospf:router-link-type
+          +--ro local-if-ipv6-addrs
+          |  +--ro local-if-ipv6-addr*   inet:ipv6-address
+          +--ro remote-if-ipv6-addrs
+          |  +--ro remote-if-ipv6-addr*   inet:ipv6-address
+          +--ro te-metric?                  uint32
+          +--ro max-bandwidth?              rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth*
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro admin-group?                uint32
+          +--ro neighbor-id
+          |  +--ro nbr-interface-id    inet:ipv4-address
+          |  +--ro nbr-router-id       yang:dotted-quad
+          +--ro unknown-tlvs
+             +--ro unknown-tlv*
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+      </artwork>
+    </figure> 
+        <t>
+    <figure>
+      <artwork><![CDATA[
+  <CODE BEGINS> file "ietf-ospfv3-te@2019-08-13.yang"
+  module ietf-ospfv3-te {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospfv3-te";
+
+  prefix ospfv3-te;
+
+  import ietf-inet-types {
+    prefix "inet";
+    reference "RFC 6991: Common YANG Data Types";
+  }
+
+  import ietf-yang-types {
+    prefix "yang";
+    reference "RFC 6991: Common YANG Data Types";
+  }
+
+  import ietf-routing-types {
+    prefix "rt-types";
+    reference "RFC 8294: Common YANG Data Types for the
+               Routing Area";
+  }
+
+  import ietf-routing {
+    prefix "rt";
+  }
+
+  import ietf-ospf {
+    prefix "ospf";
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+
+  contact
+     "WG Web:   <http://tools.ietf.org/wg/lsr>
+      WG List:  <mailto:lsr@ietf.org>
+
+      Author:   Yingzhen Qu
+                <mailto:yqu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee@cisco.com>";
+
+  description
+    "This YANG module defines the configuration and operational 
+    state for OSPFv3 extensions to support intra-area Traffic
+    Engineering (TE) as defined in RFC 5329.
+
+     Copyright (c) 2019 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Simplified BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (http://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2019-08-13 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: A YANG Data Model for OSPFv3 TE.";
+  }
+
+  identity ospfv3-intra-area-te-lsa {
+    base ospf:ospfv3-lsa-type;
+    description
+      "OSPFv3 Intrea-area TE LSA.";
+  }
+
+  grouping ospfv3-intra-area-te {
+    description "Grouping for OSPFv3 intra-area-te-lsa.";
+    container ospfv3-intra-area-te {
+      container router-address-tlv {
+        description "The router IPv6 address tlv advertises a reachable 
+                     IPv6 address.";
+        leaf router-address {
+          type inet:ipv6-address;
+          description
+            "Router IPv6 address.";
+        }               
+      }
+
+      container link-tlv {
+        description "Describes a singel link, and it is constructed
+                     of a set of Sub-TLVs.";
+        leaf link-type {
+          type ospf:router-link-type;
+          mandatory true;
+          description "Link type.";
+        }
+
+        container local-if-ipv6-addrs {
+          description "All local interface IPv6 addresses.";
+          leaf-list local-if-ipv6-addr {
+            type inet:ipv6-address;
+            description
+              "List of local interface IPv6 addresses.";
+          }
+        }
+      
+        container remote-if-ipv6-addrs {
+          description "All remote interface IPv6 addresses.";
+          leaf-list remote-if-ipv6-addr {
+            type inet:ipv6-address;
+            description
+              "List of remote interface IPv6 addresses.";
+          }
+        }
+      
+        leaf te-metric {
+          type uint32;
+          description "TE metric.";
+        }
+      
+        leaf max-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description "Maximum bandwidth.";
+        }
+      
+        leaf max-reservable-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description "Maximum reservable bandwidth.";
+        }
+      
+        container unreserved-bandwidths {
+          description "All unreserved bandwidths.";
+          list unreserved-bandwidth {
+            leaf priority {
+              type uint8 {
+                range "0 .. 7";
+              }
+              description "Priority from 0 to 7.";
+            }
+            leaf unreserved-bandwidth {
+              type rt-types:bandwidth-ieee-float32;
+              description "Unreserved bandwidth.";
+            }
+            description
+              "List of unreserved bandwidths for different
+               priorities.";
+          }
+        }
+      
+        leaf admin-group {
+          type uint32;
+          description
+            "Administrative group/Resource Class/Color.";
+        }
+
+        container neighbor-id {
+          description "Neighbor link identitification.";
+          leaf nbr-interface-id {
+            type inet:ipv4-address;
+            mandatory true;
+            description "The neighbor's interface ID.";
+          }
+          leaf nbr-router-id {
+            type yang:dotted-quad;
+            mandatory true;
+            description "The neighbor's router ID.";
+          }
+        }
+      
+        uses ospf:unknown-tlvs;
+      }
+
+      description "OSPFv3 Intra-Area-TE-LSA.";
+      reference "RFC 5329: Traffic Engineering Extensions to OSPF 
+              :   Version 3.";
+    }
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body" {
+    when "../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "OSPFv3 Intrea-Area-TE-LSA.";
+
+    uses ospfv3-intra-area-te;
+  }
+}
+  <CODE ENDS>
+      ]]></artwork>
+    </figure>
+  </t> 
+  </section>
+  <section title="YANG Module for OSPF Two-Part Metric">
+
+    <t>This document defines a YANG module for OSPF Two-Part Metric feature as
+      defined in <xref target="RFC8042"/>. It is an augmentation of the OSPF 
+      base model. </t>
+
+    <figure align="left">
+      <artwork align="left">     
+module: ietf-ospf-two-part-metric
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:interfaces/ospf:interface:
+    +--rw two-part-metric
+       +--rw enable?           boolean
+       +--rw int-input-cost?   ospf:ospf-link-metric
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:extended-link-opaque
+          /ospf:extended-link-tlv:
+    +--ro network-to-router-metric-sub-tlvs
+       +--ro net-to-rtr-sub-tlv*
+          +--ro mt-id?       uint8
+          +--ro mt-metric?   uint16
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:te-opaque/ospf:link-tlv:
+    +--ro network-to-router-te-metric?   uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-te:ospfv3-intra-area-te/ospfv3-te:link-tlv:
+    +--ro network-to-router-te-metric?   uint32
+      </artwork>
+    </figure> 
+
+        <t>
+    <figure>
+      <artwork><![CDATA[
+<CODE BEGINS> file "ietf-ospf-two-part-metric@2019-08-13.yang"
+module ietf-ospf-two-part-metric {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-two-part-metric";
+
+  prefix ospf-two-metric;
+
+  import ietf-routing {
+    prefix "rt";
+  }
+
+  import ietf-ospf {
+    prefix "ospf";
+  }
+
+  import ietf-ospfv3-te {
+    prefix "ospfv3-te";
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+
+  contact
+     "WG Web:   <http://tools.ietf.org/wg/lsr>
+      WG List:  <mailto:lsr@ietf.org>
+
+      Author:   Yingzhen Qu
+                <mailto:yqu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee@cisco.com>";
+
+  description
+    "This YANG module defines the configuration and operational 
+    state for OSPF Two-Part Metric feature as defined in RFC 8042.
+
+     Copyright (c) 2019 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Simplified BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (http://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2019-08-13 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: A YANG Data Model for OSPF.";
+  }
+
+  identity two-part-metric {
+    base ospf:informational-capability;
+    description
+      "When set, the router is capable of supporting OSPF
+       two-part metrics.";
+    reference
+      "RFC 8042: OSPF Two-Part Metric";
+  }
+
+  /* RFC 8042 */
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../rt:type = 'ospf:ospfv3'" {
+      description
+        "This augments the OSPF interface configuration
+         when used.";
+    }
+    description
+      "This augments the OSPF protocol interface
+       configuration with two-part metric.";
+    
+    container two-part-metric {
+      when "enum-value(../ospf:interface-type) = 2" {
+        description
+          "Two-part metric when link type is multi-access.";
+      }
+      leaf enable {
+        type boolean;
+        default false;
+        description
+          "Enable two-part metric.";
+      }
+      leaf int-input-cost {
+        type ospf:ospf-link-metric;
+        description
+          "Link state metric from the two-part-metric network 
+           to this router.";
+      }
+      description
+        "Interface two part metric configuration.";
+    }
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
+    when "../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Network-to-Router metric sub tlv for OSPFv2 extended link TLV
+       in type 10 opaque LSA.";
+
+       container network-to-router-metric-sub-tlvs {
+         description "Network-to-Router metric sub TLV.";
+         list net-to-rtr-sub-tlv {
+           leaf mt-id {
+             type uint8;
+             description "Multi-Topology Identifier (MT-ID).";
+           }
+           leaf mt-metric {
+             type uint16;
+             description "Network-to-router metric.";
+           }
+           description
+             "Network-to-Router metric sub-TLV.";
+         }
+       }
+    }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:te-opaque/"
+        + "ospf:link-tlv" {
+    when "../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Traffic Engineering Network-to-Router Sub-TLV.";
+      leaf network-to-router-te-metric {
+        type uint32;
+        description "Network to Router TE metric.";
+        reference
+          "RFC 8042 - OSPF Two-Part Metric";
+      }
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospfv3-te:ospfv3-intra-area-te/"
+        + "ospfv3-te:link-tlv" {
+    when "../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "Traffic Engineering Network-to-Router Sub-TLV.";
+      leaf network-to-router-te-metric {
+        type uint32;
+        description "Network to Router TE metric.";
+        reference
+          "RFC 8042 - OSPF Two-Part Metric";
+      }
+  }
+}
+<CODE ENDS>
+      ]]></artwork>
+    </figure>
+  </t> 
+
+  </section>
+  
+
+  <section title="YANG Module for OSPF Graceful Link Shutdown">
+
+    <t>This document defines a YANG module for OSPF Graceful Link Shutdown feature as
+      defined in <xref target="RFC8379"/>. It is an augmentation of the OSPF 
+      base model. </t>
+
+    <figure align="left">
+      <artwork align="left">     
+module: ietf-ospf-graceful-link-shutdown
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:interfaces/ospf:interface:
+    +--rw graceful-link-shutdown
+       +--rw enable?   boolean
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:extended-link-opaque
+          /ospf:extended-link-tlv:
+    +--ro graceful-link-shutdown-sub-tlv!
+    +--ro remote-address-sub-tlv
+    |  +--ro remote-address?   inet:ipv4-address
+    +--ro local-remote-int-id-sub-tlv
+       +--ro local-int-id?    uint32
+       +--ro remote-int-id?   uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
+          /ospfv3-e-lsa:link-tlv:
+    +--ro graceful-link-shutdown-sub-tlv!
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv3/ospf:ospfv3/ospf:body
+          /ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
+          /ospfv3-e-lsa:link-tlv:
+    +--ro graceful-link-shutdown-sub-tlv!
+
+      </artwork>
+    </figure> 
+
+        <t>
+    <figure>
+      <artwork><![CDATA[
+<CODE BEGINS> file "ietf-ospf-graceful-link-shutdown@2019-08-13.yang"
+module ietf-ospf-graceful-link-shutdown {
+  yang-version 1.1;
+  namespace 
+    "urn:ietf:params:xml:ns:yang:ietf-ospf-graceful-link-shutdown";
+
+  prefix ospf-grace-linkdown;
+
+  import ietf-inet-types {
+    prefix "inet";
+  }
+
+  import ietf-routing {
+    prefix "rt";
+  }
+
+  import ietf-ospf {
+    prefix "ospf";
+  }
+
+  import ietf-ospfv3-extended-lsa {
+    prefix "ospfv3-e-lsa";
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+
+  contact
+     "WG Web:   <http://tools.ietf.org/wg/lsr>
+      WG List:  <mailto:lsr@ietf.org>
+
+      Author:   Yingzhen Qu
+                <mailto:yqu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee@cisco.com>";
+
+  description
+    "This YANG module defines the configuration and operational 
+    state for OSPF Graceful Link Shutdown feature as defined 
+    in RFC 8379.
+
+
+     Copyright (c) 2019 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Simplified BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (http://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2019-08-13 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: A YANG Data Model for OSPF.";
+  }
+
+
+  /* RFC 8379 */
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../rt:type = 'ospf:ospfv3'" {
+      description
+        "This augments the OSPF interface configuration
+         when used.";
+    }
+    description
+      "This augments the OSPF protocol interface
+       configuration with segment routing.";
+
+    container graceful-link-shutdown {
+      leaf enable {
+        type boolean;
+        default false;
+        description
+          "Enable OSPF graceful link shutdown.";
+      }
+      description
+        "OSPF Graceful Link Shutdown.";
+    }
+  }
+
+
+  /* Database */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
+    when "../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "OSPF graceful link shutdown for OSPFv2 extended link TLV
+       in type 10 opaque LSA.";
+
+    container graceful-link-shutdown-sub-tlv {
+      presence "Enable graceful link shutdown";
+      description
+        "Graceful-Link-Shutdown sub-TLV identifies the link as being 
+         gracefully shutdown.";
+    }
+
+    container remote-address-sub-tlv {
+      leaf remote-address {
+         type inet:ipv4-address;
+         description
+           "Remote IPv4 address used to identify a particular link
+            on the remote side.";
+      }
+      description
+        "This sub-TLV specifies the IPv4 address of the remote 
+         endpoint on the link.";
+    }
+
+    container local-remote-int-id-sub-tlv {
+      leaf local-int-id {
+         type uint32;
+         description "Local interface ID.";
+      }
+      leaf remote-int-id {
+         type uint32;
+         description "Remote interface ID.";
+      }
+      description
+        "This sub-TLV specifies Local and Remote Interface IDs.";
+    }
+  }
+
+  augment "/rt:routing/"
+       + "rt:control-plane-protocols/rt:control-plane-protocol/"
+       + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+       + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+       + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
+       + "/ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
+       when "'ospf:../../../../../../../../../"
+         + "rt:type' = 'ospf:ospfv3'" {  
+         description
+           "This augmentation is only valid for OSPFv3
+            E-Router LSAs";
+       }     
+    container graceful-link-shutdown-sub-tlv {
+      presence "Enable graceful link shutdown";
+      description
+        "Graceful-Link-Shutdown sub-TLV identifies the link as being 
+         gracefully shutdown.";
+    }
+    description
+      "Augemnt OSPFv3 Area scope router-link TLV.";
+  }
+
+  augment "/rt:routing/"
+       + "rt:control-plane-protocols/rt:control-plane-protocol/"
+       + "ospf:ospf/ospf:database/"
+       + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+       + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
+       + "/ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
+       when "'ospf:../../../../../../../"
+         + "rt:type' = 'ospf:ospfv3'" {  
+         description
+           "This augmentation is only valid for OSPFv3
+            E-Router LSAs";
+       }     
+    container graceful-link-shutdown-sub-tlv {
+      presence "Enable graceful link shutdown";
+      description
+        "Graceful-Link-Shutdown sub-TLV identifies the link as being 
+         gracefully shutdown.";
+    }
+    description
+      "Augemnt OSPFv3 AS scope router-link TLV.";
+  }
+}
+<CODE ENDS>
+      ]]></artwork>
+    </figure>
+  </t> 
+
+  </section>
+
+    <section title="YANG Module for OSPF LLS Extenstion for Local Interface ID Advertisement">
+
+    <t>This document defines a YANG module for OSPF Link-Local Signaling (LLS) 
+       Extensions for Local Interface ID Advertisement feature as
+      defined in <xref target="RFC8510"/>. It is an augmentation of the OSPF 
+      base model. </t>
+
+    <figure align="left">
+      <artwork align="left">     
+module: ietf-ospf-lls-local-id
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf:
+    +--rw lls-int-id
+       +--rw enable?   boolean
+
+      </artwork>
+    </figure> 
+
+        <t>
+    <figure>
+      <artwork><![CDATA[
+<CODE BEGINS> file "ietf-ospf-lls-local-id@2019-08-13.yang"
+module ietf-ospf-lls-local-id {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-lls-local-id";
+
+  prefix ospf-lls-localid;
+
+  import ietf-routing {
+    prefix "rt";
+  }
+
+  import ietf-ospf {
+    prefix "ospf";
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+
+  contact
+     "WG Web:   <http://tools.ietf.org/wg/lsr>
+      WG List:  <mailto:lsr@ietf.org>
+
+      Author:   Yingzhen Qu
+                <mailto:yqu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee@cisco.com>";
+
+  description
+    "This YANG module defines the configuration and operational 
+    state for OSPF Link-Local Signaling (LLS) Extensions for Local 
+    Interface ID Advertisement feature as defined in RFC 8510.
+
+     Copyright (c) 2019 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Simplified BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (http://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2019-08-13 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: A YANG Data Model for OSPF.";
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols"
+        + "/rt:control-plane-protocol/ospf:ospf" {
+    when "../rt:type = 'ospf:ospfv2' or "
+       + "../rt:type = 'ospf:ospfv3'" {
+      description
+        "This augments the OSPF routing protocol when used.";
+    }
+    description
+      "This augments the OSPF protocol configuration
+       to support LLS extesnions for interfacde ID as
+       defined in RFC 8510.";
+    container lls-int-id {
+      leaf enable {
+        type boolean;
+        default false;
+        description
+          "Enable LLS to advertise local interface ID.";
+      }
+      description
+        "OSPF LLS Extensions for interface ID.";
+    }
+  }
+}
+<CODE ENDS>
+      ]]></artwork>
+    </figure>
+  </t> 
+
+  </section>
+
+    <section anchor="Security" title="Security Considerations">
+    <t>The YANG modules specified in this document define a schema for 
+       data that is designed to be accessed via network
+       management protocols such as NETCONF <xref target="RFC6241"/> or
+       RESTCONF <xref target="RFC8040"/>. The lowest NETCONF layer is the secure transport
+       layer, and the mandatory-to-implement secure transport is Secure Shell (SSH)
+       <xref target="RFC6242"/>. The lowest RESTCONF layer is HTTPS, and the
+       mandatory-to-implement secure transport is TLS <xref target="RFC5246"/>.</t>
+
+   <t>The NETCONF access control model <xref target="RFC6536"/> provides the 
+      means to restrict access for particular NETCONF or RESTCONF users to a
+      pre-configured subset of all available NETCONF or RESTCONF protocol 
+      operations and content.</t>
+
+   <t>There are a number of data nodes defined in the modules
+      that are writable/creatable/deletable (i.e., config true, which is the default). 
+      These data nodes may be considered sensitive or vulnerable in some network 
+      environments. Write operations (e.g., edit-config) to these data nodes without 
+      proper protection can have a negative effect on network operations. </t>  
+
+   <t>Some of the readable data nodes in the modules
+      may be considered sensitive or vulnerable in some network environments. It is thus 
+      important to control read access (e.g., via get, get-config, or notification)
+      to these data nodes. The exposure of the Link State Database (LSDB) will
+      expose the detailed topology of the network. This may be undesirable since
+      both due to the fact that exposure may facilitate other attacks. Additionally, 
+      network operators may consider their topologies to be sensitive confidential
+      data.</t>
+
+   </section>
+<section title="IANA Considerations">
+<t>This document registers URIs in the IETF XML registry 
+   <xref target="RFC3688"/>.  Following the format in <xref target="RFC3688"/>, 
+   the following registrations is requested to be made:
+   <figure>
+   <artwork>  
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-two-metric
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   </artwork> 
+   </figure>
+   <figure>
+   <artwork>  
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-grace-linkdown
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   </artwork> 
+   </figure>
+      <figure>
+   <artwork>  
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-lls-localid
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   </artwork> 
+   </figure>
+</t>
+   <t>This document registers the YANG modules in the YANG Module Names
+   registry <xref target="RFC6020"/>.
+   <figure>
+   <artwork>  
+   name: ietf-ospf-two-metric
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-two-metric
+   prefix: ospf-two-metric
+   reference: RFC XXXX
+   </artwork> 
+   </figure>
+   <figure>
+   <artwork>  
+   name: ietf-ospf-grace-linkdown
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-grace-linkdown
+   prefix: ospf-grace-linkdown
+   reference: RFC XXXX
+   </artwork> 
+   </figure>
+      <figure>
+   <artwork>  
+   name: ietf-ospf-lls-localid
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-lls-localid
+   prefix: ospf-lls-localid
+   reference: RFC XXXX
+   </artwork> 
+   </figure>
+   </t>
+</section>
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
+      <t>The YANG model was developed using the suite of YANG tools written 
+         and maintained by numerous authors.</t>
+    </section>   
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <!-- References split into informative and normative -->
+
+    <!-- There are 2 ways to insert reference entries from the citation libraries:
+     1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
+     2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
+        (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+
+     Both are cited textually in the same manner: by using xref elements.
+     If you use the PI option, xml2rfc will, by default, try to find included files in the same
+     directory as the including file. You can also define the XML_LIBRARY environment variable
+     with a value containing a set of directories to search.  These can be either in the local
+     filing system or remote ones accessed by http (http://domain/dir/... ).-->
+
+    <references title="Normative References">
+      <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
+      &RFC2119;
+      &RFC3688;
+      &RFC5246;
+      &RFC5329;
+      &RFC6020;
+      &RFC6241;
+      &RFC6242;
+      &RFC6536;
+      &RFC7950;
+      &RFC8022;
+      &RFC8040;
+      &RFC8042;
+      &RFC8349;
+      &RFC8379;
+      &RFC8510;
+    </references>
+    <references title="Informative References">
+      <!-- Here we use entities that we defined at the beginning. -->
+      &I-D.ietf-ospf-yang;
+    </references>
+
+  </back>
+</rfc>

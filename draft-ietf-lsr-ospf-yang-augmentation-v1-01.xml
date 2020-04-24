@@ -42,7 +42,7 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="info" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-00" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-01" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -200,7 +200,7 @@ module: ietf-ospfv3-te
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-ospfv3-te@2019-08-13.yang"
+  <CODE BEGINS> file "ietf-ospfv3-te@2020-04-24.yang"
   module ietf-ospfv3-te {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospfv3-te";
@@ -263,7 +263,7 @@ module: ietf-ospfv3-te
 
   reference "RFC XXXX";
 
-  revision 2019-08-13 {
+  revision 2020-04-24 {
     description
       "Initial version";
     reference
@@ -445,7 +445,7 @@ module: ietf-ospf-two-part-metric
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-two-part-metric@2019-08-13.yang"
+<CODE BEGINS> file "ietf-ospf-two-part-metric@2020-04-24.yang"
 module ietf-ospf-two-part-metric {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-two-part-metric";
@@ -495,7 +495,7 @@ module ietf-ospf-two-part-metric {
 
   reference "RFC XXXX";
 
-  revision 2019-08-13 {
+  revision 2020-04-24 {
     description
       "Initial version";
     reference
@@ -682,7 +682,7 @@ module: ietf-ospf-graceful-link-shutdown
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-graceful-link-shutdown@2019-08-13.yang"
+<CODE BEGINS> file "ietf-ospf-graceful-link-shutdown@2020-04-24.yang"
 module ietf-ospf-graceful-link-shutdown {
   yang-version 1.1;
   namespace 
@@ -739,7 +739,7 @@ module ietf-ospf-graceful-link-shutdown {
 
   reference "RFC XXXX";
 
-  revision 2019-08-13 {
+  revision 2020-04-24 {
     description
       "Initial version";
     reference
@@ -899,7 +899,7 @@ module: ietf-ospf-lls-local-id
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-lls-local-id@2019-08-13.yang"
+<CODE BEGINS> file "ietf-ospf-lls-local-id@2020-04-24.yang"
 module ietf-ospf-lls-local-id {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-lls-local-id";
@@ -946,7 +946,7 @@ module ietf-ospf-lls-local-id {
 
   reference "RFC XXXX";
 
-  revision 2019-08-13 {
+  revision 2020-04-24 {
     description
       "Initial version";
     reference
@@ -1019,6 +1019,13 @@ module ietf-ospf-lls-local-id {
    the following registrations is requested to be made:
    <figure>
    <artwork>  
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospfv3-te
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   </artwork> 
+   </figure>
+   <figure>
+   <artwork>  
    URI: urn:ietf:params:xml:ns:yang:ietf-ospf-two-metric
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
@@ -1041,6 +1048,14 @@ module ietf-ospf-lls-local-id {
 </t>
    <t>This document registers the YANG modules in the YANG Module Names
    registry <xref target="RFC6020"/>.
+   <figure>
+   <artwork>  
+   name: ietf-ospfv3-te
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospfv3-te
+   prefix: ospfv3-te
+   reference: RFC XXXX
+   </artwork> 
+   </figure>
    <figure>
    <artwork>  
    name: ietf-ospf-two-metric

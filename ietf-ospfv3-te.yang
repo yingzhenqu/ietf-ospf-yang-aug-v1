@@ -60,7 +60,7 @@ module ietf-ospfv3-te {
 
   reference "RFC XXXX";
 
-  revision 2019-08-13 {
+  revision 2020-04-24 {
     description
       "Initial version";
     reference

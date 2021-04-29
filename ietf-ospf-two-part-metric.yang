@@ -29,7 +29,7 @@ module ietf-ospf-two-part-metric {
                 <mailto:acee@cisco.com>";
 
   description
-    "This YANG module defines the configuration and operational 
+    "This YANG module defines the configuration and operational
     state for OSPF Two-Part Metric feature as defined in RFC 8042.
 
      Copyright (c) 2019 IETF Trust and the persons identified as
@@ -76,7 +76,7 @@ module ietf-ospf-two-part-metric {
     description
       "This augments the OSPF protocol interface
        configuration with two-part metric.";
-    
+
     container two-part-metric {
       when "enum-value(../ospf:interface-type) = 2" {
         description
@@ -91,7 +91,7 @@ module ietf-ospf-two-part-metric {
       leaf int-input-cost {
         type ospf:ospf-link-metric;
         description
-          "Link state metric from the two-part-metric network 
+          "Link state metric from the two-part-metric network
            to this router.";
       }
       description

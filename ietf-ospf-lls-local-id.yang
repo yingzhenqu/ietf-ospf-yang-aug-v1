@@ -25,8 +25,8 @@ module ietf-ospf-lls-local-id {
                 <mailto:acee@cisco.com>";
 
   description
-    "This YANG module defines the configuration and operational 
-    state for OSPF Link-Local Signaling (LLS) Extensions for Local 
+    "This YANG module defines the configuration and operational
+    state for OSPF Link-Local Signaling (LLS) Extensions for Local
     Interface ID Advertisement feature as defined in RFC 8510.
 
      Copyright (c) 2019 IETF Trust and the persons identified as

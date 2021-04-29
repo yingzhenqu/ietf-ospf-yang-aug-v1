@@ -33,8 +33,8 @@ module ietf-ospf-link-attr {
                 <mailto:slitkows.ietf@gmail.com>";
 
   description
-    "This YANG module defines the configuration and operational 
-     state for OSPF application specific link attributes feature 
+    "This YANG module defines the configuration and operational
+     state for OSPF application specific link attributes feature
      as defined in RFC xxxx.
 
      This YANG model conforms to the Network Management
@@ -95,7 +95,7 @@ module ietf-ospf-link-attr {
   grouping application-specific-link-attributes-sub-tlvs {
     description
       "OSPF Application-Specific Link Attributes (ASLA) sub-TLV.
-       The ASLA sub-TLV is a sub-TLV of the OSPFv2 Extended Link 
+       The ASLA sub-TLV is a sub-TLV of the OSPFv2 Extended Link
        TLV [RFC7684] and OSPFv3 Router-Link TLV [RFC8362].";
 
     container application-specific-link-attributes-sub-tlvs {
@@ -103,7 +103,7 @@ module ietf-ospf-link-attr {
       list asla-sub-tlvs {
         leaf sabm-length {
           type uint8;
-          description 
+          description
             "Standard Application Identifier Bit Mask Length in
              octets.";
         }
@@ -123,7 +123,7 @@ module ietf-ospf-link-attr {
                identities for the bits which are set in the
                SABA bits.";
           }
-          description 
+          description
             "Standard Application Identifier Bit Mask.";
         }
         container udabm {
@@ -134,10 +134,10 @@ module ietf-ospf-link-attr {
         }
         container link-attributes-sub-sub-tlvs {
           uses ospf:unknown-tlvs;
-          description 
+          description
             "Link Attributes sub-sub-TLVs.";
         }
-        description 
+        description
           "List of application-Specific Link Attributes sub-TLVs.";
       }
     }
@@ -165,7 +165,8 @@ module ietf-ospf-link-attr {
         leaf transition {
           type empty;
           description
-            "Send both application-specific and legacy advertisements.";
+            "Send both application-specific and legacy
+             advertisements.";
         }
         leaf app-specific{
           type empty;
@@ -197,7 +198,7 @@ module ietf-ospf-link-attr {
     description
       "OSPF Application-Specific Link Attributes (ASLA) sub-TLV is
        a sub-TLV of OSPFv2 Extended Link TLV (RFC7684).";
-    
+
     uses application-specific-link-attributes-sub-tlvs;
   }
 
@@ -209,11 +210,11 @@ module ietf-ospf-link-attr {
        + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
        + "/ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
        when "'ospf:../../../../../../../../../"
-         + "rt:type' = 'ospf:ospfv3'" {  
+         + "rt:type' = 'ospf:ospfv3'" {
          description
            "This augmentation is only valid for OSPFv3
             E-Router LSAs";
-       }     
+       }
     description
       "Augment OSPFv3 Area scope router-link TLV.";
 

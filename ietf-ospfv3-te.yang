@@ -41,7 +41,7 @@ module ietf-ospfv3-te {
                 <mailto:acee@cisco.com>";
 
   description
-    "This YANG module defines the configuration and operational 
+    "This YANG module defines the configuration and operational
     state for OSPFv3 extensions to support intra-area Traffic
     Engineering (TE) as defined in RFC 5329.
 
@@ -77,13 +77,13 @@ module ietf-ospfv3-te {
     description "Grouping for OSPFv3 intra-area-te-lsa.";
     container ospfv3-intra-area-te {
       container router-address-tlv {
-        description "The router IPv6 address tlv advertises a reachable 
-                     IPv6 address.";
+        description "The router IPv6 address tlv advertises a
+                     reachable IPv6 address.";
         leaf router-address {
           type inet:ipv6-address;
           description
             "Router IPv6 address.";
-        }               
+        }
       }
 
       container link-tlv {
@@ -103,7 +103,7 @@ module ietf-ospfv3-te {
               "List of local interface IPv6 addresses.";
           }
         }
-      
+
         container remote-if-ipv6-addrs {
           description "All remote interface IPv6 addresses.";
           leaf-list remote-if-ipv6-addr {
@@ -112,22 +112,22 @@ module ietf-ospfv3-te {
               "List of remote interface IPv6 addresses.";
           }
         }
-      
+
         leaf te-metric {
           type uint32;
           description "TE metric.";
         }
-      
+
         leaf max-bandwidth {
           type rt-types:bandwidth-ieee-float32;
           description "Maximum bandwidth.";
         }
-      
+
         leaf max-reservable-bandwidth {
           type rt-types:bandwidth-ieee-float32;
           description "Maximum reservable bandwidth.";
         }
-      
+
         container unreserved-bandwidths {
           description "All unreserved bandwidths.";
           list unreserved-bandwidth {
@@ -146,7 +146,7 @@ module ietf-ospfv3-te {
                priorities.";
           }
         }
-      
+
         leaf admin-group {
           type uint32;
           description
@@ -166,12 +166,12 @@ module ietf-ospfv3-te {
             description "The neighbor's router ID.";
           }
         }
-      
+
         uses ospf:unknown-tlvs;
       }
 
       description "OSPFv3 Intra-Area-TE-LSA.";
-      reference "RFC 5329: Traffic Engineering Extensions to OSPF 
+      reference "RFC 5329: Traffic Engineering Extensions to OSPF
               :   Version 3.";
     }
   }

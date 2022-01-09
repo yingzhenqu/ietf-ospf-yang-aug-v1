@@ -18,8 +18,6 @@
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6536.xml'>
     <!ENTITY RFC7950 PUBLIC ''
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7950.xml'>
-    <!ENTITY RFC8022 PUBLIC ''
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8022.xml'>
     <!ENTITY RFC8040 PUBLIC ''
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8040.xml'>
     <!ENTITY RFC8042 PUBLIC ''
@@ -46,7 +44,7 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-05" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-06" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN"
@@ -119,7 +117,8 @@
       Version 3 as defined in RF 5329, OSPF Two-Part Metric as defined in RFC 8042,
       OSPF Graceful Link Shutdown as defined in RFC 8379, OSPF Link-Local
       Signaling (LLS) Extensions for Local Interface ID Advertisement as defined
-      in RFC 8510 and OSPF Flexible Algorithm. </t>
+      in RFC 8510, OSPF Application-Specific Link Attributes as defined in RFC 8920,
+      and OSPF Flexible Algorithm. </t>
     </abstract>
   </front>
 
@@ -153,7 +152,7 @@
       <t>The augmentations defined in this document requires support for the
         OSPF base model<xref target="I-D.ietf-ospf-yang"></xref> which defines
         basic OSPF configuration and state. The OSPF YANG model augments the
-        ietf-routing YANG model defined in <xref target="RFC8022"/>.
+        ietf-routing YANG model defined in <xref target="RFC8349"/>.
       </t>
 
       <section title="Requirements Language">
@@ -209,7 +208,7 @@ augment /rt:routing/rt:control-plane-protocols
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospfv3-te@2020-04-24.yang"
+<CODE BEGINS> file "ietf-ospfv3-te@2021-07-11.yang"
 module ietf-ospfv3-te {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospfv3-te";
@@ -234,6 +233,8 @@ module ietf-ospfv3-te {
 
   import ietf-routing {
     prefix "rt";
+    reference "RFC 8349: A YANG Data Model for Routing
+                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
@@ -254,10 +255,13 @@ module ietf-ospfv3-te {
 
   description
     "This YANG module defines the configuration and operational
-    state for OSPFv3 extensions to support intra-area Traffic
-    Engineering (TE) as defined in RFC 5329.
+     state for OSPFv3 extensions to support intra-area Traffic
+     Engineering (TE) as defined in RFC 5329.
 
-     Copyright (c) 2019 IETF Trust and the persons identified as
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -272,7 +276,7 @@ module ietf-ospfv3-te {
 
   reference "RFC XXXX";
 
-  revision 2020-04-24 {
+  revision 2021-07-11 {
     description
       "Initial version";
     reference
@@ -282,7 +286,7 @@ module ietf-ospfv3-te {
   identity ospfv3-intra-area-te-lsa {
     base ospf:ospfv3-lsa-type;
     description
-      "OSPFv3 Intrea-area TE LSA.";
+      "OSPFv3 intra-area TE LSA.";
   }
 
   grouping ospfv3-intra-area-te {
@@ -299,7 +303,7 @@ module ietf-ospfv3-te {
       }
 
       container link-tlv {
-        description "Describes a singel link, and it is constructed
+        description "Describes a single link, and it is constructed
                      of a set of Sub-TLVs.";
         leaf link-type {
           type ospf:router-link-type;
@@ -366,7 +370,7 @@ module ietf-ospfv3-te {
         }
 
         container neighbor-id {
-          description "Neighbor link identitification.";
+          description "Neighbor link identification.";
           leaf nbr-interface-id {
             type inet:ipv4-address;
             mandatory true;
@@ -401,7 +405,7 @@ module ietf-ospfv3-te {
         "This augmentation is only valid for OSPFv3.";
     }
     description
-      "OSPFv3 Intrea-Area-TE-LSA.";
+      "OSPFv3 Intra-Area-TE-LSA.";
 
     uses ospfv3-intra-area-te;
   }
@@ -454,7 +458,7 @@ augment /rt:routing/rt:control-plane-protocols
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-two-part-metric@2020-04-24.yang"
+<CODE BEGINS> file "ietf-ospf-two-part-metric@2021-07-11.yang"
 module ietf-ospf-two-part-metric {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-two-part-metric";
@@ -463,6 +467,8 @@ module ietf-ospf-two-part-metric {
 
   import ietf-routing {
     prefix "rt";
+    reference "RFC 8349: A YANG Data Model for Routing
+                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
@@ -487,9 +493,12 @@ module ietf-ospf-two-part-metric {
 
   description
     "This YANG module defines the configuration and operational
-    state for OSPF Two-Part Metric feature as defined in RFC 8042.
+     state for OSPF Two-Part Metric feature as defined in RFC 8042.
 
-     Copyright (c) 2019 IETF Trust and the persons identified as
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -504,7 +513,7 @@ module ietf-ospf-two-part-metric {
 
   reference "RFC XXXX";
 
-  revision 2020-04-24 {
+  revision 2021-07-11 {
     description
       "Initial version";
     reference
@@ -684,7 +693,7 @@ augment /rt:routing/rt:control-plane-protocols
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-graceful-link-shutdown@2020-10-31.yang"
+<CODE BEGINS> file "ietf-ospf-graceful-link-shutdown@2021-07-11.yang"
 module ietf-ospf-graceful-link-shutdown {
   yang-version 1.1;
   namespace
@@ -694,10 +703,13 @@ module ietf-ospf-graceful-link-shutdown {
 
   import ietf-inet-types {
     prefix "inet";
+    reference "RFC 6991: Common YANG Data Types";
   }
 
   import ietf-routing {
     prefix "rt";
+    reference "RFC 8349: A YANG Data Model for Routing
+                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
@@ -728,7 +740,7 @@ module ietf-ospf-graceful-link-shutdown {
      This YANG model conforms to the Network Management
      Datastore Architecture (NDMA) as described in RFC 8342.
 
-     Copyright (c) 2020 IETF Trust and the persons identified as
+     Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -743,11 +755,11 @@ module ietf-ospf-graceful-link-shutdown {
 
   reference "RFC XXXX";
 
-  revision 2020-10-31 {
+  revision 2021-07-11 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF.";
+      "RFC XXXX: A YANG Data Model for OSPF Graceful Link Shutdown.";
   }
 
 
@@ -880,7 +892,7 @@ module: ietf-ospf-lls-local-id
         <t>
     <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-lls-local-id@2020-04-24.yang"
+<CODE BEGINS> file "ietf-ospf-lls-local-id@2021-07-11.yang"
 module ietf-ospf-lls-local-id {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-lls-local-id";
@@ -889,6 +901,8 @@ module ietf-ospf-lls-local-id {
 
   import ietf-routing {
     prefix "rt";
+    reference "RFC 8349: A YANG Data Model for Routing
+                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
@@ -909,10 +923,13 @@ module ietf-ospf-lls-local-id {
 
   description
     "This YANG module defines the configuration and operational
-    state for OSPF Link-Local Signaling (LLS) Extensions for Local
-    Interface ID Advertisement feature as defined in RFC 8510.
+     state for OSPF Link-Local Signaling (LLS) Extensions for Local
+     Interface ID Advertisement feature as defined in RFC 8510.
 
-     Copyright (c) 2019 IETF Trust and the persons identified as
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -927,7 +944,7 @@ module ietf-ospf-lls-local-id {
 
   reference "RFC XXXX";
 
-  revision 2020-04-24 {
+  revision 2021-07-11 {
     description
       "Initial version";
     reference
@@ -943,8 +960,8 @@ module ietf-ospf-lls-local-id {
     }
     description
       "This augments the OSPF protocol configuration
-       to support LLS extesnions for interfacde ID as
-       defined in RFC 8510.";
+       to support LLS extensions for local interface ID 
+       advertisement.";
     container lls-int-id {
       leaf enable {
         type boolean;
@@ -954,6 +971,8 @@ module ietf-ospf-lls-local-id {
       }
       description
         "OSPF LLS Extensions for interface ID.";
+      reference "RFC 8510 - OSPF Link-Local Signaling (LLS)
+                 Extensions for Local Interface ID Advertisement";
     }
   }
 }
@@ -2413,7 +2432,6 @@ module ietf-ospf-flex-algo {
       &RFC6242;
       &RFC6536;
       &RFC7950;
-      &RFC8022;
       &RFC8040;
       &RFC8042;
       &RFC8349;

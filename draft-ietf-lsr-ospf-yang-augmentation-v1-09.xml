@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-08" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-09" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-08"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-09"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -38,7 +38,7 @@
           <street>301 Midenhall Way</street>
           <city>Cary, NC 27513</city>
         </postal>
-        <email>acee@cisco.com</email>
+        <email>acee.ietf@gmail.com</email>
       </address>
     </author>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
@@ -83,8 +83,8 @@
       Version 3 as defined in RF 5329, OSPF Two-Part Metric as defined in RFC 8042,
       OSPF Graceful Link Shutdown as defined in RFC 8379, OSPF Link-Local
       Signaling (LLS) Extensions for Local Interface ID Advertisement as defined
-      in RFC 8510, OSPF Application-Specific Link Attributes as defined in RFC 8920,
-      and OSPF Flexible Algorithm. </t>
+      in RFC 8510, OSPF MSD as defined in RFC 8476, OSPF Application-Specific
+      Link Attributes as defined in RFC 8920, and OSPF Flexible Algorithm. </t>
     </abstract>
   </front>
   <middle>
@@ -100,7 +100,7 @@
       YANG data models can be used as the basis for implementation of other
       interfaces, such as CLI and programmatic APIs.</t>
       <t>This document defines YANG data modules augmenting the IETF OSPF
-      YANG model <xref target="I-D.ietf-ospf-yang" format="default"/>, which itself augments
+      YANG model <xref target="RFC9129" format="default"/>, which itself augments
       <xref target="RFC8349" format="default"/>, to provide support for configuration and
       operational state for the following OSPF features:
       </t>
@@ -111,6 +111,8 @@
         <dd>OSPF Two-Part Metric <xref target="RFC8042" format="default"/>.</dd>
         <dt>RFC8379:</dt>
         <dd>OSPF Graceful Link Shutdown <xref target="RFC8379" format="default"/>.</dd>
+        <dt>RFC8476:</dt>
+        <dd>Signaling Maximum SID Depth (MSD) Using OSPF<xref target="RFC8476" format="default"/>.</dd>        
         <dt>RFC8510:</dt>
         <dd>OSPF Link-Local Signaling (LLS) Extensions for
           Local Interface ID Advertisement <xref target="RFC8510" format="default"/>.</dd>
@@ -120,7 +122,7 @@
         <dd>IGP Flexible Algorithm <xref target="I-D.ietf-lsr-flex-algo" format="default"/>.</dd>
       </dl>
       <t>The augmentations defined in this document requires support for the
-        OSPF base model<xref target="I-D.ietf-ospf-yang" format="default"/> which defines
+        OSPF base model<xref target="RFC9129" format="default"/> which defines
         basic OSPF configuration and state. The OSPF YANG model augments the
         ietf-routing YANG model defined in <xref target="RFC8349" format="default"/>.
       </t>
@@ -132,7 +134,7 @@
       </section>
     </section>
     <section numbered="true" toc="default">
-      <name>YANG Module for Traffic Engineering Extesions to OSPF Version 3</name>
+      <name>YANG Module for Traffic Engineering Extensions to OSPF Version 3</name>
       <t>This document defines a YANG module for Traffic Engineering Extensions to OSPF
       Version 3 as defined in <xref target="RFC5329" format="default"/>. It is an augmentation of the OSPF
       base model. </t>
@@ -172,7 +174,7 @@ augment /rt:routing/rt:control-plane-protocols
               +--ro length?   uint16
               +--ro value?    yang:hex-string
       ]]></artwork>
-      <sourcecode name="ietf-ospfv3-te@2021-07-11.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospfv3-te@2023-01-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospfv3-te {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospfv3-te";
@@ -198,49 +200,48 @@ module ietf-ospfv3-te {
   import ietf-routing {
     prefix "rt";
     reference "RFC 8349: A YANG Data Model for Routing
-                  Management (NMDA Version)";
+               Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   organization
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>";
+                <mailto:acee.ietf@gmail.com>";
 
   description
     "This YANG module defines the configuration and operational
-     state for OSPFv3 extensions to support intra-area Traffic
-     Engineering (TE) as defined in RFC 5329.
+    state for OSPFv3 extensions to support intra-area Traffic
+    Engineering (TE) as defined in RFC 5329.
 
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
-
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
-     (http://trustee.ietf.org/license-info).
+     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
   reference "RFC XXXX";
 
-  revision 2021-07-11 {
+  revision 2023-01-02 {
     description
       "Initial version";
     reference
@@ -250,7 +251,7 @@ module ietf-ospfv3-te {
   identity ospfv3-intra-area-te-lsa {
     base ospf:ospfv3-lsa-type;
     description
-      "OSPFv3 intra-area TE LSA.";
+      "OSPFv3 Intrea-area TE LSA.";
   }
 
   grouping ospfv3-intra-area-te {
@@ -412,7 +413,7 @@ augment /rt:routing/rt:control-plane-protocols
        /ospf:body/ospfv3-te:ospfv3-intra-area-te/ospfv3-te:link-tlv:
  +--ro network-to-router-te-metric?   uint32
       ]]></artwork>
-      <sourcecode name="ietf-ospf-two-part-metric@2021-07-11.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-two-part-metric@2023-01-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-two-part-metric {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-two-part-metric";
@@ -422,11 +423,13 @@ module ietf-ospf-two-part-metric {
   import ietf-routing {
     prefix "rt";
     reference "RFC 8349: A YANG Data Model for Routing
-                  Management (NMDA Version)";
+               Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   import ietf-ospfv3-te {
@@ -437,37 +440,34 @@ module ietf-ospf-two-part-metric {
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>";
+                <mailto:acee.ietf@gmail.com>";
 
   description
     "This YANG module defines the configuration and operational
-     state for OSPF Two-Part Metric feature as defined in RFC 8042.
+    state for OSPF Two-Part Metric feature as defined in RFC 8042.
 
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
-
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
-     (http://trustee.ietf.org/license-info).
+     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
   reference "RFC XXXX";
 
-  revision 2021-07-11 {
+  revision 2023-01-02 {
     description
       "Initial version";
     reference
@@ -634,7 +634,7 @@ augment /rt:routing/rt:control-plane-protocols
  +--ro graceful-link-shutdown-sub-tlv!
 
       ]]></artwork>
-      <sourcecode name="ietf-ospf-graceful-link-shutdown@2021-07-11.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-graceful-link-shutdown@2023-01-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-graceful-link-shutdown {
   yang-version 1.1;
   namespace
@@ -650,11 +650,13 @@ module ietf-ospf-graceful-link-shutdown {
   import ietf-routing {
     prefix "rt";
     reference "RFC 8349: A YANG Data Model for Routing
-                  Management (NMDA Version)";
+               Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
@@ -665,13 +667,13 @@ module ietf-ospf-graceful-link-shutdown {
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>";
+                <mailto:acee.ietf@gmail.com>";
 
   description
     "This YANG module defines the configuration and operational
@@ -681,22 +683,22 @@ module ietf-ospf-graceful-link-shutdown {
      This YANG model conforms to the Network Management
      Datastore Architecture (NDMA) as described in RFC 8342.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
-     (http://trustee.ietf.org/license-info).
+     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
   reference "RFC XXXX";
 
-  revision 2021-07-11 {
+  revision 2023-01-02 {
     description
       "Initial version";
     reference
@@ -821,7 +823,7 @@ module: ietf-ospf-lls-local-id
        +--rw enable?   boolean
 
       ]]></artwork>
-      <sourcecode name="ietf-ospf-lls-local-id@2021-07-11.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-lls-local-id@2023-01-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-lls-local-id {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-lls-local-id";
@@ -831,53 +833,53 @@ module ietf-ospf-lls-local-id {
   import ietf-routing {
     prefix "rt";
     reference "RFC 8349: A YANG Data Model for Routing
-                  Management (NMDA Version)";
+               Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   organization
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>";
+                <mailto:acee.ietf@gmail.com>";
 
   description
     "This YANG module defines the configuration and operational
-     state for OSPF Link-Local Signaling (LLS) Extensions for Local
-     Interface ID Advertisement feature as defined in RFC 8510.
+    state for OSPF Link-Local Signaling (LLS) Extensions for Local
+    Interface ID Advertisement feature as defined in RFC 8510.
 
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
-
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
-     (http://trustee.ietf.org/license-info).
+     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
   reference "RFC XXXX";
 
-  revision 2021-07-11 {
+  revision 2023-01-02 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF.";
+      "RFC XXXX: A YANG Data Model for OSPF Link-Local Signaling (LLS)
+                 Extensions for Local Interface ID Advertisement.";
   }
 
   augment "/rt:routing/rt:control-plane-protocols"
@@ -889,8 +891,8 @@ module ietf-ospf-lls-local-id {
     }
     description
       "This augments the OSPF protocol configuration
-       to support LLS extensions for local interface ID 
-       advertisement.";
+       to support LLS extesnions for interfacde ID as
+       defined in RFC 8510.";
     container lls-int-id {
       leaf enable {
         type boolean;
@@ -900,12 +902,401 @@ module ietf-ospf-lls-local-id {
       }
       description
         "OSPF LLS Extensions for interface ID.";
-      reference "RFC 8510 - OSPF Link-Local Signaling (LLS)
-                 Extensions for Local Interface ID Advertisement";
     }
   }
 }
 ]]></sourcecode>
+    </section>
+    <section numbered="true" toc="default">
+      <name>YANG Module for OSPF Maximum SID Depth (MSD)</name>
+      <t>This document defines a model for Signaling Maximum SID Depth 
+      (MSD) Using OSPF <xref target="RFC8476"></xref>. It is an augmentation
+      of the OSPF base model.</t>
+      <artwork align="left" name="" type="" alt=""><![CDATA[
+module: ietf-ospf-msd
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:ri-opaque:
+    +--ro node-msd-tlv
+       +--ro node-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf:ri-opaque:
+    +--ro node-msd-tlv
+       +--ro node-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospf:router-information:
+    +--ro node-msd-tlv
+       +--ro node-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv3/ospf:ospfv3/ospf:body
+          /ospf:router-information:
+    +--ro node-msd-tlv
+       +--ro node-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:interfaces/ospf:interface/ospf:database
+          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+          /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:extended-link-opaque
+          /ospf:extended-link-tlv:
+    +--ro link-msd-sub-tlv
+       +--ro link-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:extended-link-opaque
+          /ospf:extended-link-tlv:
+    +--ro link-msd-sub-tlv
+       +--ro link-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf:extended-link-opaque/ospf:extended-link-tlv:
+    +--ro link-msd-sub-tlv
+       +--ro link-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs:
+    +--ro link-msd-sub-tlv
+       +--ro link-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+      ]]></artwork> 
+
+<sourcecode name="ietf-ospf-msd@2023-01-02.yang" type="" markers="true"><![CDATA[
+module ietf-ospf-msd {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-msd";
+  prefix ospf-msd;
+
+  import ietf-routing {
+    prefix rt;
+    reference "RFC 8349: A YANG Data Model for Routing
+               Management (NMDA Version)";
+  }
+
+  import ietf-ospf {
+    prefix ospf;
+  }
+
+  import ietf-ospfv3-extended-lsa {
+    prefix ospfv3-e-lsa;
+  }
+
+  organization
+    "IETF LSR - LSR Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
+     WG List:  <mailto:mpls@ietf.org>
+
+     Author:    Yingzhen Qu
+               <mailto:yingzhen.qu@futurewei.com>
+     Author:    Acee Lindem
+               <mailto:acee.ietf@gmail.com>
+     Author:    Stephane Litkowski
+               <mailto:slitkows.ietf@gmail.com>
+     Author:    Jeff Tantsura
+               <jefftant.ietf@gmail.com>
+
+    ";
+  description
+    "The YANG module augments the base OSPF model to 
+     manage different types of MSDs.
+
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2023 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+
+  reference "RFC XXXX: YANG Data Model for OSPF MSD.";
+
+  revision 2023-01-02 {
+    description
+      "Initial Version";
+    reference "RFC XXXX: YANG Data Model for OSPF MSD.";
+  }
+
+  identity msd-base-type {
+    description
+      "Base identity for MSD Type";
+  }
+
+  identity base-mpls-msd {
+    base msd-base-type;
+    description
+      "Base MPLS Imposition MSD.";
+    reference
+      "RFC 8491: Singling MSD using IS-IS.";
+  }
+
+  identity erld-msd {
+    base msd-base-type;
+    description
+      "ERLD-MSD is defined to advertise the ERLD.";
+    reference
+      "RFC 8662: Entropy Label for Source Packet Routing in 
+                 Networking (SPRING) Tunnels";
+  }
+
+  grouping node-msd-tlv {
+    description
+      "Grouping for node MSD.";
+    container node-msd-tlv {
+      list node-msds {
+        key "msd-type";
+        leaf msd-type {
+          type identityref {
+          base msd-base-type;
+          }
+          description
+            "MSD-Types";
+        }
+        leaf msd-value {
+          type uint8;
+          description
+            "MSD value, in the range of 0-255.";
+        }
+        description
+          "Node MSD is the smallest link MSD supported by
+           the node.";
+      }
+      description
+        "Node MSD is the number of SIDs supported by a node.";
+      reference
+        "RFC 8476: Signaling Maximum SID Depth (MSD) Using OSPF";
+    }
+  }
+
+  grouping link-msd-sub-tlv {
+    description
+      "Link Maximum SID Depth (MSD) grouping for an interface.";
+    container link-msd-sub-tlv {
+      list link-msds {
+        key "msd-type";
+        leaf msd-type {
+          type identityref {
+            base msd-base-type;
+          }
+          description
+            "MSD-Types";
+        }
+        leaf msd-value {
+          type uint8;
+          description
+            "MSD value, in the range of 0-255.";
+        }
+        description
+          "List of link MSDs";
+      }
+      description
+        "Link MSD sub-tlvs.";
+    }
+  }
+
+  /* Node MSD TLV */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:ri-opaque" {
+    when "../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque 
+       LSA (RFC7770) and has a type of 12.";
+
+    uses node-msd-tlv;  
+  } 
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:ri-opaque" {
+    when "../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque 
+       LSA (RFC7770) and has a type of 12.";
+
+    uses node-msd-tlv;  
+  } 
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information" {
+    when "../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque 
+       LSA (RFC7770) and has a type of 12.";
+
+    uses node-msd-tlv;  
+  } 
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information" {
+    when "../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque 
+       LSA (RFC7770) and has a type of 12.";
+
+    uses node-msd-tlv;  
+  } 
+
+  /* link MSD sub-tlv */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
+        + "ospf:interfaces/ospf:interface/ospf:database/"
+        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
+    when "../../../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
+       link TLV as defined in RFC 7684 and has a type of 6.";
+
+    uses link-msd-sub-tlv;  
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
+    when "../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
+       link TLV as defined in RFC 7684 and has a type of 6.";
+
+    uses link-msd-sub-tlv;  
+  } 
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
+    when "../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
+       link TLV as defined in RFC 7684 and has a type of 6.";
+
+    uses link-msd-sub-tlv;  
+  } 
+
+  augment "/rt:routing/"
+       + "rt:control-plane-protocols/rt:control-plane-protocol/"
+       + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+       + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+       + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
+       + "/ospfv3-e-lsa:e-router-tlvs" {
+       when "'ospf:../../../../../../../../"
+         + "rt:type' = 'ospf:ospfv3'" {
+         description
+           "This augmentation is only valid for OSPFv3
+            E-Router LSAs";
+       }
+    description
+      "Augment OSPFv3 Area scope router-link TLV.";
+
+    uses link-msd-sub-tlv;
+  }
+}
+]]></sourcecode>
+ 
     </section>
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Application-Specific Link Attributes</name>
@@ -964,7 +1355,7 @@ augment /rt:routing/rt:control-plane-protocols
                  +--ro length?   uint16
                  +--ro value?    yang:hex-string
       ]]></artwork>
-      <sourcecode name="ietf-ospf-link-attr@2020-10-31.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-link-attr@2023-01-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -979,6 +1370,8 @@ module ietf-ospf-link-attr {
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
@@ -989,13 +1382,13 @@ module ietf-ospf-link-attr {
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>
+                <mailto:acee.ietf@gmail.com>
       Author:   Stephane Litkowski
                 <mailto:slitkows.ietf@gmail.com>";
 
@@ -1007,15 +1400,15 @@ module ietf-ospf-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2020 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
-     (http://trustee.ietf.org/license-info).
+     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.
@@ -1028,7 +1421,7 @@ module ietf-ospf-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2020-10-31 {
+  revision 2023-01-02 {
     description
       "Initial version";
     reference
@@ -1470,7 +1863,7 @@ module: ietf-ospf-flex-algo
           +--ro flex-algo?   uint8
           +--ro metric?      uint32
       ]]></artwork>
-      <sourcecode name="ietf-ospf-flex-algo@2021-06-18.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-flex-algo@2023-01-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo";
@@ -1496,6 +1889,8 @@ module ietf-ospf-flex-algo {
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
@@ -1509,14 +1904,14 @@ module ietf-ospf-flex-algo {
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
-    "WG Web:   <https://tools.ietf.org/wg/spring/>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
      WG List:  <mailto:spring@ietf.org>
 
 
      Author:    Yingzhen Qu
                <mailto:yingzhen.qu@futurewei.com>
      Author:    Acee Lindem
-               <mailto:acee@cisco.com>
+               <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
                <mailto:slitkows.ietf@gmail.com>
     ";
@@ -1528,13 +1923,13 @@ module ietf-ospf-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
@@ -1550,7 +1945,7 @@ module ietf-ospf-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2021-06-18 {
+  revision 2023-01-02 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
@@ -2226,6 +2621,11 @@ module ietf-ospf-flex-algo {
    XML: N/A, the requested URI is an XML namespace.
    ]]></artwork>
       <artwork name="" type="" align="left" alt=""><![CDATA[
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-msd
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
    URI: urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
@@ -2260,6 +2660,12 @@ module ietf-ospf-flex-algo {
    name: ietf-ospf-lls-localid
    namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-lls-localid
    prefix: ospf-lls-localid
+   reference: RFC XXXX
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+   name: ietf-ospf-msd
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-msd
+   prefix: ospf-msd
    reference: RFC XXXX
    ]]></artwork>
       <artwork name="" type="" align="left" alt=""><![CDATA[
@@ -2314,9 +2720,10 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8042.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8379.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8476.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8510.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8920.xml"/>
-      <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-ospf-yang.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
       <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lsr-flex-algo.xml"/>
     </references>
   </back>

@@ -23,6 +23,8 @@ module ietf-ospf-flex-algo {
 
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
@@ -36,14 +38,14 @@ module ietf-ospf-flex-algo {
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
-    "WG Web:   <https://tools.ietf.org/wg/spring/>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
      WG List:  <mailto:spring@ietf.org>
 
 
      Author:    Yingzhen Qu
                <mailto:yingzhen.qu@futurewei.com>
      Author:    Acee Lindem
-               <mailto:acee@cisco.com>
+               <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
                <mailto:slitkows.ietf@gmail.com>
     ";
@@ -55,13 +57,13 @@ module ietf-ospf-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
@@ -77,7 +79,7 @@ module ietf-ospf-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2021-06-18 {
+  revision 2023-01-02 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";

@@ -36,7 +36,7 @@ module ietf-ospf-msd {
 
     ";
   description
-    "The YANG module augments the base OSPF model to 
+    "The YANG module augments the base OSPF model to
      manage different types of MSDs.
 
      This YANG model conforms to the Network Management
@@ -64,7 +64,7 @@ module ietf-ospf-msd {
 
   reference "RFC XXXX: YANG Data Model for OSPF MSD.";
 
-  revision 2023-01-02 {
+  revision 2023-06-27 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for OSPF MSD.";
@@ -88,7 +88,7 @@ module ietf-ospf-msd {
     description
       "ERLD-MSD is defined to advertise the ERLD.";
     reference
-      "RFC 8662: Entropy Label for Source Packet Routing in 
+      "RFC 8662: Entropy Label for Source Packet Routing in
                  Networking (SPRING) Tunnels";
   }
 
@@ -162,11 +162,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv2.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -181,11 +181,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv2.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -200,11 +200,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv3.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -218,11 +218,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv3.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   /* link MSD sub-tlv */
   augment "/rt:routing/"
@@ -242,7 +242,7 @@ module ietf-ospf-msd {
       "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
        link TLV as defined in RFC 7684 and has a type of 6.";
 
-    uses link-msd-sub-tlv;  
+    uses link-msd-sub-tlv;
   }
 
   augment "/rt:routing/"
@@ -262,8 +262,8 @@ module ietf-ospf-msd {
       "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
        link TLV as defined in RFC 7684 and has a type of 6.";
 
-    uses link-msd-sub-tlv;  
-  } 
+    uses link-msd-sub-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -281,8 +281,8 @@ module ietf-ospf-msd {
       "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
        link TLV as defined in RFC 7684 and has a type of 6.";
 
-    uses link-msd-sub-tlv;  
-  } 
+    uses link-msd-sub-tlv;
+  }
 
   augment "/rt:routing/"
        + "rt:control-plane-protocols/rt:control-plane-protocol/"

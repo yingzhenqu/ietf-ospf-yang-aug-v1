@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-10" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-11" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-10"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-11"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -112,14 +112,14 @@
         <dt>RFC8379:</dt>
         <dd>OSPF Graceful Link Shutdown <xref target="RFC8379" format="default"/>.</dd>
         <dt>RFC8476:</dt>
-        <dd>Signaling Maximum SID Depth (MSD) Using OSPF<xref target="RFC8476" format="default"/>.</dd>        
+        <dd>Signaling Maximum SID Depth (MSD) Using OSPF<xref target="RFC8476" format="default"/>.</dd>
         <dt>RFC8510:</dt>
         <dd>OSPF Link-Local Signaling (LLS) Extensions for
           Local Interface ID Advertisement <xref target="RFC8510" format="default"/>.</dd>
         <dt>RFC8920:</dt>
         <dd>OSPF Application-Specific Link Attributes <xref target="RFC8920" format="default"/>.</dd>
         <dt>RFCxxxx:</dt>
-        <dd>IGP Flexible Algorithm <xref target="I-D.ietf-lsr-flex-algo" format="default"/>.</dd>
+        <dd>IGP Flexible Algorithm <xref target="RFC9350" format="default"/>.</dd>
       </dl>
       <t>The augmentations defined in this document requires support for the
         OSPF base model<xref target="RFC9129" format="default"/> which defines
@@ -909,7 +909,7 @@ module ietf-ospf-lls-local-id {
     </section>
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Maximum SID Depth (MSD)</name>
-      <t>This document defines a model for Signaling Maximum SID Depth 
+      <t>This document defines a model for Signaling Maximum SID Depth
       (MSD) Using OSPF <xref target="RFC8476"></xref>. It is an augmentation
       of the OSPF base model.</t>
       <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -989,9 +989,9 @@ augment /rt:routing/rt:control-plane-protocols
      +--ro link-msds* [msd-type]
         +--ro msd-type     identityref
         +--ro msd-value?   uint8
-      ]]></artwork> 
+      ]]></artwork>
 
-<sourcecode name="ietf-ospf-msd@2023-01-02.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-msd@2023-06-27.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-msd {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-msd";
@@ -1005,6 +1005,8 @@ module ietf-ospf-msd {
 
   import ietf-ospf {
     prefix ospf;
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
@@ -1028,7 +1030,7 @@ module ietf-ospf-msd {
 
     ";
   description
-    "The YANG module augments the base OSPF model to 
+    "The YANG module augments the base OSPF model to
      manage different types of MSDs.
 
      This YANG model conforms to the Network Management
@@ -1056,7 +1058,7 @@ module ietf-ospf-msd {
 
   reference "RFC XXXX: YANG Data Model for OSPF MSD.";
 
-  revision 2023-01-02 {
+  revision 2023-06-27 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for OSPF MSD.";
@@ -1080,7 +1082,7 @@ module ietf-ospf-msd {
     description
       "ERLD-MSD is defined to advertise the ERLD.";
     reference
-      "RFC 8662: Entropy Label for Source Packet Routing in 
+      "RFC 8662: Entropy Label for Source Packet Routing in
                  Networking (SPRING) Tunnels";
   }
 
@@ -1154,11 +1156,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv2.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -1173,11 +1175,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv2.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv2 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -1192,11 +1194,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv3.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -1210,11 +1212,11 @@ module ietf-ospf-msd {
         "This augmentation is only valid for OSPFv3.";
     }
     description
-      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque 
+      "Node MSD TLV is an optional TLV of OSPFv3 RI Opaque
        LSA (RFC7770) and has a type of 12.";
 
-    uses node-msd-tlv;  
-  } 
+    uses node-msd-tlv;
+  }
 
   /* link MSD sub-tlv */
   augment "/rt:routing/"
@@ -1234,7 +1236,7 @@ module ietf-ospf-msd {
       "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
        link TLV as defined in RFC 7684 and has a type of 6.";
 
-    uses link-msd-sub-tlv;  
+    uses link-msd-sub-tlv;
   }
 
   augment "/rt:routing/"
@@ -1254,8 +1256,8 @@ module ietf-ospf-msd {
       "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
        link TLV as defined in RFC 7684 and has a type of 6.";
 
-    uses link-msd-sub-tlv;  
-  } 
+    uses link-msd-sub-tlv;
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -1273,8 +1275,8 @@ module ietf-ospf-msd {
       "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
        link TLV as defined in RFC 7684 and has a type of 6.";
 
-    uses link-msd-sub-tlv;  
-  } 
+    uses link-msd-sub-tlv;
+  }
 
   augment "/rt:routing/"
        + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -1295,8 +1297,10 @@ module ietf-ospf-msd {
     uses link-msd-sub-tlv;
   }
 }
+
+
 ]]></sourcecode>
- 
+
     </section>
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Application-Specific Link Attributes</name>
@@ -1586,7 +1590,7 @@ module ietf-ospf-link-attr {
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Flexible Algorithm</name>
       <t>This document defines a YANG module for OSPF Flexible
-      Algorithm as defined in <xref target="I-D.ietf-lsr-flex-algo" format="default"/>. It is an augmentation of the OSPF
+      Algorithm as defined in <xref target="RFC9350" format="default"/>. It is an augmentation of the OSPF
       base model. </t>
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-flex-algo
@@ -1608,7 +1612,7 @@ augment /rt:routing/rt:control-plane-protocols
                                            /named-admin-groups
                                            /named-admin-group/name
         +--rw exclude-srlgs*       -> /te:te/globals/named-srlgs
-                                      /named-srlg/name 
+                                      /named-srlg/name
                                       {te-types:named-srlg-groups}?
         +--rw fast-reroute?           boolean
         +--rw metric-type?            identityref
@@ -2731,7 +2735,7 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8510.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8920.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
-      <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lsr-flex-algo.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
     </references>
   </back>
 </rfc>

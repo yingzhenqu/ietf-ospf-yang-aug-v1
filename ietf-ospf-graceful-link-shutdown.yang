@@ -61,7 +61,7 @@ module ietf-ospf-graceful-link-shutdown {
 
   reference "RFC XXXX";
 
-  revision 2023-01-02 {
+  revision 2023-06-27 {
     description
       "Initial version";
     reference

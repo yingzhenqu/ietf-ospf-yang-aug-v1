@@ -63,17 +63,17 @@ module ietf-ospf-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2023-01-02 {
+  revision 2023-06-27 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF application specific
+      "RFC XXXX: A YANG Data Model for OSPF application-specific
       link attributes.";
   }
 
   identity sabm-bit {
     description
-      "Base identity for sabm bits.";
+      "Base identity for SABM bits.";
   }
 
   identity rsvp-te-bit {

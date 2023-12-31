@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-11" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-12" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-11"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-12"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -42,7 +42,7 @@
       </address>
     </author>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
-      <organization>Futurewei</organization>
+      <organization>Futurewei Technologies</organization>
       <address>
         <postal>
           <street>2330 Central Expressway</street>
@@ -52,7 +52,7 @@
           <country>USA</country>
         </postal>
         <phone/>
-        <email>yingzhen.qu@futurewei.com</email>
+        <email>yingzhen.ietf@gmail.com</email>
       </address>
     </author>
     <date/>
@@ -118,7 +118,7 @@
           Local Interface ID Advertisement <xref target="RFC8510" format="default"/>.</dd>
         <dt>RFC8920:</dt>
         <dd>OSPF Application-Specific Link Attributes <xref target="RFC8920" format="default"/>.</dd>
-        <dt>RFCxxxx:</dt>
+        <dt>RFC9350:</dt>
         <dd>IGP Flexible Algorithm <xref target="RFC9350" format="default"/>.</dd>
       </dl>
       <t>The augmentations defined in this document requires support for the

@@ -11,22 +11,28 @@ module ietf-ospf-msd {
 
   import ietf-ospf {
     prefix ospf;
-    reference "RFC 9129 - YANG Data Model for the OSPF
+    reference "RFC 9129: YANG Data Model for the OSPF
                Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
     prefix ospfv3-e-lsa;
+    reference "RFC 9587: YANG Data Model for OSPFv3 Extended Link
+               State Advertisements (LSAs)";
+  }
+
+  import iana-msd-types {
+    prefix iana-msd-types;
   }
 
   organization
     "IETF LSR - LSR Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
-     WG List:  <mailto:mpls@ietf.org>
+     WG List:  <mailto:lsr@ietf.org>
 
      Author:    Yingzhen Qu
-               <mailto:yingzhen.qu@futurewei.com>
+               <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
                <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
@@ -42,7 +48,7 @@ module ietf-ospf-msd {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -64,32 +70,12 @@ module ietf-ospf-msd {
 
   reference "RFC XXXX: YANG Data Model for OSPF MSD.";
 
-  revision 2023-06-27 {
+  revision 2024-07-01 {
     description
       "Initial Version";
-    reference "RFC XXXX: YANG Data Model for OSPF MSD.";
-  }
-
-  identity msd-base-type {
-    description
-      "Base identity for MSD Type";
-  }
-
-  identity base-mpls-msd {
-    base msd-base-type;
-    description
-      "Base MPLS Imposition MSD.";
     reference
-      "RFC 8491: Singling MSD using IS-IS.";
-  }
-
-  identity erld-msd {
-    base msd-base-type;
-    description
-      "ERLD-MSD is defined to advertise the ERLD.";
-    reference
-      "RFC 8662: Entropy Label for Source Packet Routing in
-                 Networking (SPRING) Tunnels";
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1.";
   }
 
   grouping node-msd-tlv {
@@ -100,7 +86,7 @@ module ietf-ospf-msd {
         key "msd-type";
         leaf msd-type {
           type identityref {
-          base msd-base-type;
+          base iana-msd-types:msd-base-mpls;
           }
           description
             "MSD-Types";
@@ -129,7 +115,7 @@ module ietf-ospf-msd {
         key "msd-type";
         leaf msd-type {
           type identityref {
-            base msd-base-type;
+            base iana-msd-types:msd-base-mpls;
           }
           description
             "MSD-Types";
@@ -227,26 +213,6 @@ module ietf-ospf-msd {
   /* link MSD sub-tlv */
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:areas/ospf:area/"
-        + "ospf:interfaces/ospf:interface/ospf:database/"
-        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
-        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
-        + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
-    when "../../../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
-      description
-        "This augmentation is only valid for OSPFv2.";
-    }
-    description
-      "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
-       link TLV as defined in RFC 7684 and has a type of 6.";
-
-    uses link-msd-sub-tlv;
-  }
-
-  augment "/rt:routing/"
-        + "rt:control-plane-protocols/rt:control-plane-protocol/"
         + "ospf:ospf/ospf:areas/"
         + "ospf:area/ospf:database/"
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
@@ -254,25 +220,6 @@ module ietf-ospf-msd {
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
         + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
     when "../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
-      description
-        "This augmentation is only valid for OSPFv2.";
-    }
-    description
-      "Link MSD sub-TLV is an optional sub-TLV of OSPFv2 extended
-       link TLV as defined in RFC 7684 and has a type of 6.";
-
-    uses link-msd-sub-tlv;
-  }
-
-  augment "/rt:routing/"
-        + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:database/"
-        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
-        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
-        + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
-    when "../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";

@@ -24,6 +24,8 @@ module ietf-ospf-graceful-link-shutdown {
 
   import ietf-ospfv3-extended-lsa {
     prefix "ospfv3-e-lsa";
+    reference "RFC 9587: YANG Data Model for OSPFv3 Extended Link
+               State Advertisements (LSAs)";
   }
 
   organization
@@ -34,7 +36,7 @@ module ietf-ospf-graceful-link-shutdown {
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
-                <mailto:yqu@futurewei.com>
+                <mailto:yingzhen.ietf@gmail.com>
       Author:   Acee Lindem
                 <mailto:acee.ietf@gmail.com>";
 
@@ -46,7 +48,7 @@ module ietf-ospf-graceful-link-shutdown {
      This YANG model conforms to the Network Management
      Datastore Architecture (NDMA) as described in RFC 8342.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -61,11 +63,12 @@ module ietf-ospf-graceful-link-shutdown {
 
   reference "RFC XXXX";
 
-  revision 2023-06-27 {
+  revision 2024-07-01 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF Graceful Link Shutdown.";
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1.";
   }
 
 

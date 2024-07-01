@@ -874,6 +874,7 @@ module ietf-ospf-lls-local-id {
   revision 2024-07-01 {
     description
       "Initial version";
+    reference
       "RFC XXXX: OSPF YANG Model Augmentations for Additional
                  Features - Version 1.";
   }

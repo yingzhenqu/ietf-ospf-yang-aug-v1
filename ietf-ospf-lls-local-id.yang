@@ -12,7 +12,7 @@ module ietf-ospf-lls-local-id {
 
   import ietf-ospf {
     prefix "ospf";
-    reference "RFC 9129 - YANG Data Model for the OSPF
+    reference "RFC 9129: YANG Data Model for the OSPF
                Protocol";
   }
 
@@ -24,7 +24,7 @@ module ietf-ospf-lls-local-id {
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
-                <mailto:yqu@futurewei.com>
+                <mailto:yingzhen.ietf@gmail.com>
       Author:   Acee Lindem
                 <mailto:acee.ietf@gmail.com>";
 
@@ -33,7 +33,7 @@ module ietf-ospf-lls-local-id {
     state for OSPF Link-Local Signaling (LLS) Extensions for Local
     Interface ID Advertisement feature as defined in RFC 8510.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -46,13 +46,12 @@ module ietf-ospf-lls-local-id {
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
-  revision 2023-06-27 {
+  revision 2024-07-01 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF Link-Local Signaling
-                 (LLS) Extensions for Local Interface ID
-                 Advertisement.";
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1.";
   }
 
   augment "/rt:routing/rt:control-plane-protocols"

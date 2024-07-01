@@ -23,7 +23,7 @@ module ietf-ospf-flex-algo {
 
   import ietf-ospf {
     prefix "ospf";
-    reference "RFC 9129 - YANG Data Model for the OSPF
+    reference "RFC 9129: YANG Data Model for the OSPF
                Protocol";
   }
 
@@ -41,7 +41,7 @@ module ietf-ospf-flex-algo {
     "IETF LSR - Link State Routing Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
-     WG List:  <mailto:spring@ietf.org>
+     WG List:  <mailto:lsr@ietf.org>
 
 
      Author:    Yingzhen Qu

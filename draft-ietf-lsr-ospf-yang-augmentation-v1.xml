@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-13" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-14" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-13"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-14"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -74,19 +74,19 @@
          keywords will be used for the search engine. -->
 
     <abstract>
-      <t>This document defines YANG data modules augmenting the IETF OSPF YANG
-      model to provide support for Traffic Engineering Extensions to OSPF
+      <t>This document defines YANG data modules that augment the IETF OSPF YANG
+      model to support various OSPF extensions and features, including Traffic Engineering Extensions to OSPF
       Version 3 as defined in RFC 5329, OSPF Two-Part Metric as defined in RFC 8042,
       OSPF Graceful Link Shutdown as defined in RFC 8379, OSPF Link-Local
       Signaling (LLS) Extensions for Local Interface ID Advertisement as defined
       in RFC 8510, OSPF MSD as defined in RFC 8476, OSPF Application-Specific
-      Link Attributes as defined in RFC 9492, and OSPF Flexible Algorithm. </t>
+      Link Attributes as defined in RFC 9492, and OSPF Flexible Algorithm as defined in RFC 9350. </t>
     </abstract>
   </front>
   <middle>
     <section numbered="true" toc="default">
       <name>Overview</name>
-      <t>YANG <xref target="RFC6020" format="default"/>  <xref target="RFC7950" format="default"/> is a
+      <t>YANG <xref target="RFC7950" format="default"/> is a
       data definition language
       used to define the contents of a conceptual data store
       that allows networked devices to be managed using NETCONF
@@ -137,6 +137,15 @@
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospfv3-te
 augment /rt:routing/rt:control-plane-protocols
+        /rt:control-plane-protocol/ospf:ospf:
+  +--rw traffic-eng
+     +--rw enable?   boolean
+augment /rt:routing/rt:control-plane-protocols
+        /rt:control-plane-protocol/ospf:ospf/ospf:areas
+        /ospf:area/ospf:interfaces/ospf:interface:
+  +--rw traffic-eng
+       +--rw enable?   boolean
+augment /rt:routing/rt:control-plane-protocols
         /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
         /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
         /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
@@ -162,15 +171,15 @@ augment /rt:routing/rt:control-plane-protocols
         |            rt-types:bandwidth-ieee-float32
         +--ro admin-group?                uint32
         +--ro neighbor-id
-        |  +--ro nbr-interface-id    inet:ipv4-address
-        |  +--ro nbr-router-id       yang:dotted-quad
+        |  +--ro nbr-interface-id    uint32
+        |  +--ro nbr-router-id       rt-types:router-id
         +--ro unknown-tlvs
            +--ro unknown-tlv*
               +--ro type?     uint16
               +--ro length?   uint16
               +--ro value?    yang:hex-string
       ]]></artwork>
-      <sourcecode name="ietf-ospfv3-te@2023-06-27.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospfv3-te@2024-12-27.yang" type="" markers="true"><![CDATA[
 module ietf-ospfv3-te {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospfv3-te";
@@ -178,31 +187,28 @@ module ietf-ospfv3-te {
   prefix ospfv3-te;
 
   import ietf-inet-types {
-    prefix "inet";
-    reference "RFC 6991: Common YANG Data Types";
-  }
-
-  import ietf-yang-types {
-    prefix "yang";
-    reference "RFC 6991: Common YANG Data Types";
+    prefix inet;
+    reference 
+      "RFC 6991: Common YANG Data Types";
   }
 
   import ietf-routing-types {
-    prefix "rt-types";
-    reference "RFC 8294: Common YANG Data Types for the
-               Routing Area";
+    prefix rt-types;
+    reference 
+      "RFC 8294: Common YANG Data Types for the Routing Area";
   }
 
   import ietf-routing {
-    prefix "rt";
-    reference "RFC 8349: A YANG Data Model for Routing
-               Management (NMDA Version)";
+    prefix rt;
+    reference 
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
   }
 
   import ietf-ospf {
-    prefix "ospf";
-    reference "RFC 9129 - YANG Data Model for the OSPF
-               Protocol";
+    prefix ospf;
+    reference 
+      "RFC 9129: YANG Data Model for the OSPF Protocol";
   }
 
   organization
@@ -219,10 +225,10 @@ module ietf-ospfv3-te {
 
   description
     "This YANG module defines the configuration and operational
-    state for OSPFv3 extensions to support intra-area Traffic
-    Engineering (TE) as defined in RFC 5329.
+     state for OSPFv3 extensions to support intra-area Traffic
+     Engineering (TE) as defined in RFC 5329.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -237,11 +243,12 @@ module ietf-ospfv3-te {
 
   reference "RFC XXXX";
 
-  revision 2023-06-27 {
+  revision 2024-12-27 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for OSPFv3 TE.";
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1";
   }
 
   identity ospfv3-intra-area-te-lsa {
@@ -251,11 +258,13 @@ module ietf-ospfv3-te {
   }
 
   grouping ospfv3-intra-area-te {
-    description "Grouping for OSPFv3 intra-area-te-lsa.";
+    description
+      "Grouping for OSPFv3 intra-area-te-lsa.";
     container ospfv3-intra-area-te {
       container router-address-tlv {
-        description "The router IPv6 address tlv advertises a
-                     reachable IPv6 address.";
+        description 
+          "The router IPv6 address tlv advertises a
+           reachable IPv6 address.";
         leaf router-address {
           type inet:ipv6-address;
           description
@@ -264,16 +273,19 @@ module ietf-ospfv3-te {
       }
 
       container link-tlv {
-        description "Describes a single link, and it is constructed
-                     of a set of Sub-TLVs.";
+        description 
+          "Describes a single link, and it is constructed
+           of a set of Sub-TLVs.";
         leaf link-type {
           type ospf:router-link-type;
           mandatory true;
-          description "Link type.";
+          description
+            "Link type.";
         }
 
         container local-if-ipv6-addrs {
-          description "All local interface IPv6 addresses.";
+          description
+            "All local interface IPv6 addresses.";
           leaf-list local-if-ipv6-addr {
             type inet:ipv6-address;
             description
@@ -282,7 +294,8 @@ module ietf-ospfv3-te {
         }
 
         container remote-if-ipv6-addrs {
-          description "All remote interface IPv6 addresses.";
+          description
+            "All remote interface IPv6 addresses.";
           leaf-list remote-if-ipv6-addr {
             type inet:ipv6-address;
             description
@@ -292,31 +305,37 @@ module ietf-ospfv3-te {
 
         leaf te-metric {
           type uint32;
-          description "TE metric.";
+          description
+            "TE metric.";
         }
 
         leaf max-bandwidth {
           type rt-types:bandwidth-ieee-float32;
-          description "Maximum bandwidth.";
+          description
+            "Maximum bandwidth.";
         }
 
         leaf max-reservable-bandwidth {
           type rt-types:bandwidth-ieee-float32;
-          description "Maximum reservable bandwidth.";
+          description
+            "Maximum reservable bandwidth.";
         }
 
         container unreserved-bandwidths {
-          description "All unreserved bandwidths.";
+          description
+            "All unreserved bandwidths.";
           list unreserved-bandwidth {
             leaf priority {
               type uint8 {
                 range "0 .. 7";
               }
-              description "Priority from 0 to 7.";
+              description
+                "Priority from 0 to 7.";
             }
             leaf unreserved-bandwidth {
               type rt-types:bandwidth-ieee-float32;
-              description "Unreserved bandwidth.";
+              description
+                "Unreserved bandwidth.";
             }
             description
               "List of unreserved bandwidths for different
@@ -331,28 +350,80 @@ module ietf-ospfv3-te {
         }
 
         container neighbor-id {
-          description "Neighbor link identification.";
+          description
+            "Neighbor link identification.";
           leaf nbr-interface-id {
-            type inet:ipv4-address;
+            type uint32;
             mandatory true;
-            description "The neighbor's interface ID.";
+            description
+              "The neighbor's interface ID.";
           }
           leaf nbr-router-id {
-            type yang:dotted-quad;
+            type rt-types:router-id;
             mandatory true;
-            description "The neighbor's router ID.";
+            description
+              "The neighbor's router ID.";
           }
         }
 
         uses ospf:unknown-tlvs;
       }
 
-      description "OSPFv3 Intra-Area-TE-LSA.";
-      reference "RFC 5329: Traffic Engineering Extensions to OSPF
-              :   Version 3.";
+      description
+        "OSPFv3 Intra-Area-TE-LSA.";
+      reference
+        "RFC 5329: Traffic Engineering Extensions to OSPF Version 3";
     }
   }
 
+  /* Configuration */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/ospf:ospf" {
+    when "../rt:type = 'ospf:ospfv3'" {
+      description
+        "This augment OSPFv3 routing protocol when used";
+    }
+    description
+      "This augments OSPFv3 protocol configuration
+       with MPLS TE configuration.";
+    container traffic-eng {
+      description
+        "OSPFv3 MPLS TE configuration.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enables traffic engineering advertisement in OSPFv3.";
+      }
+    }
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "derived-from-or-self(../../../../../"
+       + "rt:type, 'ospf:ospfv3')" {
+      description
+        "This augments the OSPFv3 routing protocol interface
+         configuration.";
+    }  
+    description
+      "This augments OSPFv3 interface with MPLS TE configuration.";
+    container traffic-eng {
+      description
+        "OSPFv3 interface MPLS TE configuration.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enables OSPFv3 MPLS traffic engineering functionality on
+           the interface.";
+      }    
+    }
+  }
+
+  /* Database */
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
         + "ospf:ospf/ospf:areas/"

@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-14" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-15" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-14"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-15"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -103,6 +103,8 @@
       <dl newline="false" spacing="normal">
         <dt>RFC5329:</dt>
         <dd>Traffic Engineering Extensions to OSPF Version 3 <xref target="RFC5329" format="default"/>.</dd>
+        <dt>RFC5392:</dt>
+        <dd>OSPF Extensions in Support of Inter-Autonomous System (AS) MPLS and GMPLS Traffic Engineering <xref target="RFC5392" format="default"/>.</dd>
         <dt>RFC8042:</dt>
         <dd>OSPF Two-Part Metric <xref target="RFC8042" format="default"/>.</dd>
         <dt>RFC8379:</dt>
@@ -112,10 +114,14 @@
         <dt>RFC8510:</dt>
         <dd>OSPF Link-Local Signaling (LLS) Extensions for
           Local Interface ID Advertisement <xref target="RFC8510" format="default"/>.</dd>
+        <dt>RFC9356:</dt>
+        <dd>Advertising Layer 2 Bundle Member Link Attributes in OSPF <xref target="RFC9356" format="default"/>.</dd>
         <dt>RFC9492:</dt>
         <dd>OSPF Application-Specific Link Attributes <xref target="RFC9492" format="default"/>.</dd>
         <dt>RFC9350:</dt>
         <dd>IGP Flexible Algorithm <xref target="RFC9350" format="default"/>.</dd>
+        <dt>I-D:ietf-lsr-flex-algo-bw-con:</dt>
+        <dd>IGP Flexible Algorithms: Bandwidth, Delay, Metrics and Constraints <xref target="I-D.ietf-lsr-flex-algo-bw-con" format="default"/>.</dd>        
       </dl>
       <t>The augmentations defined in this document requires support for the
         OSPF base model<xref target="RFC9129" format="default"/> which defines
@@ -130,14 +136,14 @@
       </section>
     </section>
     <section numbered="true" toc="default">
-      <name>YANG Module for Traffic Engineering Extensions to OSPF Version 3</name>
+      <name>YANG Module for Traffic Engineering Extensions to OSPF</name>
       <t>This document defines a YANG module for Traffic Engineering Extensions to OSPF
-      Version 3 as defined in <xref target="RFC5329" format="default"/>. It is an augmentation of the OSPF
+      as defined in <xref target="RFC3630" format="default"/> and <xref target="RFC5329" format="default"/>. It is an augmentation of the OSPF
       base model. </t>
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospfv3-te
 augment /rt:routing/rt:control-plane-protocols
-        /rt:control-plane-protocol/ospf:ospf:
+        /rt:control-plane-protocol/ospf:ospf/ospf:mpls:
   +--rw traffic-eng
      +--rw enable?   boolean
 augment /rt:routing/rt:control-plane-protocols
@@ -179,12 +185,12 @@ augment /rt:routing/rt:control-plane-protocols
               +--ro length?   uint16
               +--ro value?    yang:hex-string
       ]]></artwork>
-      <sourcecode name="ietf-ospfv3-te@2024-12-27.yang" type="" markers="true"><![CDATA[
-module ietf-ospfv3-te {
+      <sourcecode name="ietf-ospf-te@2025-02-27.yang" type="" markers="true"><![CDATA[
+module ietf-ospf-te {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-ospfv3-te";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-te";
 
-  prefix ospfv3-te;
+  prefix ospf-te;
 
   import ietf-inet-types {
     prefix inet;
@@ -225,10 +231,11 @@ module ietf-ospfv3-te {
 
   description
     "This YANG module defines the configuration and operational
-     state for OSPFv3 extensions to support intra-area Traffic
-     Engineering (TE) as defined in RFC 5329.
+     state for Traffic Engineering (TE) Extensions to OSPF Version 2
+     as defined in RFC 3630 and OSPFv3 extensions to support
+     intra-area Traffic Engineering (TE) as defined in RFC 5329.
 
-     Copyright (c) 2024 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -243,7 +250,7 @@ module ietf-ospfv3-te {
 
   reference "RFC XXXX";
 
-  revision 2024-12-27 {
+  revision 2025-02-27 {
     description
       "Initial version";
     reference
@@ -379,45 +386,50 @@ module ietf-ospfv3-te {
   /* Configuration */
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
-        + "/ospf:ospf" {
-    when "../rt:type = 'ospf:ospfv3'" {
-      description
-        "This augment OSPFv3 routing protocol when used";
-    }
+        + "/ospf:ospf/ospf:mpls" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+          + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+         description
+           "This augments the OSPF routing protocol when used.";
+       }
     description
-      "This augments OSPFv3 protocol configuration
+      "This augments OSPF protocol configuration
        with MPLS TE configuration.";
     container traffic-eng {
       description
-        "OSPFv3 MPLS TE configuration.";
+        "OSPF MPLS TE configuration.";
       leaf enable {
         type boolean;
         default "false";
         description
-          "Enables traffic engineering advertisement in OSPFv3.";
+          "Enables traffic engineering advertisement in OSPF.";
       }
+      reference
+        "RFC 3630: Traffic Engineering (TE) Extensions to OSPF
+                   Version 2
+         RFC 5329: Traffic Engineering Extensions to OSPF Version 3";
     }
   }
 
   augment "/rt:routing/rt:control-plane-protocols/"
         + "rt:control-plane-protocol/ospf:ospf/"
         + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
-    when "derived-from-or-self(../../../../../"
-       + "rt:type, 'ospf:ospfv3')" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+          + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
       description
-        "This augments the OSPFv3 routing protocol interface
+        "This augments the OSPF routing protocol interface
          configuration.";
     }  
     description
-      "This augments OSPFv3 interface with MPLS TE configuration.";
+      "This augments OSPF interface with MPLS TE configuration.";
     container traffic-eng {
       description
-        "OSPFv3 interface MPLS TE configuration.";
+        "OSPF interface MPLS TE configuration.";
       leaf enable {
         type boolean;
         default "false";
         description
-          "Enables OSPFv3 MPLS traffic engineering functionality on
+          "Enables OSPF MPLS traffic engineering functionality on
            the interface.";
       }    
     }
@@ -444,6 +456,527 @@ module ietf-ospfv3-te {
 }
   ]]></sourcecode>
     </section>
+
+    <section numbered="true" toc="default">
+      <name>YANG Module for OSPF Extensions in Support of Inter-Autonomous System (AS)
+            MPLS and GMPLS Traffic Engineering</name>
+      <t>This document defines a YANG module for OSPF Extensions in
+        Support of Inter-Autonomous System (AS) MPLS and GMPLS Traffic
+        Engineering as defined in <xref target="RFC5392" format="default"/>.</t>
+
+    <artwork align="left" name="" type="" alt=""><![CDATA[
+module: ietf-ospf-inter-as-te
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf
+          /ospf:mpls/ospf-te:traffic-eng:
+    +--rw inter-as-te!
+       +--rw flood-as-wide?   boolean
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque:
+    +--ro inter-as-te-v2
+       +--ro link-tlv
+          +--ro link-type                   ospf:router-link-type
+          +--ro local-if-ipv4-addrs
+          |  +--ro local-if-ipv4-addr*   inet:ipv4-address
+          +--ro remote-if-ipv4-addrs
+          |  +--ro remote-if-ipv4-addr*   inet:ipv4-address
+          +--ro te-metric?                  uint32
+          +--ro max-bandwidth?              rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth* []
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro admin-group?                uint32
+          +--ro remote-as-number            uint32
+          +--ro ipv4-remote-asbr-id?        inet:ipv4-address
+          +--ro ipv6-remote-asbr-id?        inet:ipv6-address
+          +--ro unknown-tlvs
+             +--ro unknown-tlv* []
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2
+          /ospf:ospfv2/ospf:body/ospf:opaque:
+    +--ro inter-as-te-v2
+       +--ro link-tlv
+          +--ro link-type                   ospf:router-link-type
+          +--ro local-if-ipv4-addrs
+          |  +--ro local-if-ipv4-addr*   inet:ipv4-address
+          +--ro remote-if-ipv4-addrs
+          |  +--ro remote-if-ipv4-addr*   inet:ipv4-address
+          +--ro te-metric?                  uint32
+          +--ro max-bandwidth?              rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth* []
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro admin-group?                uint32
+          +--ro remote-as-number            uint32
+          +--ro ipv4-remote-asbr-id?        inet:ipv4-address
+          +--ro ipv6-remote-asbr-id?        inet:ipv6-address
+          +--ro unknown-tlvs
+             +--ro unknown-tlv* []
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body:
+    +--ro inter-as-te-v3
+       +--ro link-tlv
+          +--ro link-type                   ospf:router-link-type
+          +--ro local-if-ipv6-addrs
+          |  +--ro local-if-ipv6-addr*   inet:ipv6-address
+          +--ro remote-if-ipv6-addrs
+          |  +--ro remote-if-ipv6-addr*   inet:ipv6-address
+          +--ro te-metric?                  uint32
+          +--ro max-bandwidth?             rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?  rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth* []
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro admin-group?                uint32
+          +--ro remote-as-number            uint32
+          +--ro ipv4-remote-asbr-id?        inet:ipv4-address
+          +--ro ipv6-remote-asbr-id?        inet:ipv6-address
+          +--ro unknown-tlvs
+             +--ro unknown-tlv* []
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3
+          /ospf:ospfv3/ospf:body:
+    +--ro inter-as-te-v3
+       +--ro link-tlv
+          +--ro link-type                   ospf:router-link-type
+          +--ro local-if-ipv6-addrs
+          |  +--ro local-if-ipv6-addr*   inet:ipv6-address
+          +--ro remote-if-ipv6-addrs
+          |  +--ro remote-if-ipv6-addr*   inet:ipv6-address
+          +--ro te-metric?                  uint32
+          +--ro max-bandwidth?              rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth* []
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?   rt-types:bandwidth-ieee-float32
+          +--ro admin-group?                uint32
+          +--ro remote-as-number            uint32
+          +--ro ipv4-remote-asbr-id?        inet:ipv4-address
+          +--ro ipv6-remote-asbr-id?        inet:ipv6-address
+          +--ro unknown-tlvs
+             +--ro unknown-tlv* []
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+      ]]></artwork>
+      <artwork><![CDATA[
+<CODE BEGINS> file "ietf-ospf-inter-as-te@2025-02-27.yang"
+module ietf-ospf-inter-as-te {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-inter-as-te";
+
+  prefix ospf-inter-as-te;
+
+  import ietf-inet-types {
+    prefix inet;
+    reference 
+      "RFC 6991: Common YANG Data Types";
+  }
+
+  import ietf-routing-types {
+    prefix rt-types;
+    reference 
+      "RFC 8294: Common YANG Data Types for the Routing Area";
+  }
+
+  import ietf-routing {
+    prefix rt;
+    reference 
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
+  }
+
+  import ietf-ospf {
+    prefix ospf;
+    reference 
+      "RFC 9129: YANG Data Model for the OSPF Protocol";
+  }
+
+  import ietf-ospf-te {
+    prefix ospf-te;
+    reference
+      "RFC 3630: Traffic Engineering (TE) Extensions to OSPF Version 2
+       RFC 5329: Traffic Engineering Extensions to OSPF Version 3";
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+
+  contact
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
+      WG List:  <mailto:lsr@ietf.org>
+
+      Author:   Yingzhen Qu
+                <mailto:yqu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee.ietf@gmail.com>";
+
+  description
+    "This YANG module defines the configuration and operational
+     state for OSPF Extensions in Support of Inter-Autonomous
+     System (AS) MPLS and GMPLS Traffic Engineering as defined
+     in RFC 5392.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2025-02-27 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1";
+  }
+
+  identity ospfv3-intra-area-te-lsa {
+    base ospf:ospfv3-lsa-type;
+    description
+      "OSPFv3 Intrea-area TE LSA.";
+  }
+
+  grouping inter-as-te-v2-lsa {
+    description
+      "Grouping for OSPF Inter-AS-TE-2 LSA.";
+    container inter-as-te-v2 {
+      description
+        "The Inter-AS-TE-v2 LSA.";
+
+      container link-tlv {
+        description
+          "Describes a single link.  It is constructed
+           from a set of sub-TLVs.";
+        leaf link-type {
+          type ospf:router-link-type;
+          mandatory true;
+          description
+            "Link type.";
+        }
+        container local-if-ipv4-addrs {
+          description
+            "All local interface IPv4 addresses.";
+          leaf-list local-if-ipv4-addr {
+            type inet:ipv4-address;
+            description
+              "List of local interface IPv4 addresses.";
+          }
+        }
+        container remote-if-ipv4-addrs {
+          description
+            "All remote interface IPv4 addresses.";
+          leaf-list remote-if-ipv4-addr {
+            type inet:ipv4-address;
+            description
+              "List of remote interface IPv4 addresses.";
+          }
+        }
+        leaf te-metric {
+          type uint32;
+          description
+            "TE metric.";
+        }
+        leaf max-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "Maximum bandwidth.";
+        }
+        leaf max-reservable-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "Maximum reservable bandwidth.";
+        }
+        container unreserved-bandwidths {
+          description
+            "All unreserved bandwidths.";
+          list unreserved-bandwidth {
+            leaf priority {
+              type uint8 {
+                range "0 .. 7";
+              }
+            description
+              "Priority from 0 to 7.";
+               }
+            leaf unreserved-bandwidth {
+              type rt-types:bandwidth-ieee-float32;
+              description
+                "Unreserved bandwidth.";
+            }
+            description
+              "List of unreserved bandwidths for different
+               priorities.";
+          }
+        }
+        leaf admin-group {
+          type uint32;
+          description
+            "Administrative Group / Resource Class/Color.";
+        }
+        leaf remote-as-number {
+          type uint32;
+          mandatory true;
+          description
+            "Remote AS number.";
+        }
+        leaf ipv4-remote-asbr-id {
+          type inet:ipv4-address;
+          description
+            "The neighboring ASBR IPv4 address.";
+        }
+        leaf ipv6-remote-asbr-id {
+          type inet:ipv6-address;
+          description
+            "The neighboring ASBR IPv6 address.";
+        }
+        uses ospf:unknown-tlvs;
+      }
+    }
+  }
+  grouping inter-as-te-v3 {
+    description
+      "Grouping for OSPFv3 inter-as-te-v3 lsa.";
+    container inter-as-te-v3 {
+      container link-tlv {
+        description 
+          "Describes a single link, and it is constructed
+           of a set of Sub-TLVs.";
+        leaf link-type {
+          type ospf:router-link-type;
+          mandatory true;
+          description
+            "Link type.";
+        }
+
+        container local-if-ipv6-addrs {
+          description
+            "All local interface IPv6 addresses.";
+          leaf-list local-if-ipv6-addr {
+            type inet:ipv6-address;
+            description
+              "List of local interface IPv6 addresses.";
+          }
+        }
+
+        container remote-if-ipv6-addrs {
+          description
+            "All remote interface IPv6 addresses.";
+          leaf-list remote-if-ipv6-addr {
+            type inet:ipv6-address;
+            description
+              "List of remote interface IPv6 addresses.";
+          }
+        }
+
+        leaf te-metric {
+          type uint32;
+          description
+            "TE metric.";
+        }
+
+        leaf max-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "Maximum bandwidth.";
+        }
+
+        leaf max-reservable-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "Maximum reservable bandwidth.";
+        }
+
+        container unreserved-bandwidths {
+          description
+            "All unreserved bandwidths.";
+          list unreserved-bandwidth {
+            leaf priority {
+              type uint8 {
+                range "0 .. 7";
+              }
+              description
+                "Priority from 0 to 7.";
+            }
+            leaf unreserved-bandwidth {
+              type rt-types:bandwidth-ieee-float32;
+              description
+                "Unreserved bandwidth.";
+            }
+            description
+              "List of unreserved bandwidths for different
+               priorities.";
+          }
+        }
+
+        leaf admin-group {
+          type uint32;
+          description
+            "Administrative group/Resource Class/Color.";
+        }
+
+        leaf remote-as-number {
+          type uint32;
+          mandatory true;
+          description
+            "Remote AS number.";
+        }
+        leaf ipv4-remote-asbr-id {
+          type inet:ipv4-address;
+          description
+            "The neighboring ASBR IPv4 address.";
+        }
+        leaf ipv6-remote-asbr-id {
+          type inet:ipv6-address;
+          description
+            "The neighboring ASBR IPv6 address.";
+        }
+        uses ospf:unknown-tlvs;
+      }
+
+      description
+        "OSPFv3 Inter-AS-TE-v3 LSA.";
+      reference
+        "RFC 5392: TOSPF Extensions in Support of Inter-Autonomous
+         System (AS) MPLS and GMPLS Traffic Engineering";
+    }
+  }
+
+  /* Configuration */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:mpls/ospf-te:traffic-eng" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+          + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+      description
+        "This augment OSPF routing protocol when used";
+    }
+    description
+      "This augments OSPF protocol traffic engineering configuration
+       with Inter-AS-TE configuration.";
+    container inter-as-te {
+      presence "Enable Inter-AS-TE";
+      description
+        "OSPFv3 MPLS TE configuration.";
+      leaf flood-as-wide {
+        type boolean;
+        default "false";
+        description
+          "Enables as-scoped traffic engineering advertisement. By
+           default, the inter-as TE link advertisement is limited to
+           within the single area.";
+      }
+      reference
+        "RFC 5392: OSPF Extensions in Support of Inter-Autonomous
+                   System (AS) MPLS and GMPLS Traffic Engineering";
+    }
+  }
+
+  /* Database */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augments OSPFv2 routing protocol when used";         
+         }
+      description
+        "OSPFv2 type 10 Opaque LSA.";
+      uses inter-as-te-v2-lsa;
+    }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augments OSPFv2 routing protocol when used";         
+         }
+      description
+        "OSPFv2 type 11 Opaque LSA.";
+      uses inter-as-te-v2-lsa;
+    } 
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "OSPFv3 Intra-Area-TE-LSA.";
+
+    uses inter-as-te-v3;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "OSPFv3 Intra-Area-TE-LSA.";
+
+    uses inter-as-te-v3;
+  }
+}
+      ]]></artwork>
+    </section>
+    
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Two-Part Metric</name>
       <t>This document defines a YANG module for OSPF Two-Part Metric feature as
@@ -1293,8 +1826,8 @@ module ietf-ospf-msd {
   }
 }
 ]]></sourcecode>
-
     </section>
+
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Application-Specific Link Attributes</name>
       <t>This document defines a YANG module for OSPF Application-Specific
@@ -1319,7 +1852,7 @@ augment /rt:routing/rt:control-plane-protocols
         /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
         /ospf:body/ospf:opaque/ospf:extended-link-opaque
         /ospf:extended-link-tlv:
-  +--ro application-specific-link-attributes-sub-tlvs
+  +--ro app-specific-link-attr-sub-tlvs
      +--ro asla-sub-tlvs* []
         +--ro sabm-length?                    uint8
         +--ro udabm-length?                   uint8
@@ -1338,7 +1871,7 @@ augment /rt:routing/rt:control-plane-protocols
         /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
         /ospf:body/ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
         /ospfv3-e-lsa:link-tlv:
-  +--ro application-specific-link-attributes-sub-tlvs
+  +--ro app-specific-link-attr-sub-tlvs
      +--ro asla-sub-tlvs* []
         +--ro sabm-length?                    uint8
         +--ro udabm-length?                   uint8
@@ -1352,7 +1885,7 @@ augment /rt:routing/rt:control-plane-protocols
                  +--ro length?   uint16
                  +--ro value?    yang:hex-string
       ]]></artwork>
-      <sourcecode name="ietf-ospf-link-attr@2024-07-01.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-link-attr@2025-02-27.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -1399,7 +1932,7 @@ module ietf-ospf-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2024 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1420,7 +1953,7 @@ module ietf-ospf-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial version";
     reference
@@ -1451,13 +1984,13 @@ module ietf-ospf-link-attr {
       "F bit, Loop Free Alternate (LFA). Includes all LFA types.";
   }
 
-  grouping application-specific-link-attributes-sub-tlvs {
+  grouping app-specific-link-attr-sub-tlvs {
     description
       "OSPF Application-Specific Link Attributes (ASLA) sub-TLV.
        The ASLA sub-TLV is a sub-TLV of the OSPFv2 Extended Link
-       TLV [RFC7684] and OSPFv3 Router-Link TLV [RFC8362].";
+       TLV (RFC7684) and OSPFv3 Router-Link TLV (RFC8362).";
 
-    container application-specific-link-attributes-sub-tlvs {
+    container app-specific-link-attr-sub-tlvs {
       description "Application-Specific Link Attributes sub-TLV.";
       list asla-sub-tlvs {
         leaf sabm-length {
@@ -1502,6 +2035,7 @@ module ietf-ospf-link-attr {
     }
   }
 
+  /* Configuration */
   augment "/rt:routing/rt:control-plane-protocols"
         + "/rt:control-plane-protocol/ospf:ospf" {
     when "../rt:type = 'ospf:ospfv2' or "
@@ -1549,8 +2083,8 @@ module ietf-ospf-link-attr {
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
         + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
-    when "../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -1558,7 +2092,7 @@ module ietf-ospf-link-attr {
       "OSPF Application-Specific Link Attributes (ASLA) sub-TLV is
        a sub-TLV of OSPFv2 Extended Link TLV (RFC7684).";
 
-    uses application-specific-link-attributes-sub-tlvs;
+    uses app-specific-link-attr-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -1566,10 +2100,10 @@ module ietf-ospf-link-attr {
        + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
-       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
-       + "/ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
-       when "'ospf:../../../../../../../../../"
-         + "rt:type' = 'ospf:ospfv3'" {
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+       + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
          description
            "This augmentation is only valid for OSPFv3
             E-Router LSAs";
@@ -1577,11 +2111,405 @@ module ietf-ospf-link-attr {
     description
       "Augment OSPFv3 Area scope router-link TLV.";
 
-    uses application-specific-link-attributes-sub-tlvs;
+    uses app-specific-link-attr-sub-tlvs;
   }
 }
   ]]></sourcecode>
     </section>
+
+    <section numbered="true" toc="default">
+      <name>YANG Module for Advertising Layer 2 Bundle Member Link Attributes in OSPF</name>
+      <t>This document defines a YANG Moduel for Advertising Layer 2
+        Bundle Member Link Attributes in OSPF as defined in
+        <xref target="RFC9356" format="default"/>.</t>
+
+       <artwork align="left" name="" type="" alt=""><![CDATA[
+module: ietf-ospf-l2-bundle
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:interfaces/ospf:interface:
+    +--rw l2-mbr-attrs
+       +--rw l2-mbr-attr* [l2-bdl-mbr-dscpr]
+          +--rw l2-bdl-mbr-dscpr    uint32
+          +--rw adj-sid?            uint32
+          +--rw lan-adj-sid?        uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf:extended-link-opaque/ospf:extended-link-tlv:
+    +--ro l2-bdl-mbr-attr
+       +--ro l2-bdl-mbrs* []
+          +--ro l2-bdl-mbr-dscpr?                  uint32
+          +--ro adj-sid-sub-tlvs
+          |  +--ro adj-sid-sub-tlv* []
+          |     +--ro adj-sid-flags
+          |     |  +--ro flags*   identityref
+          |     +--ro mt-id?           uint8
+          |     +--ro weight?          uint8
+          |     +--ro sid?             uint32
+          +--ro lan-adj-sid-sub-tlv
+          |  +--ro lan-adj-sid-sub-tlv* []
+          |     +--ro lan-adj-sid-flags
+          |     |  +--ro flags*   identityref
+          |     +--ro mt-id?                uint8
+          |     +--ro weight?               uint8
+          |     +--ro neighbor-router-id?   rt-types:router-id
+          |     +--ro sid?                  uint32
+          +--ro app-specific-link-attr-sub-tlvs
+             +--ro asla-sub-tlvs* []
+                +--ro sabm-length?                    uint8
+                +--ro udabm-length?                   uint8
+                +--ro sabm
+                |  +--ro sabm-bits*   identityref
+                +--ro udabm
+                +--ro link-attributes-sub-sub-tlvs
+                   +--ro unknown-tlvs
+                      +--ro unknown-tlv* []
+                         +--ro type?     uint16
+                         +--ro length?   uint16
+                         +--ro value?    yang:hex-string
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+          /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv:
+    +--ro l2-bdl-mbr-attr
+       +--ro l2-bdl-mbrs* []
+          +--ro l2-bdl-mbr-dscpr?                  uint32
+          +--ro adj-sid-sub-tlvs
+          |  +--ro adj-sid-sub-tlv* []
+          |     +--ro adj-sid-flags
+          |     |  +--ro flags*   identityref
+          |     +--ro weight?          uint8
+          |     +--ro sid?             uint32
+          +--ro lan-adj-sid-sub-tlvs
+          |  +--ro lan-adj-sid-sub-tlv* []
+          |     +--ro lan-adj-sid-flags
+          |     |  +--ro flags*   identityref
+          |     +--ro weight?               uint8
+          |     +--ro neighbor-router-id?   rt-types:router-id
+          |     +--ro sid?                  uint32
+          +--ro app-specific-link-attr-sub-tlvs
+             +--ro asla-sub-tlvs* []
+                +--ro sabm-length?                    uint8
+                +--ro udabm-length?                   uint8
+                +--ro sabm
+                |  +--ro sabm-bits*   identityref
+                +--ro udabm
+                +--ro link-attributes-sub-sub-tlvs
+                   +--ro unknown-tlvs
+                      +--ro unknown-tlv* []
+                         +--ro type?     uint16
+                         +--ro length?   uint16
+                         +--ro value?    yang:hex-string
+
+       ]]></artwork>
+       <artwork><![CDATA[
+<CODE BEGINS> file "ietf-ospf-l2-bundle@2025-02-27.yang"
+module ietf-ospf-l2-bundle {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-l2-bundle";
+
+  prefix ospf-l2-bundle;
+
+  import ietf-routing-types {
+    prefix rt-types;
+    reference 
+      "RFC 8294: Common YANG Data Types for the Routing Area";
+  }
+
+  import ietf-routing {
+    prefix rt;
+    reference 
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
+  }
+
+  import ietf-ospf {
+    prefix ospf;
+    reference 
+      "RFC 9129: YANG Data Model for the OSPF Protocol";
+  }
+
+  import ietf-ospf-link-attr {
+    prefix ospf-link-attr;
+  }
+
+  import ietf-ospfv3-extended-lsa {
+    prefix ospfv3-e-lsa;
+    reference
+      "RFC 9587 - YANG Data Model for OSPFv3 Extended LSAs";
+  }
+
+  import ietf-ospf-sr-mpls {
+    prefix ospf-sr-mpls;
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+
+  contact
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
+      WG List:  <mailto:lsr@ietf.org>
+
+      Author:   Yingzhen Qu
+                <mailto:yqu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee.ietf@gmail.com>";
+
+  description
+    "This YANG module defines the configuration and operational
+     state for Advertising Layer 2 Bundle Member Link Attributes
+     in OSPF as defined in RFC 9356.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2025-02-27 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1";
+  }
+
+  /* Groupings */
+  grouping ospfv2-member-link-attr-sub-tlvs {
+    description
+      "OSPFv2 L2 Bundle Member Attributes sub-TLV (RFC 9356).";
+
+    container adj-sid-sub-tlvs {
+      list adj-sid-sub-tlv {
+        description
+          "List of adj-sid sub-tlvs.";
+        container adj-sid-flags {
+          leaf-list flags {
+            type identityref {
+              base ospf-sr-mpls:adj-sid-flag;
+            }
+          description
+            "Adj-SID sub-TLV flags.";
+          }
+          description
+            "Adj-sid sub-TLV flags.";
+        }
+        leaf mt-id {
+          type uint8;
+          description
+            "Multi-topology ID. Topologies range from 0-127 and
+             return of any other value would indicate an error.";
+          reference
+            "RFC 4915 - Multi-Topology (MT) Routing in OSPF";
+        }
+        leaf weight {
+          type uint8;
+          description
+            "Weight used for load-balancing.";
+        }
+        leaf sid {
+          type uint32;
+          description
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.";
+        }
+      }
+      description
+        "Adjacency SID sub-tlvs.";
+    }
+    container lan-adj-sid-sub-tlv {
+      description
+        "LAN Adj-SID optional sub-TLVs.";
+      list lan-adj-sid-sub-tlv {
+        description
+          "List of LAN Adj-SID sub-TLVs.";
+        container lan-adj-sid-flags {
+          leaf-list flags {
+            type identityref {
+              base ospf-sr-mpls:adj-sid-flag;
+            }
+            description
+              "LAN Adj-SID sub-TLV flags.";
+          }
+          description
+            "LAN Adj-SID sub-TLV flags.";
+        }
+        leaf mt-id {
+          type uint8;
+          description
+            "Multi-topology ID. Topologies range from 0-127 and
+             return of any other value would indicate an error.";
+          reference
+            "RFC 4915 - Multi-Topology (MT) Routing in OSPF";
+        }
+        leaf weight {
+          type uint8;
+          description
+            "Weight used for load-balancing.";
+        }
+        leaf neighbor-router-id {
+          type rt-types:router-id;
+          description
+            "Neighbor router ID.";
+        }
+        leaf sid {
+          type uint32;
+          description
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
+        }
+      }
+    }
+
+    uses ospf-link-attr:app-specific-link-attr-sub-tlvs;
+  }
+
+  grouping ospfv3-member-link-attr-sub-tlvs {
+    description
+      "OSPFv3 L2 Bundle Member Attributes sub-TLV (RFC 9356).";
+
+    uses ospf-sr-mpls:ospfv3-adj-sid-sub-tlvs;
+    uses ospf-sr-mpls:ospfv3-lan-adj-sid-sub-tlvs;
+    uses ospf-link-attr:app-specific-link-attr-sub-tlvs;
+  }
+
+  /* Configuration */
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+      description
+        "This augments the OSPF routing protocol when used.";
+    }
+    description
+      "This augments the OSPF interface configuration with L2
+       Bundle Member Attributes.";
+
+    container l2-mbr-attrs {
+      description
+        "L2 member attributes configuration.";
+      list l2-mbr-attr {
+        key l2-bdl-mbr-dscpr;
+        leaf l2-bdl-mbr-dscpr {
+          type uint32;
+          description
+            "L2 bundle member descriptor: a 4-octet link-local
+             identifier for the member link.";
+        }
+        leaf adj-sid {
+          type uint32;
+          description
+            "Value of the Adj-SID.";
+        }
+        leaf lan-adj-sid {
+          type uint32;
+          description
+            "Value of the LAN-Adj-SID.";
+        } 
+        /* More configuration can be added here */              
+        description
+          "List of L2 bundle members.";
+      }
+    }
+
+  }
+
+  /* Database */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "OSPFv2 L2 Bundle Member Attributes sub-TLV is
+       a sub-TLV of OSPFv2 Extended Link TLV (RFC7684).";
+
+    container l2-bdl-mbr-attr {
+      list l2-bdl-mbrs {
+        description
+          "List of L2 bundle members.";
+        leaf l2-bdl-mbr-dscpr {
+          type uint32;
+          description
+            "L2 bundle member descriptor: a 4-octet link-local
+             identifier for the member link.";
+        }
+        uses ospfv2-member-link-attr-sub-tlvs;
+      }
+      description
+        "OSPFv2 L2 Bundle Member Attributes sub-TLV.";
+    }
+  }
+
+  augment "/rt:routing/"
+       + "rt:control-plane-protocols/rt:control-plane-protocol/"
+       + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+       + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+       + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+       + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+         description
+           "This augmentation is only valid for OSPFv3
+            E-Router LSAs";
+       }
+    description
+      "Augment OSPFv3 Area scope router-link TLV.";
+
+    container l2-bdl-mbr-attr {
+      list l2-bdl-mbrs {
+        description
+          "List of L2 bundle members.";
+        leaf l2-bdl-mbr-dscpr {
+          type uint32;
+          description
+            "L2 bundle member descriptor: a 4-octet link-local
+             identifier for the member link.";
+        }
+        uses ospfv3-member-link-attr-sub-tlvs;
+      }
+      description
+        "OSPFv3 L2 Bundle Member Attributes sub-TLV.";
+    }
+  }
+}
+       ]]></artwork>
+       </section>
+
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Flexible Algorithm</name>
       <t>This document defines a YANG module for OSPF Flexible
@@ -2576,6 +3504,1040 @@ module ietf-ospf-flex-algo {
 }
         ]]></sourcecode>
     </section>
+
+    <section numbered="true" toc="default">
+      <name>YANG Module for OSPF Flexible Algorithms: Bandwidth,
+        Delay, Metrics and Constraints</name>
+      <t>This document defines a YANG module for OSPF Flexible
+      Algorithms: Bandwidth, Delay, Metrics and Constraints
+      <xref target="I-D.ietf-lsr-flex-algo-bw-con" format="default"/>. 
+      It is an augmentation of the OSPF base model and the Flexible
+      Algorithm YANG module . </t>
+
+      <artwork align="left" name="" type="" alt=""><![CDATA[
+module: ietf-ospf-flex-algo-bw-con
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:interfaces/ospf:interface:
+    +--rw generic-metrics
+       +--rw generic-metric* [metric-type]
+          +--rw metric-type     identityref
+          +--rw metric-value?   uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf
+          /ospf-flex-algo:ospf-flex-algo/ospf-flex-algo:flex-algo:
+    +--rw bandwidth-constraints
+    |  +--rw constraint* [constraint-type]
+    |     +--rw constraint-type    identityref
+    |     +--rw bandwidth-value?   te-types:te-bandwidth
+    |     +--rw threshold?         uint8
+    +--rw (metric-derivation-method)?
+    |  +--:(reference-bandwidth)
+    |  |  +--rw reference-bandwidth
+    |  |     +--rw reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  |     +--rw granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    |  +--:(bandwidth-thresholds)
+    |     +--rw bandwidth-thresholds
+    |        +--rw bandwidth-threshold* [bandwidth-threshold]
+    |           +--rw bandwidth-threshold    rt-types:bandwidth-ieee-float32
+    |           +--rw threshold-metric?      uint32
+    +--rw exclude-min-bw?               rt-types:bandwidth-ieee-float32
+    +--rw exclude-max-delay?            rt-types:uint24
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
+          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+          /ospf:link-scope-lsa/ospf:version/ospf:ospfv2
+          /ospf:ospfv2/ospf:body/ospf:opaque/ospf:te-opaque
+          /ospf:link-tlv:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf-inter-as-te:inter-as-te-v2/ospf-inter-as-te:link-tlv:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf-inter-as-te:inter-as-te-v2/ospf-inter-as-te:link-tlv:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body
+          /ospf-te:ospfv3-intra-area-te/ospf-te:link-tlv:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body
+          /ospf-inter-as-te:inter-as-te-v3/ospf-inter-as-te:link-tlv:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospf-inter-as-te:inter-as-te-v3
+          /ospf-inter-as-te:link-tlv:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf:extended-link-opaque/ospf:extended-link-tlv
+          /ospf-link-attr:app-specific-link-attr-sub-tlvs:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+          /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
+          /ospf-link-attr:app-specific-link-attr-sub-tlvs:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+          /ospf:extended-link-opaque/ospf:extended-link-tlv
+          /ospf-l2-bundle:l2-bdl-mbr-attr/ospf-l2-bundle:l2-bdl-mbrs:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+          /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
+          /ospf-l2-bundle:l2-bdl-mbr-attr/ospf-l2-bundle:l2-bdl-mbrs:
+    +--ro generic-metric-sub-tlvs
+       +--ro generic-metric-sub-tlv* []
+          +--ro metric-type?   identityref
+          +--ro value?         uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
+          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+          /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:ri-opaque
+          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+    +--ro faemb-sub-tlv
+    |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro faemd-sub-tlv
+    |  +--ro max-link-delay?   rt-types:uint24
+    +--ro fadrb-sub-tlv
+    |  +--ro fadrb-flags*             identityref
+    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro fadbt-sub-tlv
+       +--ro fadbt-flags*           identityref
+       +--ro bandwidth-threshold* []
+          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro threshold-metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:ri-opaque
+          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+    +--ro faemb-sub-tlv
+    |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro faemd-sub-tlv
+    |  +--ro max-link-delay?   rt-types:uint24
+    +--ro fadrb-sub-tlv
+    |  +--ro fadrb-flags*             identityref
+    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro fadbt-sub-tlv
+       +--ro fadbt-flags*           identityref
+       +--ro bandwidth-threshold* []
+          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro threshold-metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv2/ospf:ospfv2/ospf:body
+          /ospf:opaque/ospf:ri-opaque/ospf-flex-algo:fad-tlvs
+          /ospf-flex-algo:fad-tlv:
+    +--ro faemb-sub-tlv
+    |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro faemd-sub-tlv
+    |  +--ro max-link-delay?   rt-types:uint24
+    +--ro fadrb-sub-tlv
+    |  +--ro fadrb-flags*             identityref
+    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro fadbt-sub-tlv
+       +--ro fadbt-flags*           identityref
+       +--ro bandwidth-threshold* []
+          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro threshold-metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
+          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+          /ospf:link-scope-lsa/ospf:version/ospf:ospfv3
+          /ospf:ospfv3/ospf:body/ospf:router-information
+          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+    +--ro faemb-sub-tlv
+    |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro faemd-sub-tlv
+    |  +--ro max-link-delay?   rt-types:uint24
+    +--ro fadrb-sub-tlv
+    |  +--ro fadrb-flags*             identityref
+    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro fadbt-sub-tlv
+       +--ro fadbt-flags*           identityref
+       +--ro bandwidth-threshold* []
+          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro threshold-metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:database/ospf:area-scope-lsa-type
+          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospf:router-information
+          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+    +--ro faemb-sub-tlv
+    |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro faemd-sub-tlv
+    |  +--ro max-link-delay?   rt-types:uint24
+    +--ro fadrb-sub-tlv
+    |  +--ro fadrb-flags*             identityref
+    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro fadbt-sub-tlv
+       +--ro fadbt-flags*           identityref
+       +--ro bandwidth-threshold* []
+          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro threshold-metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/ospf:ospf/ospf:database
+          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
+          /ospf:version/ospf:ospfv3/ospf:ospfv3/ospf:body
+          /ospf:router-information/ospf-flex-algo:fad-tlvs
+          /ospf-flex-algo:fad-tlv:
+    +--ro faemb-sub-tlv
+    |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro faemd-sub-tlv
+    |  +--ro max-link-delay?   rt-types:uint24
+    +--ro fadrb-sub-tlv
+    |  +--ro fadrb-flags*             identityref
+    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    +--ro fadbt-sub-tlv
+       +--ro fadbt-flags*           identityref
+       +--ro bandwidth-threshold* []
+          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro threshold-metric?      uint32
+      ]]></artwork> 
+
+      <artwork align="left" name="" type="" alt=""><![CDATA[
+<CODE BEGINS> file "ietf-ospf-flex-algo-bw-con@2025-02-27.yang"
+module ietf-ospf-flex-algo-bw-con {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo-bw-con";
+  prefix ospf-flex-algo-bw-con;
+
+  import ietf-routing {
+    prefix rt;
+    reference "RFC 8349: A YANG Data Model for Routing
+               Management (NMDA Version)";
+  }
+
+  import ietf-routing-types {
+    prefix rt-types;
+    reference
+      "RFC 8294: Common YANG Data Types for the Routing Area";
+  }
+
+  import ietf-te-types {
+    prefix te-types;
+    reference
+      "RFC8776: Common YANG Data Types for Traffic Engineering.";
+  }
+
+  import ietf-ospf {
+    prefix ospf;
+    reference
+      "RFC 9129: YANG Data Model for the OSPF Protocol";
+  }
+
+  import ietf-ospfv3-extended-lsa {
+    prefix ospfv3-e-lsa;
+    reference
+      "RFC 9587: YANG Data Model for OSPFv3 Extended Link
+                 State Advertisements (LSAs)";
+  }
+
+  import ietf-ospf-te {
+    prefix ospf-te;
+  }
+
+  import ietf-ospf-flex-algo {
+    prefix ospf-flex-algo;
+    reference
+      "RFC XXXX";
+  }
+
+  import ietf-ospf-link-attr {
+    prefix ospf-link-attr;
+  }
+
+  import ietf-ospf-inter-as-te {
+    prefix ospf-inter-as-te;
+  }
+
+  import ietf-ospf-l2-bundle {
+    prefix ospf-l2-bundle;
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
+     WG List:  <mailto:lsr@ietf.org>
+
+
+     Author:    Yingzhen Qu
+               <mailto:yingzhen.ietf@gmail.com>
+     Author:    Acee Lindem
+               <mailto:acee.ietf@gmail.com>
+    ";
+
+  description
+    "The YANG module defines the configuration and operational
+     state for OSPF protocol as defined in
+     draft-ietf-lsr-flex-algo-bw-con, IGP Flexible Algorithms:
+     Bandwidth, Delay, Metrics and Constraints
+
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+
+  reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
+
+  revision 2025-02-27 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX: OSPF YANG Model Augmentations for Additional
+                 Features - Version 1.";
+  }
+
+  /* Identities */
+
+  identity bandwidth-metric {
+    base ospf-flex-algo:metric-type;
+    description
+      "Bandwidth metric type.";
+  }
+
+  identity bandwidth-constraint-type {
+    description
+      "Base identity for bandwidth constraint types.";
+  }
+
+  identity min-bw {
+    base bandwidth-constraint-type;
+    description
+      "Minimum bandwidth constraint.";
+  }
+
+  identity max-bw {
+    base bandwidth-constraint-type;
+    description
+      "Maximum bandwidth constraint.";
+  }
+
+  identity fadrb-flags {
+    description
+      "Base identity for OSPF Flexible Algorithm Definition
+       Reference Bandwidth sub-tlv flags.";
+  }
+
+  identity g-bit {
+    base fadrb-flags;
+    description
+      "G bit, when set, interface group mode MUST be used to
+       derive total link bandwidth.";
+  }
+
+  identity fadbt-flags {
+    description
+      "Base identity for OSPF Flexible Algorithm Definition
+       Reference Bandwidth sub-tlv flags.";
+  }
+
+  identity gp-bit {
+    base fadbt-flags;
+    description
+      "G bit, when set, interface group mode MUST be used to
+       derive total link bandwidth.";
+  }
+
+  /* Groupings */
+  grouping bandwidth-constraint {
+    description
+      "Grouping for bandwidth constraints in Flex-Algo.";
+    container bandwidth-constraints {
+      list constraint {
+        key "constraint-type";
+        description
+          "List of bandwidth constraints for the Flex-Algo.";
+        leaf constraint-type {
+          type identityref {
+            base bandwidth-constraint-type;
+          }
+          description
+            "Type of bandwidth constraint (e.g., min-bw, max-bw).";
+        }
+        leaf bandwidth-value {
+          type te-types:te-bandwidth;
+          description
+            "Bandwidth value for the constraint.";
+        }
+        leaf threshold {
+          type uint8 {
+            range "1..100";
+          }
+          units "percent";
+          description
+            "Threshold percentage for triggering re-optimization.";
+        }
+      }
+      description
+        "Bandwidth constraints configuration for flex-algo.";
+    }
+  }
+
+  grouping generic-metric-sub-tlv {
+    container generic-metric-sub-tlvs {
+      list generic-metric-sub-tlv {
+        leaf metric-type {
+          type identityref {
+            base ospf-flex-algo:metric-type;
+          }
+            description
+              "Type of metric to be used during the calculation.";
+        }
+        leaf value {
+          type uint32;
+          description
+            "A 32-bit unsigned integer representing the metric value.";
+        }
+        description
+          "The list of generic metric sub-tlvs.";
+      }
+      description
+        "The generic metric sub-tlv.";
+    }
+    description
+      "The grouping for generic metric sub-tlv.";
+  }
+
+  grouping faemb-sub-tlv {
+    container faemb-sub-tlv {
+      leaf min-bandwidth {
+        type rt-types:bandwidth-ieee-float32;
+        description
+          "A 32-bit field specifying the link bandwidth in IEEE
+           floating point format (IEEE754). The units are
+           bytes-per-second.";
+      }
+      description
+        "Flex-algo Exclude Minimum Bandwidth sub-tlv (FAEMB).";
+    }
+    description
+      "Grouping for FAEMB sub-tlv.";
+  }
+
+  grouping faemd-sub-tlv {
+    container faemd-sub-tlv {
+      leaf max-link-delay {
+        type rt-types:uint24;
+        description
+          "A 24-bit field specifying the maximum link delay in
+           microseconds.";
+      }
+      description
+        "The Flex-algo Exclude Maximum Delay sub-tlv (FAEMD).";
+    }
+    description
+      "Grouping for FAEMD sub-tlv.";
+  }
+
+  grouping fadrb-sub-tlv {
+    container fadrb-sub-tlv {
+      leaf-list fadrb-flags {
+        type identityref {
+          base fadrb-flags;
+        }
+        description
+          "Flex-algo definition reference bandwidth sub-tlv
+           flags list.";
+      }
+      leaf reference-bandwidth {
+        type rt-types:bandwidth-ieee-float32;
+        description
+          "A 32-bit field specifying the link bandwidth in IEEE
+           floating point format (IEEE754). The units are
+           bytes-per-second.";
+      }
+      leaf granularity-bandwidth {
+        type rt-types:bandwidth-ieee-float32;
+        description
+          "A 32-bit field specifying the link bandwidth in IEEE
+           floating point format (IEEE754). The units are
+           bytes-per-second.";
+      }
+      description
+        "The Flex-algo Reference Bandwidth sub-tlv (FAEMD).";
+    }
+    description
+      "Grouping for FADRB sub-tlv.";
+  }
+
+  grouping fadbt-sub-tlv {
+    container fadbt-sub-tlv {
+      leaf-list fadbt-flags {
+        type identityref {
+          base fadbt-flags;
+        }
+        description
+          "Flex-algo definition bandwidth thresholds sub-tlv
+           flags list.";
+      }
+      list bandwidth-threshold {
+        leaf bandwidth-threshold {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "Maximum link bandwidth. A 32-bit field specifying the
+             link bandwidth in IEEE floating point format (IEEE754).
+             The units are bytes-per-second.";
+        }
+
+        leaf threshold-metric {
+          type uint32;
+          description
+            "Metric value range 1 - 4,294,967,296 (0xFFFFFFFF).";
+        }
+        description
+          "List of bandwidth thresholds and metrics.";
+      }
+      description
+        "The Flex-algo Bandwidth Thresholds sub-tlv (FADBT).";
+    }
+    description
+      "Grouping for FADBT sub-tlv."; 
+  }  
+
+  /* Configurations */
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+      description
+        "This augments the OSPF interface configuration
+         when used.";
+    }
+    description
+      "This augments the OSPF protocol interface
+       configuration with generic metric configuration.";
+
+    container generic-metrics {
+      list generic-metric {
+        key "metric-type";
+        leaf metric-type {
+          type identityref {
+            base ospf-flex-algo:metric-type;
+          }
+          description
+            "Type of metric to be used during the calculation.";
+        }
+        leaf metric-value {
+          type uint32;
+          description
+            "Metric value, range is from 0 to 0xFFFFFFFF.";
+        }
+        description
+          "Interface generic metric configuration per metric-type.";
+      }
+      description
+        "Interface generic metric configuration.";
+    }
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+     + "rt:control-plane-protocol/ospf:ospf/"
+     + "ospf-flex-algo:ospf-flex-algo/ospf-flex-algo:flex-algo" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+      description
+        "This augments the OSPF routing protocol when used.";
+    }
+    description
+      "This augments OSPF protocol Flexible Algorithm with
+       bandwidth constraints.";
+
+    uses bandwidth-constraint;
+
+    choice metric-derivation-method {
+      description
+        "Choice of automatic metric derivation methods.";
+      container reference-bandwidth {
+        description
+          "Metric is inversely proportional to the link
+           bandwidth.";
+        leaf reference-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "A 32-bit field specifying the link bandwidth in IEEE
+             floating point format (IEEE754). The units are
+             bytes-per-second.";
+        }
+        leaf granularity-bandwidth {
+          type rt-types:bandwidth-ieee-float32;
+          description
+            "A 32-bit field specifying the link bandwidth in IEEE
+             floating point format (IEEE754). The units are
+             bytes-per-second.";
+        }
+      }
+      container bandwidth-thresholds {
+        description
+          "Pre-define non-proportional metric values from the varying
+           ranges of link bandwidth.";
+        list bandwidth-threshold {
+          key bandwidth-threshold;
+          leaf bandwidth-threshold {
+            type rt-types:bandwidth-ieee-float32;
+            description
+              "Maximum link bandwidth. A 32-bit field specifying the
+               link bandwidth in IEEE floating point format (IEEE754).
+               The units are bytes-per-second.";
+          }  
+          leaf threshold-metric {
+            type uint32;
+            description
+              "Metric value range 1 - 4,294,967,296 (0xFFFFFFFF).";
+          }
+          description
+            "List of bandwidth thresholds and metrics.";
+        }
+      }
+    }
+
+    leaf exclude-min-bw {
+      type rt-types:bandwidth-ieee-float32;
+      description
+        "A 32-bit field specifying the link bandwidth in IEEE
+         floating point format (IEEE754). The units are
+         bytes-per-second.";    
+    }
+
+    leaf exclude-max-delay {
+      type rt-types:uint24;
+      description
+        "A 24-bit field specifying the maximum link delay in
+         microseconds.";    
+    }
+  }
+
+  /* Database */
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
+        + "ospf:interfaces/ospf:interface/ospf:database/"
+        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:te-opaque/"
+        + "ospf:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+
+    description
+      "TE link TLV of OSPF TE LSA.";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf-inter-as-te:inter-as-te-v2/"
+        + "ospf-inter-as-te:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Area scope TE link TLV of OSPFv2 Inter-AS-TE-v2 LSA.";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf-inter-as-te:inter-as-te-v2/"
+        + "ospf-inter-as-te:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augment OSPFv2 routing protocol when used";         
+    }
+    description
+      "AS scope TE link TLV of OSPFv2 Inter-AS-TE-v2 LSA.";
+
+    uses generic-metric-sub-tlv;
+  } 
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf-te:ospfv3-intra-area-te/"
+        + "ospf-te:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "TE Link TLV of OSPFv3 Intra-Area-TE-LSA.";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf-inter-as-te:inter-as-te-v3/"
+        + "ospf-inter-as-te:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "Area scope TE Link TLV of OSPFv3 Inter-AS-TE-v3 LSA.";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf-inter-as-te:inter-as-te-v3/"
+        + "ospf-inter-as-te:link-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "AS scope TE Link TLV of OSPFv3 Inter-AS-TE-v3 LSA.";
+
+    uses generic-metric-sub-tlv;
+  }
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv/"
+        + "ospf-link-attr:app-specific-link-attr-sub-tlvs" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "OSPF Application-Specific Link Attributes (ASLA) sub-TLV is
+       a sub-TLV of OSPFv2 Extended Link TLV (RFC7684).";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+       + "rt:control-plane-protocols/rt:control-plane-protocol/"
+       + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+       + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+       + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+       + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv/"
+       + "ospf-link-attr:app-specific-link-attr-sub-tlvs" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+         description
+           "This augmentation is only valid for OSPFv3
+            E-Router LSAs";
+       }
+    description
+      "Application-Specific Link Attributes (ASLA) sub-TLV (RFC9492)
+       of the OSPFv3 Router-Link TLV (RFC8362).";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv/"
+        + "ospf-l2-bundle:l2-bdl-mbr-attr/"
+        + "ospf-l2-bundle:l2-bdl-mbrs" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "OSPFv2 L2 Bundle Member Attributes sub-TLV is
+       a sub-TLV of OSPFv2 Extended Link TLV (RFC7684).";
+
+    uses generic-metric-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+       + "rt:control-plane-protocols/rt:control-plane-protocol/"
+       + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+       + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+       + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+       + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv/"
+       + "ospf-l2-bundle:l2-bdl-mbr-attr/"
+       + "ospf-l2-bundle:l2-bdl-mbrs" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+         description
+           "This augmentation is only valid for OSPFv3
+            E-Router LSAs";
+       }
+    description
+      "OSPFv3 L2 Bundle Member Attributes sub-TLV in
+       OSPFv3 Area scope router-link TLV.";
+
+    uses generic-metric-sub-tlv;
+
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
+        + "ospf:interfaces/ospf:interface/ospf:database/"
+        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque/"
+        + "ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+
+    description
+      "Flex-algo definition TLVs for OSPFv2 type 9 opaque RI LSA.";
+
+    uses faemb-sub-tlv;
+    uses faemd-sub-tlv;
+    uses fadrb-sub-tlv;
+    uses fadbt-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque/"
+        + "ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+
+    description
+      "Flex-algo definition TLVs for OSPFv2 type 10 opaque RI LSA.";
+
+    uses faemb-sub-tlv;
+    uses faemd-sub-tlv;
+    uses fadrb-sub-tlv;
+    uses fadbt-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque/"
+        + "ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "Flex-algo definition TLVs for OSPFv2 type 11 opaque RI LSA.";
+
+    uses faemb-sub-tlv;
+    uses faemd-sub-tlv;
+    uses fadrb-sub-tlv;
+    uses fadbt-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
+        + "ospf:interfaces/ospf:interface/ospf:database/"
+        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information/"
+        + "ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+
+    description
+      "Flex-algo definition TLVs for OSPFv3 Router
+       Information (RI) LSA.";
+
+    uses faemb-sub-tlv;
+    uses faemd-sub-tlv;
+    uses fadrb-sub-tlv;
+    uses fadbt-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information/"
+        + "ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+
+    description
+      "Flex-algo definition TLVs for OSPFv3 Router
+       Information (RI) LSA.";
+
+    uses faemb-sub-tlv;
+    uses faemd-sub-tlv;
+    uses fadrb-sub-tlv;
+    uses fadbt-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information/"
+        + "ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+         + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "Flex-algo definition TLVs for OSPFv3 Router Information LSA.";
+
+    uses faemb-sub-tlv;
+    uses faemd-sub-tlv;
+    uses fadrb-sub-tlv;
+    uses fadbt-sub-tlv;
+  }
+}
+      ]]></artwork> 
+    </section>
+
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
       <t>The YANG modules specified in this document define a schema for
@@ -2610,7 +4572,12 @@ module ietf-ospf-flex-algo {
    the following registrations is requested to be made:
       </t>
       <artwork name="" type="" align="left" alt=""><![CDATA[
-   URI: urn:ietf:params:xml:ns:yang:ietf-ospfv3-te
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-te
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-inter-as-te
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
    ]]></artwork>
@@ -2635,6 +4602,11 @@ module ietf-ospf-flex-algo {
    XML: N/A, the requested URI is an XML namespace.
    ]]></artwork>
       <artwork name="" type="" align="left" alt=""><![CDATA[
+   URI: urn:ietf:params:xml:ns:yang:ietf-l2-bundle
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
    URI: urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
@@ -2644,13 +4616,24 @@ module ietf-ospf-flex-algo {
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
    ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+   URI: urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo-bw-con
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   ]]></artwork>
       <t>This document registers the YANG modules in the YANG Module Names
    registry <xref target="RFC6020" format="default"/>.
       </t>
       <artwork name="" type="" align="left" alt=""><![CDATA[
-   name: ietf-ospfv3-te
-   namespace: urn:ietf:params:xml:ns:yang:ietf-ospfv3-te
-   prefix: ospfv3-te
+   name: ietf-ospf-te
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-te
+   prefix: ospf-te
+   reference: RFC XXXX
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+   name: ietf-ospf-inter-as-te
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-inter-as-te
+   prefix: ospf-inter-as-te
    reference: RFC XXXX
    ]]></artwork>
       <artwork name="" type="" align="left" alt=""><![CDATA[
@@ -2678,6 +4661,12 @@ module ietf-ospf-flex-algo {
    reference: RFC XXXX
    ]]></artwork>
       <artwork name="" type="" align="left" alt=""><![CDATA[
+   name: ietf-ospf-l2-bundle
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-l2-bundle
+   prefix: ospf-l2-bundle
+   reference: RFC XXXX
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
    name: ietf-ospf-link-attr
    namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr
    prefix: ospf-link-attr
@@ -2687,6 +4676,12 @@ module ietf-ospf-flex-algo {
    name: ietf-ospf-flex-algo
    namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo
    prefix: ospf-flex-algo
+   reference: RFC XXXX
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+   name: ietf-ospf-flex-algo-bw-con
+   namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo-bw-con
+   prefix: ospf-flex-algo-bw-con
    reference: RFC XXXX
    ]]></artwork>
     </section>
@@ -2717,9 +4712,11 @@ module ietf-ospf-flex-algo {
       <name>Normative References</name>
       <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3630.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5329.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5392.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6242.xml"/>
@@ -2734,6 +4731,8 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9492.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9356.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-lsr-flex-algo-bw-con.xml"/>
     </references>
   </back>
 </rfc>

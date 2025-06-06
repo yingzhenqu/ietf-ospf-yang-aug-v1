@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-15" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-16" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-15"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-16"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -1565,14 +1565,15 @@ augment /rt:routing/rt:control-plane-protocols
         /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
         /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
         /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
-        /ospf:body/ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs:
+        /ospf:body/ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
+        /ospfv3-e-lsa:link-tlv::
   +--ro link-msd-sub-tlv
      +--ro link-msds* [msd-type]
         +--ro msd-type     identityref
         +--ro msd-value?   uint8
       ]]></artwork>
 
-<sourcecode name="ietf-ospf-msd@2024-07-01.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-msd@2025-03-01.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-msd {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-msd";
@@ -1623,7 +1624,7 @@ module ietf-ospf-msd {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2024 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1645,7 +1646,7 @@ module ietf-ospf-msd {
 
   reference "RFC XXXX: YANG Data Model for OSPF MSD.";
 
-  revision 2024-07-01 {
+  revision 2025-03-01 {
     description
       "Initial Version";
     reference
@@ -1811,8 +1812,8 @@ module ietf-ospf-msd {
        + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
-       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
-       + "/ospfv3-e-lsa:e-router-tlvs" {
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+       + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
        when "'ospf:../../../../../../../../"
          + "rt:type' = 'ospf:ospfv3'" {
          description

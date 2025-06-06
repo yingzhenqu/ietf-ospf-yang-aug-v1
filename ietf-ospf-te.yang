@@ -62,7 +62,7 @@ module ietf-ospf-te {
 
   reference "RFC XXXX";
 
-  revision 2025-02-20 {
+  revision 2025-02-27 {
     description
       "Initial version";
     reference

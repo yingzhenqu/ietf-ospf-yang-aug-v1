@@ -34,7 +34,7 @@ module ietf-ospf-flex-algo {
   }
 
   import ietf-te {
-    prefix "te";
+    prefix te;
   }
 
   organization

@@ -48,7 +48,7 @@ module ietf-ospf-msd {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2024 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -70,7 +70,7 @@ module ietf-ospf-msd {
 
   reference "RFC XXXX: YANG Data Model for OSPF MSD.";
 
-  revision 2024-07-01 {
+  revision 2025-03-01 {
     description
       "Initial Version";
     reference
@@ -236,8 +236,8 @@ module ietf-ospf-msd {
        + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
-       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router"
-       + "/ospfv3-e-lsa:e-router-tlvs" {
+       + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+       + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
        when "'ospf:../../../../../../../../"
          + "rt:type' = 'ospf:ospfv3'" {
          description

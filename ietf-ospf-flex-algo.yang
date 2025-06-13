@@ -37,6 +37,10 @@ module ietf-ospf-flex-algo {
     prefix te;
   }
 
+  import iana-igp-algo-types {
+     prefix iana-algo-types;
+  }
+
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
@@ -81,7 +85,7 @@ module ietf-ospf-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2024-07-01 {
+  revision 2025-06-13 {
     description
       "Initial Version";
     reference
@@ -403,6 +407,16 @@ module ietf-ospf-flex-algo {
           default true;
           description
             "Enable fast reroute.";
+        }
+
+        leaf calc-type {
+          type identityref {
+            base iana-algo-types:algo-base;
+          }
+          description
+            "Calcuation-type. Value from 0-127 inclusive from the IANA 
+             'IGP Algorithm Types' registry defined under the 'Interior
+             Gateway Protocol (IGP) Parameters' registry.";
         }
 
         leaf metric-type {

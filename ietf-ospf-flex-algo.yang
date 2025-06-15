@@ -41,6 +41,10 @@ module ietf-ospf-flex-algo {
      prefix iana-algo-types;
   }
 
+  import iana-igp-metric-types {
+    prefix iana-metric-type;
+  }
+
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
@@ -63,7 +67,7 @@ module ietf-ospf-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2024 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -94,34 +98,6 @@ module ietf-ospf-flex-algo {
   }
 
   /* Identities */
-
-  identity metric-type {
-    description
-      "Base identity for route metric types.";
-  }
-
-  identity igp-metric {
-    base metric-type;
-    description
-      "Identity for the IGP metric type.";
-  }
-
-  identity min-uni-delay {
-    base metric-type;
-    description
-      "Min unidirectional link delay metric type.";
-    reference
-      "RFC 7471 - OSPF Traffic Engineering (TE) Metric Extensions";
-  }
-
-  identity te-metric {
-    base metric-type;
-    description
-      "Traffic engineering metric type.";
-    reference
-      "RFC 3630 - Traffic Engineering (TE) Extensions to OSPF
-                  Version 2";
-  }
 
   identity fad-flags {
     description
@@ -231,7 +207,7 @@ module ietf-ospf-flex-algo {
         }
         leaf metric-type {
           type identityref {
-            base metric-type;
+            base iana-metric-type:metric-type;
           }
             description
               "Type of metric to be used during the calculation.";
@@ -411,7 +387,7 @@ module ietf-ospf-flex-algo {
 
         leaf calc-type {
           type identityref {
-            base iana-algo-types:algo-base;
+            base iana-algo-types:algo-type;
           }
           description
             "Calcuation-type. Value from 0-127 inclusive from the IANA 
@@ -421,7 +397,7 @@ module ietf-ospf-flex-algo {
 
         leaf metric-type {
           type identityref {
-            base metric-type;
+            base iana-metric-type:metric-type;
           }
           description
             "Type of metric to be used during the calculation.";

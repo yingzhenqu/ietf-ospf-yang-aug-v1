@@ -1,7 +1,7 @@
-module iana-igp-algo-types {
+module iana-igp-metric-types {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:iana-igp-algo-types";
-  prefix iana-algo-types;
+  namespace "urn:ietf:params:xml:ns:yang:iana-igp-metric-types";
+  prefix iana-metric-types;
 
   organization
     "Internet Assigned Numbers Authority (IANA)";
@@ -19,10 +19,10 @@ module iana-igp-algo-types {
 
   description
     "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Algorithm Types.
+     Protocol (IGP) Metric-Types.
 
      This YANG module is maintained by IANA and reflects the 'IGP
-     Algorithm Types' registry.
+     Metric-Type' registry.
 
      Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -44,7 +44,7 @@ module iana-igp-algo-types {
      //RFC Ed.: replace IANA_FOO_URL and remove this note.
 
      The latest version of this YANG module is available at
-     &lt;mailto:iana@iana.org&gt;";
+     &lt;IANA_FOO_URL&gt;.";
 
   revision 2025-06-13 {
     description
@@ -53,25 +53,35 @@ module iana-igp-algo-types {
       "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm";
   }
 
-  identity algo-type {
+  identity metric-type {
     description
-      "Base identity for IGP Algorithm Type. The algorithm types
-       are defined in IANA IGP Algorithm Types registry.";
+      "Base identity for IGP Metric-Type. The metric types
+       are defined in IANA IGP Metric-Type registry.";
   }
 
-  identity algo-spf {
-    base algo-type;
+  identity igp-metric {
+    base metric-type;
     description
-      "Shortest Path First (SPF) algorithm based on link metric.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
+      "IGP Metric.";  
+  }
+  identity min-unidirectional-link-delay {
+    base metric-type;
+    description
+      "Min Unidirectional Link Delay as defined in RFC8570 Section 4.2
+       and RFC7471 Section 4.2.";
   }
 
-  identity algo-strict-spf {
-    base algo-type;
+  identity te-default-metric {
+    base metric-type;
     description
-      "Strict Shortest Path First (SPF) algorithm based on link metric.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
+      "STraffic Engineering Default Metric as defined in RFC5305
+       Section 3.7 and Traffic Engineering Metric as defined in 
+       RFC3630, Section 2.5.5.";
+  }
+
+  identity bandwidth-metric {
+    base metric-type;
+    description
+      "Bandwidth metric.";
   }
 }

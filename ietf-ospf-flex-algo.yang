@@ -378,17 +378,11 @@ module ietf-ospf-flex-algo {
             the flex-algo path computation.";
         }
 
-        leaf fast-reroute {
-          type boolean;
-          default true;
-          description
-            "Enable fast reroute.";
-        }
-
         leaf calc-type {
           type identityref {
             base iana-algo-types:algo-type;
           }
+          default iana-algo-types:algo-spf;
           description
             "Calcuation-type. Value from 0-127 inclusive from the IANA 
              'IGP Algorithm Types' registry defined under the 'Interior
@@ -401,13 +395,6 @@ module ietf-ospf-flex-algo {
           }
           description
             "Type of metric to be used during the calculation.";
-        }
-
-        leaf microloop-avoidance {
-          type boolean;
-          default true;
-          description
-            "Enable microloop avoidance.";
         }
 
         container prefix-metric {

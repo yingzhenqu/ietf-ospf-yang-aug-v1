@@ -70,7 +70,8 @@ module iana-igp-algo-types {
   identity algo-strict-spf {
     base algo-type;
     description
-      "Strict Shortest Path First (SPF) algorithm based on link metric.";
+      "Strict Shortest Path First (SPF) algorithm based on link
+       metric.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing";
   }

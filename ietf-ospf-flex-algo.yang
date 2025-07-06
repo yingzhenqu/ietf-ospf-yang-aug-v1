@@ -89,7 +89,7 @@ module ietf-ospf-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2025-06-13 {
+  revision 2025-07-05 {
     description
       "Initial Version";
     reference
@@ -107,7 +107,7 @@ module ietf-ospf-flex-algo {
   identity m-bit {
     base fad-flags;
     description
-      "M bit, when set, the fex-algo specific prefix and ASBR
+      "M bit, when set, the flex-algo specific prefix and ASBR
        metric MUST be used for inter-area and external prefix
        calculation.";
   }
@@ -209,12 +209,12 @@ module ietf-ospf-flex-algo {
           type identityref {
             base iana-metric-type:metric-type;
           }
-            description
-              "Type of metric to be used during the calculation.";
+          description
+            "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type uint8 {
-            range "0..127";
+          type identityref {
+            base iana-algo-types:algo-type;
           }
           description
             "IGP algorithm types, value from 0 to 127 as

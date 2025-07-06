@@ -5,21 +5,23 @@ module ietf-ospf-link-attr {
   prefix ospf-link-attr;
 
   import ietf-routing {
-    prefix "rt";
-    reference "RFC 8349: A YANG Data Model for Routing
-               Management (NMDA Version)";
+    prefix rt;
+    reference
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
   }
 
   import ietf-ospf {
-    prefix "ospf";
-    reference "RFC 9129: YANG Data Model for the OSPF
-               Protocol";
+    prefix ospf;
+    reference
+      "RFC 9129: YANG Data Model for the OSPF Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
-    prefix "ospfv3-e-lsa";
-    reference "RFC 9587: YANG Data Model for OSPFv3 Extended Link
-               State Advertisements (LSAs)";
+    prefix ospfv3-e-lsa;
+    reference
+      "RFC 9587: YANG Data Model for OSPFv3 Extended Link
+                 State Advertisements (LSAs)";
   }
 
   organization
@@ -65,7 +67,7 @@ module ietf-ospf-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2025-02-27 {
+  revision 2025-07-05 {
     description
       "Initial version";
     reference
@@ -94,6 +96,14 @@ module ietf-ospf-link-attr {
     base sabm-bit;
     description
       "F bit, Loop Free Alternate (LFA). Includes all LFA types.";
+  }
+
+  identity flex-algo-bit {
+    base sabm-bit;
+    description
+      "X bit, flexible algorithm.";
+    reference
+      "RFC 9350: IGP Flexible Algorithm, Section 12.";
   }
 
   grouping app-specific-link-attr-sub-tlvs {

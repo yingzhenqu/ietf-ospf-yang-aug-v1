@@ -56,6 +56,10 @@ module ietf-ospf-flex-algo-bw-con {
     prefix ospf-l2-bundle;
   }
 
+  import iana-igp-metric-types {
+    prefix iana-metric-types;
+  }  
+
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
@@ -100,7 +104,7 @@ module ietf-ospf-flex-algo-bw-con {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2025-02-27 {
+  revision 2025-07-06 {
     description
       "Initial Version";
     reference
@@ -109,12 +113,6 @@ module ietf-ospf-flex-algo-bw-con {
   }
 
   /* Identities */
-
-  identity bandwidth-metric {
-    base ospf-flex-algo:metric-type;
-    description
-      "Bandwidth metric type.";
-  }
 
   identity bandwidth-constraint-type {
     description
@@ -199,7 +197,7 @@ module ietf-ospf-flex-algo-bw-con {
       list generic-metric-sub-tlv {
         leaf metric-type {
           type identityref {
-            base ospf-flex-algo:metric-type;
+            base iana-metric-types:metric-type;
           }
             description
               "Type of metric to be used during the calculation.";
@@ -334,7 +332,7 @@ module ietf-ospf-flex-algo-bw-con {
         key "metric-type";
         leaf metric-type {
           type identityref {
-            base ospf-flex-algo:metric-type;
+            base iana-metric-types:metric-type;
           }
           description
             "Type of metric to be used during the calculation.";

@@ -160,7 +160,8 @@ module ietf-ospf-flex-algo {
           leaf-list extended-admin-groups {
             type uint32;
             description
-              "Extended administrative group as defined in RFC 7308.";
+              "Extended administrative group as defined in
+               RFC 7308.";
           }
           description
             "The flex-algo exclude admin group sub-tlv.";
@@ -170,7 +171,8 @@ module ietf-ospf-flex-algo {
           leaf-list extended-admin-groups {
             type uint32;
             description
-              "Extended administrative group as defined in RFC 7308.";
+              "Extended administrative group as defined in
+               RFC 7308.";
           }
           description
             "The flex-algo include-any admin group sub-tlv.";
@@ -180,7 +182,8 @@ module ietf-ospf-flex-algo {
           leaf-list extended-admin-groups {
             type uint32;
             description
-              "Extended administrative group as defined in RFC 7308.";
+              "Extended administrative group as defined in
+               RFC 7308.";
           }
           description
             "The flex-algo include-all admin group sub-tlv.";
@@ -358,9 +361,9 @@ module ietf-ospf-flex-algo {
           }
           default "iana-algo-types:algo-spf";
           description
-            "Calcuation-type. Value from 0-127 inclusive from the IANA
-             'IGP Algorithm Types' registry defined under the 'Interior
-             Gateway Protocol (IGP) Parameters' registry.";
+            "Calcuation-type. Value from 0-127 inclusive from the
+             IANA 'IGP Algorithm Types' registry defined under the
+             'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
         leaf metric-type {
           type identityref {

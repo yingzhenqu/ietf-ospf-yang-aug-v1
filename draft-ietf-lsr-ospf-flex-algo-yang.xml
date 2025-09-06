@@ -288,8 +288,8 @@ module iana-igp-metric-types {
   identity min-unidirectional-link-delay {
     base metric-type;
     description
-      "Min Unidirectional Link Delay as defined in RFC8570 Section 4.2
-       and RFC7471 Section 4.2.";
+      "Min Unidirectional Link Delay as defined in RFC8570
+       Section 4.2 and RFC7471 Section 4.2.";
     reference
       "RFC9350: IGP Flexible Algorithm";
   }
@@ -370,7 +370,7 @@ module: ietf-ospf-link-attr
                    +--ro type?     uint16
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
-     
+
       ]]></artwork>
       <sourcecode name="ietf-ospf-link-attr@2025-09-05.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
@@ -1054,7 +1054,8 @@ module ietf-ospf-flex-algo {
           leaf-list extended-admin-groups {
             type uint32;
             description
-              "Extended administrative group as defined in RFC 7308.";
+              "Extended administrative group as defined in
+               RFC 7308.";
           }
           description
             "The flex-algo exclude admin group sub-tlv.";
@@ -1064,7 +1065,8 @@ module ietf-ospf-flex-algo {
           leaf-list extended-admin-groups {
             type uint32;
             description
-              "Extended administrative group as defined in RFC 7308.";
+              "Extended administrative group as defined in
+               RFC 7308.";
           }
           description
             "The flex-algo include-any admin group sub-tlv.";
@@ -1074,7 +1076,8 @@ module ietf-ospf-flex-algo {
           leaf-list extended-admin-groups {
             type uint32;
             description
-              "Extended administrative group as defined in RFC 7308.";
+              "Extended administrative group as defined in
+               RFC 7308.";
           }
           description
             "The flex-algo include-all admin group sub-tlv.";
@@ -1090,7 +1093,7 @@ module ietf-ospf-flex-algo {
           }
           description
             "OSPF flex-algo definition flags.";
-        }    
+        }
 
         container fa-ex-srlg-sub-tlv {
           leaf-list srlgs {
@@ -1252,9 +1255,9 @@ module ietf-ospf-flex-algo {
           }
           default "iana-algo-types:algo-spf";
           description
-            "Calcuation-type. Value from 0-127 inclusive from the IANA
-             'IGP Algorithm Types' registry defined under the 'Interior
-             Gateway Protocol (IGP) Parameters' registry.";
+            "Calcuation-type. Value from 0-127 inclusive from the
+             IANA 'IGP Algorithm Types' registry defined under the
+             'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
         leaf metric-type {
           type identityref {
@@ -1702,7 +1705,7 @@ module ietf-ospf-flex-algo {
   statement with a unique revision date must be added in front of the
   existing revision statements. The "revision" statement MUST contain
   both "description" and "reference" substatements as follows.</t>
-  
+
   <t>
   The "description" substatement captures what changed in the
   revised version. Typically, the description enumerates the changes
@@ -1716,7 +1719,7 @@ module ietf-ospf-flex-algo {
   authoritative event triggering the update to the YANG module. In all
   cases, this event is cited from the underlying IANA registry. If the
   update is triggered by an RFC, that RFC must also be included in
-  the "reference" substatement.</t>    
+  the "reference" substatement.</t>
 
       <t>
       IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:</t>
@@ -1762,7 +1765,7 @@ module ietf-ospf-flex-algo {
   statement with a unique revision date must be added in front of the
   existing revision statements. The "revision" statement MUST contain
   both "description" and "reference" substatements as follows.</t>
-  
+
   <t>
   The "description" substatement captures what changed in the
   revised version. Typically, the description enumerates the changes
@@ -1776,7 +1779,7 @@ module ietf-ospf-flex-algo {
   authoritative event triggering the update to the YANG module. In all
   cases, this event is cited from the underlying IANA registry. If the
   update is triggered by an RFC, that RFC must also be included in
-  the "reference" substatement.</t>    
+  the "reference" substatement.</t>
 
       <t>
       IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:</t>
@@ -1786,15 +1789,20 @@ module ietf-ospf-flex-algo {
          <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
          </t>
        </blockquote>
-       
+
       </section>
 
     </section>
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
-      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
-      <t>The YANG model was developed using the suite of YANG tools written
-         and maintained by numerous authors.</t>
+      <t>
+        Thanks to Dhruv Dhody for his detailed YANG doctors review.
+      </t>
+      <t>
+        The YANG model was developed using the suite of YANG tools written
+        and maintained by numerous authors.
+      </t>
+
     </section>
   </middle>
   <!--  *****BACK MATTER ***** -->
@@ -1819,11 +1827,8 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6242.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6536.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>

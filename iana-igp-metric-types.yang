@@ -71,8 +71,8 @@ module iana-igp-metric-types {
   identity min-unidirectional-link-delay {
     base metric-type;
     description
-      "Min Unidirectional Link Delay as defined in RFC8570 Section 4.2
-       and RFC7471 Section 4.2.";
+      "Min Unidirectional Link Delay as defined in RFC8570
+       Section 4.2 and RFC7471 Section 4.2.";
     reference
       "RFC9350: IGP Flexible Algorithm";
   }

@@ -82,7 +82,7 @@
     <section numbered="true" toc="default">
       <name>Overview</name>
       <t>This document defines YANG <xref target="RFC7950" format="default"/> data modules augmenting the IETF OSPF
-      YANG model <xref target="RFC9129" format="default"/>, which itself augments
+      YANG model <xref target="RFC9129" format="default"/>, which itself augments the IETF Routing model
       <xref target="RFC8349" format="default"/>, to provide support for both
       OSPF Flexible Algorithm as defined in <xref target="RFC9350" format="default"/> and
       OSPF Application-Specific Link Attributes as defined in <xref target="RFC9492"/>.
@@ -317,8 +317,16 @@ module iana-igp-metric-types {
 
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Application-Specific Link Attributes</name>
-      <t>This document defined a YANG module for OSPF Application-Specific Link Attributes
+      <t>This document defined a YANG module for OSPF Application-Specific Link Attributes (ASLA)
         as defined in <xref target="RFC9492"/>.</t>
+
+      <t>The module augments OSPF router configuration with support for
+        the ASLA operation mode, enabling interoperability during the
+        transition from legacy advertisements to ASLA. In addition,
+        both the OSPFv2 and OSPFv3 link-state databases are augmented to
+        include the TLVs defined in<xref target="RFC9492"/>.
+      </t>
+
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-link-attr
@@ -616,6 +624,12 @@ module ietf-ospf-link-attr {
       <t>This document defines a YANG module for OSPF Flexible
       Algorithm as defined in <xref target="RFC9350" format="default"/>. It is an augmentation of the OSPF
       base model. </t>
+
+      <t>The module augments OSPF router configuration with support flexible algorithms. In addition,
+        both the OSPFv2 and OSPFv3 link-state databases are augmented to
+        include the TLVs defined in<xref target="RFC9350"/>.
+      </t>
+
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-flex-algo
   augment /rt:routing/rt:control-plane-protocols

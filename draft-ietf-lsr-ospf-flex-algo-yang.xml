@@ -988,7 +988,13 @@ module ietf-ospf-flex-algo {
      (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
-     see the RFC itself for full legal notices.";
+     see the RFC itself for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
 
   revision 2025-09-05 {
     description
@@ -1107,7 +1113,7 @@ module ietf-ospf-flex-algo {
           }
           description
             "OSPF flex-algo definition flags.";
-        }
+        }    
 
         container fa-ex-srlg-sub-tlv {
           leaf-list srlgs {

@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-01" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-02" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-01"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-02"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -1854,6 +1854,7 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8792.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9492.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
@@ -1886,5 +1887,130 @@ module ietf-ospf-flex-algo {
           </front>
         </reference>
     </references>
+    <section numbered="false" toc="default">
+      <name>Appendix A. Example OSPF Flex-Algo Configuration (XML)</name>
+      <t>
+        The following is an example configuration for 
+        OSPF Flexible Algorithm using the YANG model defined in this document.
+      </t>
+      <t>
+        Note: '\' line wrapping per <xref target="RFC8792"/>.</t>
+      <artwork name="Example IS-IS Flex-Algo Configuration" type="xml" align="left" alt=""><![CDATA[
+<?xml version='1.0' encoding='UTF-8'?>
+  <te xmlns="urn:ietf:params:xml:ns:yang:ietf-te">
+    <enable>true</enable>
+    <globals>
+      <named-admin-groups>
+        <named-admin-group>
+          <name>blue</name>
+        </named-admin-group>
+      </named-admin-groups>
+    </globals>
+  </te>
+  <routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
+    <router-id>1.1.1.1</router-id>
+    <control-plane-protocols>
+      <control-plane-protocol>
+        <type xmlns:ospf="urn:ietf:params:xml:ns:yang:ietf-ospf">\
+          ospf:ospfv2</type>
+        <name>OSPFv2</name>
+           <ospf xmlns="urn:ietf:params:xml:ns:yang:ietf-ospf">
+             <areas>
+               <area>
+                 <area-id>0.0.0.0</area-id>
+               </area>
+             </areas>
+          <ospf-flex-algo xmlns="urn:ietf:params:xml:ns:yang:\
+            ietf-ospf-flex-algo">
+            <flex-algo> 
+              <algo-number>200</algo-number>
+              <admin-groups>
+                <exclude-admin-groups>blue</exclude-admin-groups>
+              </admin-groups>
+              <metric-type xmlns:iana-metric-types=\
+                "urn:ietf:params:xml:ns:yang:iana-igp-metric-types">\
+                iana-metric-types:igp-metric</metric-type>
+              <calc-type xmlns:iana-algo-types=\
+                "urn:ietf:params:xml:ns:yang:iana-igp-algo-types">\
+                iana-algo-types:algo-spf</calc-type>
+              <prefix-metric/>
+              <priority>100</priority>
+            </flex-algo>
+          </ospf-flex-algo>
+        </ospf>     
+      </control-plane-protocol>
+    </control-plane-protocols>
+  </routing>
+      ]]></artwork>
+    </section>
+
+    <section numbered="false" toc="default">
+      <name>Appendix B. Example OSPF Flex-Algo Configuration (JSON)</name>
+      <t>
+        The following is the same example configuration for OSPF 
+        Flexible Algorithm as in the previous section in JSON format using the YANG model 
+        defined in this document.
+      </t>
+      <artwork name="Example OSPF Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
+{
+  "te": {
+    "enable": "true",
+    "globals": {
+      "named-admin-groups": {
+        "named-admin-group": {
+          "name": "blue"
+        }
+      }
+    },
+    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-te"
+  }
+}
+{
+  "routing": {
+    "router-id": "1.1.1.1",
+    "control-plane-protocols": {
+      "control-plane-protocol": {
+        "type": {
+          "_xmlns:ospf": "urn:ietf:params:xml:ns:yang:ietf-ospf",
+          "__text": "ospf:ospfv2"
+        },
+        "name": "OSPFv2",
+        "ospf": {
+          "areas": {
+            "area": {
+              "area-id": "0.0.0.0"
+            }
+          },
+          "ospf-flex-algo": {
+            "flex-algo": {
+              "algo-number": "200",
+              "admin-groups": {
+                "exclude-admin-groups": "blue"
+              },
+              "metric-type": {
+                "_xmlns:iana-metric-types": "urn:ietf:params:xml:ns:\
+                yang:iana-igp-metric-types",
+                "__text": "iana-metric-types:igp-metric"
+              },
+              "calc-type": {
+                "_xmlns:iana-algo-types": "urn:ietf:params:xml:ns:\
+                yang:iana-igp-algo-types",
+                "__text": "iana-algo-types:algo-spf"
+              },
+              "prefix-metric": "",
+              "priority": "100"
+            },
+            "_xmlns": "urn:ietf:params:xml:ns:yang:\
+            ietf-ospf-flex-algo"
+          },
+          "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf"
+        }
+      }
+    },
+    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-routing"
+  }
+}
+      ]]></artwork>
+    </section>
   </back>
 </rfc>

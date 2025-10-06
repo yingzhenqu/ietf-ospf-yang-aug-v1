@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-02" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-03" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-02"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-03"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -659,7 +659,7 @@ module: ietf-ospf-flex-algo
             /ospf:body/ospf:opaque/ospf:ri-opaque:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -686,7 +686,7 @@ module: ietf-ospf-flex-algo
             /ospf:ri-opaque:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -712,7 +712,7 @@ module: ietf-ospf-flex-algo
             /ospf:body/ospf:opaque/ospf:ri-opaque:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -739,7 +739,7 @@ module: ietf-ospf-flex-algo
             /ospf:body/ospf:router-information:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -766,7 +766,7 @@ module: ietf-ospf-flex-algo
             /ospf:router-information:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -792,7 +792,7 @@ module: ietf-ospf-flex-algo
             /ospf:body/ospf:router-information:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -820,9 +820,9 @@ module: ietf-ospf-flex-algo
             /ospf:extended-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?    uint8
-          +--ro fapm-flags*   identityref
-          +--ro metric?       uint32
+          +--ro algo-number?   uint8
+          +--ro fapm-flags*    identityref
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
             /ospf:database/ospf:area-scope-lsa-type
@@ -831,9 +831,9 @@ module: ietf-ospf-flex-algo
             /ospf:extended-prefix-opaque/ospf:extended-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?    uint8
-          +--ro fapm-flags*   identityref
-          +--ro metric?       uint32
+          +--ro algo-number?   uint8
+          +--ro fapm-flags*    identityref
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:database
             /ospf:as-scope-lsa-type/ospf:as-scope-lsas
@@ -842,9 +842,9 @@ module: ietf-ospf-flex-algo
             /ospf:extended-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?    uint8
-          +--ro fapm-flags*   identityref
-          +--ro metric?       uint32
+          +--ro algo-number?   uint8
+          +--ro fapm-flags*    identityref
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
             /ospf:database/ospf:area-scope-lsa-type
@@ -855,9 +855,9 @@ module: ietf-ospf-flex-algo
             /ospfv3-e-lsa:inter-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?    uint8
-          +--ro fapm-flags*   identityref
-          +--ro metric?       uint32
+          +--ro algo-number?   uint8
+          +--ro fapm-flags*    identityref
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:database
             /ospf:as-scope-lsa-type/ospf:as-scope-lsas
@@ -867,9 +867,9 @@ module: ietf-ospf-flex-algo
             /ospfv3-e-lsa:external-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?    uint8
-          +--ro fapm-flags*   identityref
-          +--ro metric?       uint32
+          +--ro algo-number?   uint8
+          +--ro fapm-flags*    identityref
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
             /ospf:database/ospf:area-scope-lsa-type
@@ -880,8 +880,8 @@ module: ietf-ospf-flex-algo
        |  +--ro asbr-rtr-id?     rt-types:router-id
        |  +--ro faam-sub-tlvs
        |  |  +--ro faam-sub-tlv* []
-       |  |     +--ro flex-algo?   uint8
-       |  |     +--ro metric?      uint32
+       |  |     +--ro algo-number?   uint8
+       |  |     +--ro metric?        uint32
        |  +--ro unknown-tlvs
        |     +--ro unknown-tlv* []
        |        +--ro type?     uint16
@@ -902,10 +902,15 @@ module: ietf-ospf-flex-algo
             /ospfv3-e-lsa:inter-router-tlv:
     +--ro faam-sub-tlvs
        +--ro faam-sub-tlv* []
-          +--ro flex-algo?   uint8
-          +--ro metric?      uint32
+          +--ro algo-number?   uint8
+          +--ro metric?        uint32
+
+  notifications:
+    +---n flex-algo-not-supported
+       +--ro routing-protocol-name?   leafref
+       +--ro algo-number?             uint8
       ]]></artwork>
-      <sourcecode name="ietf-ospf-flex-algo@2025-09-05.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-flex-algo@2025-10-06.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo";
@@ -996,7 +1001,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-09-05 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -1043,7 +1048,7 @@ module ietf-ospf-flex-algo {
   grouping fad-tlvs {
     container fad-tlvs {
       list fad-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255 inclusive.";
@@ -1141,7 +1146,7 @@ module ietf-ospf-flex-algo {
   grouping fapm-sub-tlvs {
     container fapm-sub-tlvs {
       list fapm-sub-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255
@@ -1174,7 +1179,7 @@ module ietf-ospf-flex-algo {
   grouping faam-sub-tlvs {
     container faam-sub-tlvs {
       list faam-sub-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255
@@ -1217,8 +1222,8 @@ module ietf-ospf-flex-algo {
             range "128..255";
           }
           description
-            "An identifier in the range 128-255 that's associated
-             with the Flexible Algorithm Definition.";
+            "An identifier associated with the Flexible Algorithm
+             Definition.";
         }
         leaf advertise-definition {
           type boolean;
@@ -1564,6 +1569,28 @@ module ietf-ospf-flex-algo {
     description
       "OSPFv3 Area-Scoped Inter-Area-Router TLV.";
   }
+
+  /* notification */
+
+  notification flex-algo-not-supported {
+    leaf routing-protocol-name {
+      type leafref {
+        path "/rt:routing/rt:control-plane-protocols/"
+           + "rt:control-plane-protocol/rt:name";
+      }
+      description
+        "Name of the OSPF instance.";
+    }  
+    leaf algo-number {
+      type uint8;
+      description
+        "Flex-algo identifier which is not supported by the OSPF
+         instance.";
+    }
+    description
+      "This notification is sent when an OSPF instance does not
+       support this flex-algo.";
+  }
 }
         ]]></sourcecode>
     </section>
@@ -1842,6 +1869,8 @@ module ietf-ospf-flex-algo {
      filing system or remote ones accessed by http (http://domain/dir/... ).-->
 
     <references>
+      <name>References</name>
+    <references>
       <name>Normative References</name>
       <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
@@ -1854,7 +1883,6 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8792.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9492.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
@@ -1887,6 +1915,10 @@ module ietf-ospf-flex-algo {
           </front>
         </reference>
     </references>
+    <references title="Informative References">
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8792.xml"/>
+    </references>
+  </references>
     <section numbered="false" toc="default">
       <name>Appendix A. Example OSPF Flex-Algo Configuration (XML)</name>
       <t>

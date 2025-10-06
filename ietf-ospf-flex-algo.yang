@@ -88,7 +88,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-09-05 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -135,7 +135,7 @@ module ietf-ospf-flex-algo {
   grouping fad-tlvs {
     container fad-tlvs {
       list fad-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255 inclusive.";
@@ -233,7 +233,7 @@ module ietf-ospf-flex-algo {
   grouping fapm-sub-tlvs {
     container fapm-sub-tlvs {
       list fapm-sub-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255
@@ -266,7 +266,7 @@ module ietf-ospf-flex-algo {
   grouping faam-sub-tlvs {
     container faam-sub-tlvs {
       list faam-sub-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255
@@ -309,8 +309,8 @@ module ietf-ospf-flex-algo {
             range "128..255";
           }
           description
-            "An identifier in the range 128-255 that's associated
-             with the Flexible Algorithm Definition.";
+            "An identifier associated with the Flexible Algorithm
+             Definition.";
         }
         leaf advertise-definition {
           type boolean;
@@ -655,5 +655,27 @@ module ietf-ospf-flex-algo {
     uses faam-sub-tlvs;
     description
       "OSPFv3 Area-Scoped Inter-Area-Router TLV.";
+  }
+
+  /* notification */
+
+  notification flex-algo-not-supported {
+    leaf routing-protocol-name {
+      type leafref {
+        path "/rt:routing/rt:control-plane-protocols/"
+           + "rt:control-plane-protocol/rt:name";
+      }
+      description
+        "Name of the OSPF instance.";
+    }    
+    leaf algo-number {
+      type uint8;
+      description
+        "Flex-algo identifier which is not supported by the OSPF
+         instance.";
+    }
+    description
+      "This notification is sent when an OSPF instance does not
+       support this flex-algo.";
   }
 }

@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-17" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-18" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,13 +26,13 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Release 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-17"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-18"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
 
     <author fullname="Acee Lindem" initials="A." surname="Lindem">
-      <organization>LabN Consulting, LLC</organization>
+      <organization>Arrcus, Inc</organization>
       <address>
         <postal>
           <street>301 Midenhall Way</street>
@@ -116,8 +116,8 @@
           Local Interface ID Advertisement <xref target="RFC8510" format="default"/>.</dd>
         <dt>RFC9356:</dt>
         <dd>Advertising Layer 2 Bundle Member Link Attributes in OSPF <xref target="RFC9356" format="default"/>.</dd>
-        <dt>I-D:ietf-lsr-flex-algo-bw-con:</dt>
-        <dd>IGP Flexible Algorithms: Bandwidth, Delay, Metrics and Constraints <xref target="I-D.ietf-lsr-flex-algo-bw-con" format="default"/>.</dd>        
+        <dt>RFC9843:</dt>
+        <dd>IGP Flexible Algorithms: Bandwidth, Delay, Metrics and Constraints <xref target="RFC9843" format="default"/>.</dd>
       </dl>
       <t>The augmentations defined in this document requires support for the
         OSPF base model<xref target="RFC9129" format="default"/> which defines
@@ -190,26 +190,26 @@ module ietf-ospf-te {
 
   import ietf-inet-types {
     prefix inet;
-    reference 
+    reference
       "RFC 6991: Common YANG Data Types";
   }
 
   import ietf-routing-types {
     prefix rt-types;
-    reference 
+    reference
       "RFC 8294: Common YANG Data Types for the Routing Area";
   }
 
   import ietf-routing {
     prefix rt;
-    reference 
+    reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix ospf;
-    reference 
+    reference
       "RFC 9129: YANG Data Model for the OSPF Protocol";
   }
 
@@ -265,7 +265,7 @@ module ietf-ospf-te {
       "Grouping for OSPFv3 intra-area-te-lsa.";
     container ospfv3-intra-area-te {
       container router-address-tlv {
-        description 
+        description
           "The router IPv6 address tlv advertises a
            reachable IPv6 address.";
         leaf router-address {
@@ -276,7 +276,7 @@ module ietf-ospf-te {
       }
 
       container link-tlv {
-        description 
+        description
           "Describes a single link, and it is constructed
            of a set of Sub-TLVs.";
         leaf link-type {
@@ -415,7 +415,7 @@ module ietf-ospf-te {
       description
         "This augments the OSPF routing protocol interface
          configuration.";
-    }  
+    }
     description
       "This augments OSPF interface with MPLS TE configuration.";
     container traffic-eng {
@@ -427,7 +427,7 @@ module ietf-ospf-te {
         description
           "Enables OSPF MPLS traffic engineering functionality on
            the interface.";
-      }    
+      }
     }
   }
 
@@ -590,26 +590,26 @@ module ietf-ospf-inter-as-te {
 
   import ietf-inet-types {
     prefix inet;
-    reference 
+    reference
       "RFC 6991: Common YANG Data Types";
   }
 
   import ietf-routing-types {
     prefix rt-types;
-    reference 
+    reference
       "RFC 8294: Common YANG Data Types for the Routing Area";
   }
 
   import ietf-routing {
     prefix rt;
-    reference 
+    reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix ospf;
-    reference 
+    reference
       "RFC 9129: YANG Data Model for the OSPF Protocol";
   }
 
@@ -768,7 +768,7 @@ module ietf-ospf-inter-as-te {
       "Grouping for OSPFv3 inter-as-te-v3 lsa.";
     container inter-as-te-v3 {
       container link-tlv {
-        description 
+        description
           "Describes a single link, and it is constructed
            of a set of Sub-TLVs.";
         leaf link-type {
@@ -912,7 +912,7 @@ module ietf-ospf-inter-as-te {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
          + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
-        "This augments OSPFv2 routing protocol when used";         
+        "This augments OSPFv2 routing protocol when used";
          }
       description
         "OSPFv2 type 10 Opaque LSA.";
@@ -928,12 +928,12 @@ module ietf-ospf-inter-as-te {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
          + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
-        "This augments OSPFv2 routing protocol when used";         
+        "This augments OSPFv2 routing protocol when used";
          }
       description
         "OSPFv2 type 11 Opaque LSA.";
       uses inter-as-te-v2-lsa;
-    } 
+    }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -972,7 +972,7 @@ module ietf-ospf-inter-as-te {
 }
       ]]></artwork>
     </section>
-    
+
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Two-Part Metric</name>
       <t>This document defines a YANG module for OSPF Two-Part Metric feature as
@@ -1925,20 +1925,20 @@ module ietf-ospf-l2-bundle {
 
   import ietf-routing-types {
     prefix rt-types;
-    reference 
+    reference
       "RFC 8294: Common YANG Data Types for the Routing Area";
   }
 
   import ietf-routing {
     prefix rt;
-    reference 
+    reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
 
   import ietf-ospf {
     prefix ospf;
-    reference 
+    reference
       "RFC 9129: YANG Data Model for the OSPF Protocol";
   }
 
@@ -2138,8 +2138,8 @@ module ietf-ospf-l2-bundle {
           type uint32;
           description
             "Value of the LAN-Adj-SID.";
-        } 
-        /* More configuration can be added here */              
+        }
+        /* More configuration can be added here */
         description
           "List of L2 bundle members.";
       }
@@ -2223,7 +2223,7 @@ module ietf-ospf-l2-bundle {
         Delay, Metrics and Constraints</name>
       <t>This document defines a YANG module for OSPF Flexible
       Algorithms: Bandwidth, Delay, Metrics and Constraints
-      <xref target="I-D.ietf-lsr-flex-algo-bw-con" format="default"/>. 
+      <xref target="RFC9843" format="default"/>.
       It is an augmentation of the OSPF base model and the Flexible
       Algorithm YANG module . </t>
 
@@ -2476,10 +2476,10 @@ module: ietf-ospf-flex-algo-bw-con
        +--ro bandwidth-threshold* []
           +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
-      ]]></artwork> 
+      ]]></artwork>
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
-<CODE BEGINS> file "ietf-ospf-flex-algo-bw-con@2025-07-06.yang"
+<CODE BEGINS> file "ietf-ospf-flex-algo-bw-con@2026-01-08.yang"
 module ietf-ospf-flex-algo-bw-con {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo-bw-con";
@@ -2540,7 +2540,7 @@ module ietf-ospf-flex-algo-bw-con {
 
   import iana-igp-metric-types {
     prefix iana-metric-type;
-  }  
+  }
 
   organization
     "IETF LSR - Link State Routing Working Group";
@@ -2557,9 +2557,8 @@ module ietf-ospf-flex-algo-bw-con {
 
   description
     "The YANG module defines the configuration and operational
-     state for OSPF protocol as defined in
-     draft-ietf-lsr-flex-algo-bw-con, IGP Flexible Algorithms:
-     Bandwidth, Delay, Metrics and Constraints
+     state for OSPF protocol as defined in RFC 9843,
+     IGP Flexible Algorithms: Bandwidth, Delay, Metrics and Constraints
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
@@ -2792,8 +2791,8 @@ module ietf-ospf-flex-algo-bw-con {
         "The Flex-algo Bandwidth Thresholds sub-tlv (FADBT).";
     }
     description
-      "Grouping for FADBT sub-tlv."; 
-  }  
+      "Grouping for FADBT sub-tlv.";
+  }
 
   /* Configurations */
   augment "/rt:routing/rt:control-plane-protocols/"
@@ -2880,7 +2879,7 @@ module ietf-ospf-flex-algo-bw-con {
               "Maximum link bandwidth. A 32-bit field specifying the
                link bandwidth in IEEE floating point format (IEEE754).
                The units are bytes-per-second.";
-          }  
+          }
           leaf threshold-metric {
             type uint32;
             description
@@ -2897,14 +2896,14 @@ module ietf-ospf-flex-algo-bw-con {
       description
         "A 32-bit field specifying the link bandwidth in IEEE
          floating point format (IEEE754). The units are
-         bytes-per-second.";    
+         bytes-per-second.";
     }
 
     leaf exclude-max-delay {
       type rt-types:uint24;
       description
         "A 24-bit field specifying the maximum link delay in
-         microseconds.";    
+         microseconds.";
     }
   }
 
@@ -2960,13 +2959,13 @@ module ietf-ospf-flex-algo-bw-con {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
          + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
-        "This augment OSPFv2 routing protocol when used";         
+        "This augment OSPFv2 routing protocol when used";
     }
     description
       "AS scope TE link TLV of OSPFv2 Inter-AS-TE-v2 LSA.";
 
     uses generic-metric-sub-tlv;
-  } 
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
@@ -3246,7 +3245,7 @@ module ietf-ospf-flex-algo-bw-con {
     uses fadbt-sub-tlv;
   }
 }
-      ]]></artwork> 
+      ]]></artwork>
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
@@ -3427,7 +3426,7 @@ module ietf-ospf-flex-algo-bw-con {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8510.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9356.xml"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-lsr-flex-algo-bw-con.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9843.xml"/>
     </references>
   </back>
 </rfc>

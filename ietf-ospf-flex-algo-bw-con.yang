@@ -58,7 +58,7 @@ module ietf-ospf-flex-algo-bw-con {
 
   import iana-igp-metric-types {
     prefix iana-metric-types;
-  }  
+  }
 
   organization
     "IETF LSR - Link State Routing Working Group";
@@ -75,9 +75,8 @@ module ietf-ospf-flex-algo-bw-con {
 
   description
     "The YANG module defines the configuration and operational
-     state for OSPF protocol as defined in
-     draft-ietf-lsr-flex-algo-bw-con, IGP Flexible Algorithms:
-     Bandwidth, Delay, Metrics and Constraints
+     state for OSPF protocol as defined in RFC 9843,
+     IGP Flexible Algorithms: Bandwidth, Delay, Metrics and Constraints
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
@@ -104,7 +103,7 @@ module ietf-ospf-flex-algo-bw-con {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2025-07-06 {
+  revision 2026-01-08 {
     description
       "Initial Version";
     reference
@@ -310,8 +309,8 @@ module ietf-ospf-flex-algo-bw-con {
         "The Flex-algo Bandwidth Thresholds sub-tlv (FADBT).";
     }
     description
-      "Grouping for FADBT sub-tlv."; 
-  }  
+      "Grouping for FADBT sub-tlv.";
+  }
 
   /* Configurations */
   augment "/rt:routing/rt:control-plane-protocols/"
@@ -398,7 +397,7 @@ module ietf-ospf-flex-algo-bw-con {
               "Maximum link bandwidth. A 32-bit field specifying the
                link bandwidth in IEEE floating point format (IEEE754).
                The units are bytes-per-second.";
-          }  
+          }
           leaf threshold-metric {
             type uint32;
             description
@@ -415,14 +414,14 @@ module ietf-ospf-flex-algo-bw-con {
       description
         "A 32-bit field specifying the link bandwidth in IEEE
          floating point format (IEEE754). The units are
-         bytes-per-second.";    
+         bytes-per-second.";
     }
 
     leaf exclude-max-delay {
       type rt-types:uint24;
       description
         "A 24-bit field specifying the maximum link delay in
-         microseconds.";    
+         microseconds.";
     }
   }
 
@@ -478,13 +477,13 @@ module ietf-ospf-flex-algo-bw-con {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
          + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
-        "This augment OSPFv2 routing protocol when used";         
+        "This augment OSPFv2 routing protocol when used";
     }
     description
       "AS scope TE link TLV of OSPFv2 Inter-AS-TE-v2 LSA.";
 
     uses generic-metric-sub-tlv;
-  } 
+  }
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"

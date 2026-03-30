@@ -35,7 +35,8 @@ module ietf-ospf-flex-algo {
   import ietf-te {
     prefix te;
     reference
-      "draft-ietf-teas-yang-te";
+      "RFC XXXX: A YANG Data Model for Traffic Engineering
+                 Tunnels, Label Switched Paths, and Interfaces";
   }
   import iana-igp-algo-types {
     prefix iana-algo-types;
@@ -69,7 +70,7 @@ module ietf-ospf-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -88,7 +89,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-10-06 {
+  revision 2026-03-30 {
     description
       "Initial Version";
     reference
@@ -132,13 +133,15 @@ module ietf-ospf-flex-algo {
   }
 
   /* Groupings */
+
   grouping fad-tlvs {
     container fad-tlvs {
       list fad-tlv {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255 inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAD TLV specification.";
         }
         leaf metric-type {
           type identityref {
@@ -161,7 +164,6 @@ module ietf-ospf-flex-algo {
           description
             "Priority of the advertisement.";
         }
-
         container fa-ex-ag-sub-tlv {
           leaf-list extended-admin-groups {
             type uint32;
@@ -172,7 +174,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo exclude admin group sub-tlv.";
         }
-
         container fa-in-any-ag-sub-tlv {
           leaf-list extended-admin-groups {
             type uint32;
@@ -183,7 +184,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo include-any admin group sub-tlv.";
         }
-
         container fa-in-all-ag-sub-tlv {
           leaf-list extended-admin-groups {
             type uint32;
@@ -194,7 +194,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo include-all admin group sub-tlv.";
         }
-
         container fad-flags-sub-tlv {
           leaf-list fad-flags {
             type identityref {
@@ -205,8 +204,7 @@ module ietf-ospf-flex-algo {
           }
           description
             "OSPF flex-algo definition flags.";
-        }    
-
+        }
         container fa-ex-srlg-sub-tlv {
           leaf-list srlgs {
             type uint32;
@@ -216,7 +214,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo exclude SRLG sub-tlv.";
         }
-
         uses ospf:unknown-tlvs;
         description
           "List of flex-algo definition TLVs.";
@@ -236,8 +233,8 @@ module ietf-ospf-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255
-             inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAD TLV specification.";
         }
         leaf-list fapm-flags {
           type identityref {
@@ -269,8 +266,8 @@ module ietf-ospf-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255
-             inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAAM Sub-TLV specification.";
         }
         leaf metric {
           type uint32;
@@ -375,7 +372,7 @@ module ietf-ospf-flex-algo {
           type identityref {
             base iana-metric-type:metric-type;
           }
-          default iana-metric-type:igp-metric;
+          default "iana-metric-type:igp-metric";
           description
             "Type of metric to be used during the calculation.";
         }
@@ -667,12 +664,13 @@ module ietf-ospf-flex-algo {
       }
       description
         "Name of the OSPF instance.";
-    }    
+    }
     leaf algo-number {
       type uint8;
       description
         "Flex-algo identifier which is not supported by the OSPF
-         instance.";
+         instance. A value not in the inclusive range of 128-255
+         is indicative of an invalid FAD algorithm specification.";
     }
     description
       "This notification is sent when an OSPF instance does not

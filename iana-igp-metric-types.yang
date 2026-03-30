@@ -22,7 +22,7 @@ module iana-igp-metric-types {
      This YANG module is maintained by IANA and reflects the 'IGP
      Metric-Type' registry.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -46,7 +46,7 @@ module iana-igp-metric-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2025-09-05 {
+  revision 2026-03-30 {
     description
       "Initial Version";
     reference
@@ -71,20 +71,24 @@ module iana-igp-metric-types {
   identity min-unidirectional-link-delay {
     base metric-type;
     description
-      "Min Unidirectional Link Delay as defined in RFC8570
-       Section 4.2 and RFC7471 Section 4.2.";
+      "Min Unidirectional Link Delay as defined in RFC 8570
+       and Section 4.2 and RFC 7471 Section 4.2.";
     reference
-      "RFC9350: IGP Flexible Algorithm";
+      "RFC 7471: OSPF Traffic Engineering (TE) Metric Extensions
+       RFC 8570: IS-IS Traffic Engineering (TE) Metric Extensions
+       RFC 9350: IGP Flexible Algorithm";
   }
 
   identity te-default-metric {
     base metric-type;
     description
-      "Traffic Engineering Default Metric as defined in RFC5305
+      "Traffic Engineering Default Metric as defined in RFC 5305
        Section 3.7 and Traffic Engineering Metric as defined in
        RFC3630, Section 2.5.5.";
     reference
-      "RFC9350: IGP Flexible Algorithm";
+      "RFC 3630: OSPF Traffic Engineering
+       RFC 5305: IS-IS Traffic Engineering
+       RFC 9350: IGP Flexible Algorithm";
   }
 
   identity bandwidth-metric {
@@ -92,6 +96,8 @@ module iana-igp-metric-types {
     description
       "Bandwidth metric.";
     reference
-      "draft-ietf-lsr-flex-algo-bw-con";
+      "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
+                 Metrics, and Constraints";
+
   }
 }

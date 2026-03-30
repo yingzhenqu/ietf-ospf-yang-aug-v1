@@ -22,7 +22,7 @@ module iana-igp-algo-types {
      This YANG module is maintained by IANA and reflects the 'IGP
      Algorithm Types' registry.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -46,7 +46,7 @@ module iana-igp-algo-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2025-09-05 {
+  revision 2026-03-30 {
     description
       "Initial Version";
     reference

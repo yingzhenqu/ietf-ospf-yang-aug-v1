@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-05" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-06" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-05"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-06"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -88,10 +88,10 @@
       OSPF Application-Specific Link Attributes as defined in <xref target="RFC9492"/>.
       </t>
       <t>
-        Four YANG modules defined in this document. The first is the initial version of the IANA-maintained YANG module for IGP
+        Four YANG modules are defined in this document. The first is the initial version of the IANA-maintained YANG module for IGP
         Algorithm Types. The second module is the initial version of the IANA-maintained YANG
-        module for IGP Metric-Type. The third module augments the IETF OSPF YANG data model to support
-        OSPF Flexible Algorithm, and the fourth module is to support OSPF Application-Specific Link Attributes.
+        module for IGP Metric-Type. The third module is to support OSPF Application-Specific Link Attributes,
+        and the fourth module augments the IETF OSPF YANG data model to support OSPF Flex Algorithm.
       </t>
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -119,7 +119,10 @@
         module for Algorithm Types that mirrors the IANA "IGP Algorithm Types" registry
         <xref target="IANA-IGP-ALGO-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>.
       </t>
-<sourcecode name="iana-igp-algo-types@2025-09-05.yang" type="yang" markers="true">
+      <t>
+        This YANG module references <xref target="RFC8665"/>.
+      </t>
+<sourcecode name="iana-igp-algo-types@2026-03-30.yang" type="yang" markers="true">
 module iana-igp-algo-types {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:iana-igp-algo-types";
@@ -144,7 +147,7 @@ module iana-igp-algo-types {
      This YANG module is maintained by IANA and reflects the 'IGP
      Algorithm Types' registry.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -168,7 +171,7 @@ module iana-igp-algo-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2025-09-05 {
+  revision 2026-03-30 {
     description
       "Initial Version";
     reference
@@ -217,7 +220,12 @@ module iana-igp-algo-types {
         module for Algorithm Types that mirrors the IANA "IGP Metric-Type" registry
         <xref target="IANA-IGP-Metric-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>.
       </t>
-<sourcecode name="iana-igp-metric-types@2025-09-05.yang" type="yang" markers="true">
+      <t>
+        This YANG module references <xref target="RFC3630"/>, <xref target="RFC5305"/>,
+        <xref target="RFC7471"/>, <xref target="RFC8570"/>, <xref target="RFC9350"/>, and
+        <xref target="RFC9843"/>.
+      </t>
+<sourcecode name="iana-igp-metric-types@2026-03-30.yang" type="yang" markers="true">
 module iana-igp-metric-types {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:iana-igp-metric-types";
@@ -242,7 +250,7 @@ module iana-igp-metric-types {
      This YANG module is maintained by IANA and reflects the 'IGP
      Metric-Type' registry.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -266,7 +274,7 @@ module iana-igp-metric-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2025-09-05 {
+  revision 2026-03-30 {
     description
       "Initial Version";
     reference
@@ -291,20 +299,24 @@ module iana-igp-metric-types {
   identity min-unidirectional-link-delay {
     base metric-type;
     description
-      "Min Unidirectional Link Delay as defined in RFC8570
-       Section 4.2 and RFC7471 Section 4.2.";
+      "Min Unidirectional Link Delay as defined in RFC 8570
+       and Section 4.2 and RFC 7471 Section 4.2.";
     reference
-      "RFC9350: IGP Flexible Algorithm";
+      "RFC 7471: OSPF Traffic Engineering (TE) Metric Extensions
+       RFC 8570: IS-IS Traffic Engineering (TE) Metric Extensions
+       RFC 9350: IGP Flexible Algorithm";
   }
 
   identity te-default-metric {
     base metric-type;
     description
-      "Traffic Engineering Default Metric as defined in RFC5305
+      "Traffic Engineering Default Metric as defined in RFC 5305
        Section 3.7 and Traffic Engineering Metric as defined in
        RFC3630, Section 2.5.5.";
     reference
-      "RFC9350: IGP Flexible Algorithm";
+      "RFC 3630: OSPF Traffic Engineering
+       RFC 5305: IS-IS Traffic Engineering
+       RFC 9350: IGP Flexible Algorithm";
   }
 
   identity bandwidth-metric {
@@ -312,7 +324,9 @@ module iana-igp-metric-types {
     description
       "Bandwidth metric.";
     reference
-      "draft-ietf-lsr-flex-algo-bw-con";
+      "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
+                 Metrics, and Constraints";
+
   }
 }
 </sourcecode>
@@ -326,10 +340,13 @@ module iana-igp-metric-types {
       <t>The module augments OSPF router configuration with support for
         the ASLA operation mode, enabling interoperability during the
         transition from legacy advertisements to ASLA. In addition,
-        both the OSPFv2 and OSPFv3 link-state databases are augmented to
+        both OSPFv2 and OSPFv3 LSAs are augmented to
         include the TLVs defined in<xref target="RFC9492"/>.
       </t>
-
+      <t>
+        This YANG module references <xref target="RFC8349"/>, <xref target="RFC9129"/>,
+        <xref target="RFC9350"/>, <xref target="RFC9492"/>, and <xref target="RFC9587"/> .
+      </t>
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-link-attr
@@ -383,7 +400,7 @@ module: ietf-ospf-link-attr
                    +--ro value?    yang:hex-string
 
       ]]></artwork>
-      <sourcecode name="ietf-ospf-link-attr@2025-09-05.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-link-attr@2026-03-30.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -426,7 +443,7 @@ module ietf-ospf-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -439,8 +456,7 @@ module ietf-ospf-link-attr {
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
-
-  revision 2025-09-05 {
+  revision 2026-03-30 {
     description
       "Initial version";
     reference
@@ -632,7 +648,10 @@ module ietf-ospf-link-attr {
         both the OSPFv2 and OSPFv3 link-state databases are augmented to
         include the TLVs defined in<xref target="RFC9350"/>.
       </t>
-
+      <t>
+        This YANG module references <xref target="RFC8349"/>, <xref target="RFC9129"/>,
+        <xref target="RFC9350"/>, <xref target="RFC9587"/>, and <xref target="I-D.ietf-yang-te"/>.
+      </t>
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-flex-algo
   augment /rt:routing/rt:control-plane-protocols
@@ -913,7 +932,7 @@ module: ietf-ospf-flex-algo
        +--ro routing-protocol-name?   leafref
        +--ro algo-number?             uint8
       ]]></artwork>
-      <sourcecode name="ietf-ospf-flex-algo@2025-10-06.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-flex-algo@2026-03-30.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo";
@@ -951,7 +970,8 @@ module ietf-ospf-flex-algo {
   import ietf-te {
     prefix te;
     reference
-      "draft-ietf-teas-yang-te";
+      "RFC XXXX: A YANG Data Model for Traffic Engineering
+                 Tunnels, Label Switched Paths, and Interfaces";
   }
   import iana-igp-algo-types {
     prefix iana-algo-types;
@@ -985,7 +1005,7 @@ module ietf-ospf-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1004,7 +1024,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-10-06 {
+  revision 2026-03-30 {
     description
       "Initial Version";
     reference
@@ -1048,13 +1068,15 @@ module ietf-ospf-flex-algo {
   }
 
   /* Groupings */
+
   grouping fad-tlvs {
     container fad-tlvs {
       list fad-tlv {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255 inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAD TLV specification.";
         }
         leaf metric-type {
           type identityref {
@@ -1077,7 +1099,6 @@ module ietf-ospf-flex-algo {
           description
             "Priority of the advertisement.";
         }
-
         container fa-ex-ag-sub-tlv {
           leaf-list extended-admin-groups {
             type uint32;
@@ -1088,7 +1109,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo exclude admin group sub-tlv.";
         }
-
         container fa-in-any-ag-sub-tlv {
           leaf-list extended-admin-groups {
             type uint32;
@@ -1099,7 +1119,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo include-any admin group sub-tlv.";
         }
-
         container fa-in-all-ag-sub-tlv {
           leaf-list extended-admin-groups {
             type uint32;
@@ -1110,7 +1129,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo include-all admin group sub-tlv.";
         }
-
         container fad-flags-sub-tlv {
           leaf-list fad-flags {
             type identityref {
@@ -1121,8 +1139,7 @@ module ietf-ospf-flex-algo {
           }
           description
             "OSPF flex-algo definition flags.";
-        }    
-
+        }
         container fa-ex-srlg-sub-tlv {
           leaf-list srlgs {
             type uint32;
@@ -1132,7 +1149,6 @@ module ietf-ospf-flex-algo {
           description
             "The flex-algo exclude SRLG sub-tlv.";
         }
-
         uses ospf:unknown-tlvs;
         description
           "List of flex-algo definition TLVs.";
@@ -1152,8 +1168,8 @@ module ietf-ospf-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255
-             inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAD TLV specification.";
         }
         leaf-list fapm-flags {
           type identityref {
@@ -1185,8 +1201,8 @@ module ietf-ospf-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255
-             inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAAM Sub-TLV specification.";
         }
         leaf metric {
           type uint32;
@@ -1291,7 +1307,7 @@ module ietf-ospf-flex-algo {
           type identityref {
             base iana-metric-type:metric-type;
           }
-          default iana-metric-type:igp-metric;
+          default "iana-metric-type:igp-metric";
           description
             "Type of metric to be used during the calculation.";
         }
@@ -1583,12 +1599,13 @@ module ietf-ospf-flex-algo {
       }
       description
         "Name of the OSPF instance.";
-    }  
+    }
     leaf algo-number {
       type uint8;
       description
         "Flex-algo identifier which is not supported by the OSPF
-         instance.";
+         instance. A value not in the inclusive range of 128-255
+         is indicative of an invalid FAD algorithm specification.";
     }
     description
       "This notification is sent when an OSPF instance does not
@@ -1849,8 +1866,7 @@ module ietf-ospf-flex-algo {
         Thanks to Dhruv Dhody for his detailed YANG doctors review.
       </t>
       <t>
-        The YANG model was developed using the suite of YANG tools written
-        and maintained by numerous authors.
+        Thanks to Adrian Farrel for his OPS directorate review.
       </t>
 
     </section>
@@ -1877,20 +1893,37 @@ module ietf-ospf-flex-algo {
       <name>Normative References</name>
       <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3630.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5305.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7471.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8570.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8665.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9492.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9587.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9843.xml"/>
+      <reference anchor="I-D.ietf-yang-te">
+        <front>
+          <title>YANG Data Model for Traffic Engineering</title>
+          <author>
+            <organization>IETF</organization>
+          </author>
+          <date/>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-ietf-yang-te"/>
+      </reference>
       <reference anchor="IANA-IGP-ALGO-Types" target="https://www.iana.org/assignments/igp-parameters" quoteTitle="true" derivedAnchor="IANA-IGP-ALGO-Types">
           <front>
             <title>IGP Algorithm Types</title>

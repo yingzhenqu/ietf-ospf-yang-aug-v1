@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-04" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-05" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-04"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-05"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -100,7 +100,7 @@
           "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
           "OPTIONAL" in this document are to be interpreted as described in
           BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all
-          capitals, as shown here..</t>
+          capitals, as shown here.</t>
       </section>
     </section>
 

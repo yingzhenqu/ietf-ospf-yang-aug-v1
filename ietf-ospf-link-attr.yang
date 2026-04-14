@@ -20,8 +20,8 @@ module ietf-ospf-link-attr {
       "RFC 9587: YANG Data Model for OSPFv3 Extended Link
                  State Advertisements (LSAs)";
   }
-  import iana-igp-link-attr-app {
-    prefix iana-link-attr-app;
+  import iana-igp-link-attr-apps {
+    prefix iana-link-attr-apps;
     reference
       "RFC XXXX: YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
@@ -59,7 +59,7 @@ module ietf-ospf-link-attr {
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
-  revision 2026-04-08 {
+  revision 2026-04-14 {
     description
       "Initial version";
     reference
@@ -67,17 +67,17 @@ module ietf-ospf-link-attr {
                  Link Attributes and Flexible Algorithm";
   }
 
-  grouping ospf-te-link-atttrs {
+  grouping ospf-te-link-attrs {
     description
       "OSPF Application-Specific Link Attributes (ASLA)
-      inherited from the base OSPF TE attributes";
+       inherited from the base OSPF TE attributes";
     leaf te-metric {
       type uint32;
       description
         "TE metric.";
       reference
         "RFC 3630 - Traffic Engineering (TE) Extensions
-        to OSPFv2";
+         to OSPFv2";
     }
     leaf admin-group {
       type uint32;
@@ -85,13 +85,13 @@ module ietf-ospf-link-attr {
         "Administrative Group / Resource Class/Color.";
       reference
         "RFC 3630 - Traffic Engineering (TE) Extensions
-        to OSPFv2";
-     }
+         to OSPFv2";
+    }
     reference
       "RFC 3630 - Traffic Engineering (TE) Extensions
-      to OSPFv2";
+       to OSPFv2";
   }
-      
+
   grouping app-specific-link-attr-sub-tlvs {
     description
       "OSPF Application-Specific Link Attributes (ASLA) sub-TLV.
@@ -116,11 +116,11 @@ module ietf-ospf-link-attr {
         container sabm {
           leaf-list sabm-bits {
             type identityref {
-              base iana-link-attr-app:igp-link-attr-app;
+              base iana-link-attr-apps:igp-link-attr-app;
             }
             description
               "SABM bits list. This list will contain identities
-              for the applications which are set in the SABA bits.";
+               for the applications which are set in the SABA bits.";
           }
           description
             "Standard Application Identifier Bit Mask.";
@@ -132,7 +132,7 @@ module ietf-ospf-link-attr {
              applications.";
         }
         container link-attributes-sub-sub-tlvs {
-          uses ospf-te-link-atttrs;
+          uses ospf-te-link-attrs;
           uses ospf:unknown-tlvs;
           description
             "Link Attributes sub-sub-TLVs.";
@@ -185,29 +185,29 @@ module ietf-ospf-link-attr {
   }
 
   augment "/rt:routing/rt:control-plane-protocols/"
-           + "rt:control-plane-protocol/ospf:ospf/"
-           + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
-       when "derived-from(/rt:routing/rt:control-plane-protocols/"
-           + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') " {
-         description
-           "This augments the OSPF interfaces.";
-       }
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') " {
+      description
+        "This augments the OSPF interfaces.";
+    }
     description
       "This augments OSPF interface configuration
-      with Application Specific Link Attributes (ASLA).";
+       with Application Specific Link Attributes (ASLA).";
     container OSPF-asla {
       list interface-asla {
         key "link-attr-app";
         leaf link-attr-app {
           type identityref {
-              base iana-link-attr-app:igp-link-attr-app;
+            base iana-link-attr-apps:igp-link-attr-app;
           }
           description
             "Application-specific attributes. Note that
-            when encoded, applications with identical
-            attributes may be included in the same sub-TLV.";
+             when encoded, applications with identical
+             attributes may be included in the same sub-TLV.";
         }
-        uses ospf-te-link-atttrs;
+        uses ospf-te-link-attrs;
         description
           "ASLA interface configuration.";
       }

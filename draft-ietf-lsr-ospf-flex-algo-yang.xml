@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-06" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-07" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-06"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-07"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -75,7 +75,7 @@
       <t>This document defines a YANG data model to support OSPF Application-Specific
         Link Attributes and Flexible Algorithm.
         It also specifies the initial version of IANA-maintained YANG modules for IGP
-        Algorithm Types and IGP Metric-Type. </t>
+        Algorithm Types, IGP Metric-Types, and IGP Link Attribute Applications.</t>
     </abstract>
   </front>
   <middle>
@@ -88,10 +88,12 @@
       OSPF Application-Specific Link Attributes as defined in <xref target="RFC9492"/>.
       </t>
       <t>
-        Four YANG modules are defined in this document. The first is the initial version of the IANA-maintained YANG module for IGP
+        Five YANG modules are defined in this document. The first is the initial version of the IANA-maintained YANG module for IGP
         Algorithm Types. The second module is the initial version of the IANA-maintained YANG
-        module for IGP Metric-Type. The third module is to support OSPF Application-Specific Link Attributes,
-        and the fourth module augments the IETF OSPF YANG data model to support OSPF Flex Algorithm.
+        module for IGP Metric-Type. The third module is the initial version of the IANA-maintaained YANG module for IGP Link
+        Attribute Application types.
+        The fourth module is to support OSPF Application-Specific Link Attributes,
+        and the fifth module augments the IETF OSPF YANG data model to support OSPF Flex Algorithm.
       </t>
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -330,6 +332,137 @@ module iana-igp-metric-types {
   }
 }
 </sourcecode>
+</section>
+    <section anchor="iana-link-attrib-apps" numbered="true" toc="default">
+      <name>IANA IGP Link Attribute Applications Module</name>
+      <t>
+        IANA has created a registry titled "Link Attribute Application Identifiers"
+        under the "Interior Gateway Protocol (IGP) Parameters" registry group to
+        identify Algorithm Types.  Module iana-igp-link-attr-apps is an IANA-maintained
+        module, which defines the identities for the link attribute application IDs
+        as in the IANA "Link Attribute Application Identifiers" registry.</t>
+      <t>
+        This module is maintained by IANA and will be updated if and when
+        there is any change to the registry.
+      </t>
+      <t>
+        This document defines the initial version of the IANA-maintained YANG
+        module for Algorithm Types that mirrors the IANA "Link Attribute Application Identifiers" registry
+        <xref target="IANA-Link-Attribute-Apps" format="default" sectionFormat="of"
+              derivedContent="IANA-Link-Attribute-Apps"/>.
+      </t>
+      <t>
+        This YANG module references <xref target="RFC9492"/>.
+      </t>
+      <sourcecode name="iana-igp-link-attr-apps@2026-04-14.yang" type="yang" markers="true">
+module iana-igp-link-attr-apps {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps";
+  prefix iana-link-attr-app;
+
+  organization
+    "Internet Assigned Numbers Authority (IANA)";
+  contact
+    "Internet Assigned Numbers Authority
+
+     ICANN
+     12025 Waterfront Drive, Suite 300
+     Los Angeles, CA 90094-2536
+     United States of America
+
+     Tel:    +1 310 301 5800
+      &lt;mailto:iana@iana.org&gt;";
+  description
+    "The YANG module defines the identities for Interior Gateway
+     Protocol (IGP) Application IDs used for Link Attributes.
+
+     This YANG module is maintained by IANA and reflects the 'Link
+     Attribute Application Identifiers' registry.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
+
+     This initial version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     //RFC Ed.: replace XXXX with actual RFC number and remove
+       this note
+
+     The latest version of this YANG module is available at
+     https://www.iana.org/assignments/yang-parameters.";
+
+  revision 2026-04-14 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
+  }
+
+  identity igp-link-attr-app {
+    description
+      "Base identity for Standard Applications";
+    reference
+      "RFC 9492: OSPF Application-Specific Link Attributes";
+  }
+
+  identity rsvp-te-app {
+    base igp-link-attr-app;
+    description
+      "RSVP Traffic Engineering (TE) Application - This
+       corresponds to Bit 0 (R-BIT) in the Standard Application
+       Bit Mask (SABM).";
+    reference
+      "RFC 3630: Traffic Engineering (TE) for OSPFv2
+       RFC 5329: Traffic Engineering Extensions to OSPFv3";
+  }
+
+  identity sr-policy-app {
+    base igp-link-attr-app;
+    description
+      "Segment Routing (SR) Policy Application - This
+       corresponds to Bit 1 (S-BIT) in the Standard Application
+       Bit Mask (SABM).";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       RFC 8666: OSPFv3 Extensions for Segment Routing";
+  }
+
+  identity lfa-app {
+    base igp-link-attr-app;
+    description
+      "Loop-Free Alternative (LFA) Application - This
+       corresponds to Bit 2 (F-BIT) in the Standard Application
+       Bit Mask (SABM).";
+    reference
+      "RFC 8102: Remote-LFA Node Protection and Manageability
+       RFC 9855: Topology Independent Fast Reroute Using
+                 Segment Routing";
+  }
+
+  identity flex-algo-app {
+    base igp-link-attr-app;
+    description
+      "Flexible Algorithm Application - This
+       corresponds to Bit 3 (X-BIT) in the Standard Application
+       Bit Mask (SABM).";
+    reference
+      "RFC 9350: IGP Flexible Algorithm, Section 12.";
+  }
+}
+      </sourcecode>
     </section>
 
     <section numbered="true" toc="default">
@@ -361,8 +494,16 @@ module: ietf-ospf-link-attr
           +--:(app-specific)
              +--rw app-specific?   empty
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
-            /ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas
+            /ospf:area/ospf:interfaces/ospf:interface:
+    +--rw OSPF-asla
+       +--rw interface-asla* [link-attr-app]
+          +--rw link-attr-app    identityref
+          +--rw te-metric?       uint32
+          +--rw admin-group?     uint32
+  augment /rt:routing/rt:control-plane-protocols
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas
+            /ospf:area/ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
             /ospf:extended-link-opaque/ospf:extended-link-tlv:
@@ -374,17 +515,20 @@ module: ietf-ospf-link-attr
           |  +--ro sabm-bits*   identityref
           +--ro udabm
           +--ro link-attributes-sub-sub-tlvs
+             +--ro te-metric?      uint32
+             +--ro admin-group?    uint32
              +--ro unknown-tlvs
                 +--ro unknown-tlv* []
                    +--ro type?     uint16
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
-            /ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas
+            /ospf:area/ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-            /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
-            /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv:
+            /ospf:ospfv3/ospf:ospfv3/ospf:body
+            /ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
+            /ospfv3-e-lsa:link-tlv:
     +--ro app-specific-link-attr-sub-tlvs
        +--ro asla-sub-tlvs* []
           +--ro sabm-length?                    uint8
@@ -393,6 +537,8 @@ module: ietf-ospf-link-attr
           |  +--ro sabm-bits*   identityref
           +--ro udabm
           +--ro link-attributes-sub-sub-tlvs
+             +--ro te-metric?      uint32
+             +--ro admin-group?    uint32
              +--ro unknown-tlvs
                 +--ro unknown-tlv* []
                    +--ro type?     uint16
@@ -400,7 +546,7 @@ module: ietf-ospf-link-attr
                    +--ro value?    yang:hex-string
 
       ]]></artwork>
-      <sourcecode name="ietf-ospf-link-attr@2026-03-30.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-ospf-link-attr@2026-04-14.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -422,6 +568,12 @@ module ietf-ospf-link-attr {
     reference
       "RFC 9587: YANG Data Model for OSPFv3 Extended Link
                  State Advertisements (LSAs)";
+  }
+  import iana-igp-link-attr-apps {
+    prefix iana-link-attr-apps;
+    reference
+      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
   }
 
   organization
@@ -456,7 +608,7 @@ module ietf-ospf-link-attr {
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
-  revision 2026-03-30 {
+  revision 2026-04-14 {
     description
       "Initial version";
     reference
@@ -464,43 +616,29 @@ module ietf-ospf-link-attr {
                  Link Attributes and Flexible Algorithm";
   }
 
-  identity sabm-bit {
+  grouping ospf-te-link-attrs {
     description
-      "Base identity for SABM bits.";
+      "OSPF Application-Specific Link Attributes (ASLA)
+       inherited from the base OSPF TE attributes";
+    leaf te-metric {
+      type uint32;
+      description
+        "TE metric.";
+      reference
+        "RFC 3630 - Traffic Engineering (TE) Extensions
+         to OSPFv2";
+    }
+    leaf admin-group {
+      type uint32;
+      description
+        "Administrative Group / Resource Class/Color.";
+      reference
+        "RFC 3630 - Traffic Engineering (TE) Extensions
+         to OSPFv2";
+    }
     reference
-      "RFC 9492: OSPF Application-Specific Link Attributes";
-  }
-
-  identity rsvp-te-bit {
-    base sabm-bit;
-    description
-      "R bit, RSVP-TE.";
-    reference
-      "RFC 9492: OSPF Application-Specific Link Attributes";
-  }
-
-  identity sr-policy-bit {
-    base sabm-bit;
-    description
-      "S bit, Segment Routing Policy.";
-    reference
-      "RFC 9492: OSPF Application-Specific Link Attributes";
-  }
-
-  identity lfa-bit {
-    base sabm-bit;
-    description
-      "F bit, Loop Free Alternate (LFA). Includes all LFA types.";
-    reference
-      "RFC 9492: OSPF Application-Specific Link Attributes";
-  }
-
-  identity flex-algo-bit {
-    base sabm-bit;
-    description
-      "X bit, flexible algorithm.";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 12.";
+      "RFC 3630 - Traffic Engineering (TE) Extensions
+       to OSPFv2";
   }
 
   grouping app-specific-link-attr-sub-tlvs {
@@ -527,12 +665,11 @@ module ietf-ospf-link-attr {
         container sabm {
           leaf-list sabm-bits {
             type identityref {
-              base sabm-bit;
+              base iana-link-attr-apps:igp-link-attr-app;
             }
             description
-              "SABM bits list. This list will contain
-               identities for the bits which are set in the
-               SABA bits.";
+              "SABM bits list. This list will contain identities
+               for the applications which are set in the SABA bits.";
           }
           description
             "Standard Application Identifier Bit Mask.";
@@ -544,6 +681,7 @@ module ietf-ospf-link-attr {
              applications.";
         }
         container link-attributes-sub-sub-tlvs {
+          uses ospf-te-link-attrs;
           uses ospf:unknown-tlvs;
           description
             "Link Attributes sub-sub-TLVs.";
@@ -592,6 +730,38 @@ module ietf-ospf-link-attr {
       }
       description
         "Link attributes operation mode.";
+    }
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') " {
+      description
+        "This augments the OSPF interfaces.";
+    }
+    description
+      "This augments OSPF interface configuration
+       with Application Specific Link Attributes (ASLA).";
+    container OSPF-asla {
+      list interface-asla {
+        key "link-attr-app";
+        leaf link-attr-app {
+          type identityref {
+            base iana-link-attr-apps:igp-link-attr-app;
+          }
+          description
+            "Application-specific attributes. Note that
+             when encoded, applications with identical
+             attributes may be included in the same sub-TLV.";
+        }
+        uses ospf-te-link-attrs;
+        description
+          "ASLA interface configuration.";
+      }
+      description
+        "Application specific link attributes configuration.";
     }
   }
 
@@ -1691,6 +1861,12 @@ module ietf-ospf-flex-algo {
    ]]></artwork>
 
       <artwork name="" type="" align="left" alt=""><![CDATA[
+   URI: urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   ]]></artwork>
+
+      <artwork name="" type="" align="left" alt=""><![CDATA[
    URI: urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
@@ -1719,6 +1895,14 @@ module ietf-ospf-flex-algo {
    Maintained by IANA?  Y
    namespace: urn:ietf:params:xml:ns:yang:iana-igp-metric-types
    prefix: iana-metric-types
+   reference: RFC XXXX
+   ]]></artwork>
+
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+   name: iana-igp-link-atttr-app
+   Maintained by IANA?  Y
+   namespace: urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps
+   prefix: iana-link-attr-app
    reference: RFC XXXX
    ]]></artwork>
 
@@ -1789,7 +1973,8 @@ module ietf-ospf-flex-algo {
   the "reference" substatement.</t>
 
       <t>
-      IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:</t>
+        IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
+        sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:</t>
         <blockquote>
           <t indent="0">
          When this registry is modified, the YANG module "iana-algo-types"
@@ -1868,6 +2053,9 @@ module ietf-ospf-flex-algo {
       <t>
         Thanks to Adrian Farrel for his OPS directorate review.
       </t>
+      <t>
+        Thanks to Renato Westphal for his review and comments.
+      </t>
 
     </section>
   </middle>
@@ -1942,6 +2130,16 @@ module ietf-ospf-flex-algo {
             <date/>
           </front>
         </reference>
+        <reference anchor="IANA-Link-Attribute-Apps" target="https://www.iana.org/assignments/igp-parameters"
+                   quoteTitle="true" derivedAnchor="IANA-Link-Attribute-Application-Identifiers">
+          <front>
+            <title>Link Attribute Application Identifiers</title>
+            <author>
+              <organization showOnFrontPage="true">IANA</organization>
+            </author>
+            <date/>
+          </front>
+        </reference>
         <reference anchor="IANA-YANG-Parameters" target="https://www.iana.org/assignments/yang-parameters" quoteTitle="true" derivedAnchor="IANA-YANG-Parameters">
           <front>
             <title>YANG Module Names</title>
@@ -1959,7 +2157,7 @@ module ietf-ospf-flex-algo {
     <section numbered="false" toc="default">
       <name>Appendix A. Example OSPF Flex-Algo Configuration (XML)</name>
       <t>
-        The following is an example configuration for 
+        The following is an example configuration for
         OSPF Flexible Algorithm using the YANG model defined in this document.
       </t>
       <t>
@@ -1991,7 +2189,7 @@ module ietf-ospf-flex-algo {
              </areas>
           <ospf-flex-algo xmlns="urn:ietf:params:xml:ns:yang:\
             ietf-ospf-flex-algo">
-            <flex-algo> 
+            <flex-algo>
               <algo-number>200</algo-number>
               <admin-groups>
                 <exclude-admin-groups>blue</exclude-admin-groups>
@@ -2006,7 +2204,7 @@ module ietf-ospf-flex-algo {
               <priority>100</priority>
             </flex-algo>
           </ospf-flex-algo>
-        </ospf>     
+        </ospf>
       </control-plane-protocol>
     </control-plane-protocols>
   </routing>
@@ -2016,8 +2214,8 @@ module ietf-ospf-flex-algo {
     <section numbered="false" toc="default">
       <name>Appendix B. Example OSPF Flex-Algo Configuration (JSON)</name>
       <t>
-        The following is the same example configuration for OSPF 
-        Flexible Algorithm as in the previous section in JSON format using the YANG model 
+        The following is the same example configuration for OSPF
+        Flexible Algorithm as in the previous section in JSON format using the YANG model
         defined in this document.
       </t>
       <artwork name="Example OSPF Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[

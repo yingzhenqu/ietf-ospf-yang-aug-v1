@@ -1,7 +1,7 @@
-module iana-igp-link-attr-app {
+module iana-igp-link-attr-apps {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:iana-igp-link-attr-app";
-  prefix iana-link-attr-app;
+  namespace "urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps";
+  prefix iana-link-attr-apps;
 
   organization
     "Internet Assigned Numbers Authority (IANA)";
@@ -46,7 +46,7 @@ module iana-igp-link-attr-app {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-04-08 {
+  revision 2026-04-14 {
     description
       "Initial Version";
     reference

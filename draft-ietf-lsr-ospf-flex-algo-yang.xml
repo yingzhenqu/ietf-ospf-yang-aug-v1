@@ -348,8 +348,8 @@ module iana-igp-metric-types {
       <t>
         This document defines the initial version of the IANA-maintained YANG
         module for Algorithm Types that mirrors the IANA "Link Attribute Application Identifiers" registry
-        <xref target="IANA-Link-Attribute-Apps" format="default" sectionFormat="of"
-              derivedContent="IANA-Link-Attribute-Apps"/>.
+        <xref target="IANA-Link-Attr-Apps" format="default" sectionFormat="of"
+              derivedContent="IANA-IGP-Link-Attribute-Apps"/>.
       </t>
       <t>
         This YANG module references <xref target="RFC9492"/>.
@@ -1922,24 +1922,25 @@ module ietf-ospf-flex-algo {
    ]]></artwork>
  </section>
 
-      <section numbered="true" toc="default">
-        <name slugifiedName="name-iana-algo-types-module">IANA IGP Algorithm Types Module</name>
-        <t>This document defines the initial version of the IANA-maintained
-          "iana-algo-types" YANG module (<xref target="iana-algo-types"/>).
-          The most recent version of the YANG module is available from the "YANG Parameters"
-          registry <xref target="IANA-YANG-Parameters"/>.
-         </t>
-         <t>
-          IANA is requested to add this note to the registry:
-         </t>
-        <blockquote>
-          <t indent="0">New values must not be directly added to the "iana-algo-types" YANG
-              module.  They must instead be added to the "IGP Algorithm Types" registry in the "Interior Gateway Protocol (IGP) Parameters" registry group.
-          </t>
-        </blockquote>
+ <section numbered="true" toc="default">
+   <name slugifiedName="name-iana-algo-types-module">IANA IGP Algorithm Types Module</name>
+   <t>This document defines the initial version of the IANA-maintained
+   "iana-igp-algo-types" YANG module (<xref target="iana-algo-types"/>).
+   The most recent version of the YANG module is available from the "YANG Parameters"
+   registry <xref target="IANA-YANG-Parameters"/>.
+   </t>
+   <t>
+     IANA is requested to add this note to the registry:
+   </t>
+   <blockquote>
+     <t indent="0">New values must not be directly added to the "iana-algo-types" YANG
+     module.  They must instead be added to the "IGP Algorithm Types" registry in the
+     "Interior Gateway Protocol (IGP) Parameters" registry group.
+     </t>
+   </blockquote>
         <t>
           When a value is added to the "IGP Algorithm Types" registry, a new "identity"
-          statement needs to be added to the "iana-algo-types" YANG module. The name
+          statement needs to be added to the "iana-igp-algo-types" YANG module. The name
           of the "identity" MUST be the name as provided in the registry.
           The "identity" statement should have the following
           sub-statements defined:
@@ -1952,41 +1953,45 @@ module ietf-ospf-flex-algo {
   </artwork>
 
   <t>
-  When the "iana-algo-types" YANG module is updated, a new "revision"
-  statement with a unique revision date must be added in front of the
-  existing revision statements. The "revision" statement MUST contain
-  both "description" and "reference" substatements as follows.</t>
+    When the "iana-igp-algo-types" YANG module is updated, a new "revision"
+    statement with a unique revision date must be added in front of the
+    existing revision statements. The "revision" statement MUST contain
+    both "description" and "reference" substatements as follows.
+  </t>
 
   <t>
-  The "description" substatement captures what changed in the
-  revised version. Typically, the description enumerates the changes
-  such as udpates to existing entries (e.g., update a description or
-  a reference) or notes which identities were added or had their status
-  changed (e.g., deprecated, discouraged, or obsoleted).</t>
+    The "description" substatement captures what changed in the
+    revised version. Typically, the description enumerates the changes
+    such as udpates to existing entries (e.g., update a description or
+    a reference) or notes which identities were added or had their status
+    changed (e.g., deprecated, discouraged, or obsoleted).
+  </t>
 
   <t>
-  The "reference" substatement points specifically to the published
-  module (i.e., IANA_FOO_URL_With_REV). It may also point to an
-  authoritative event triggering the update to the YANG module. In all
-  cases, this event is cited from the underlying IANA registry. If the
-  update is triggered by an RFC, that RFC must also be included in
-  the "reference" substatement.</t>
+    The "reference" substatement points specifically to the published
+    module (i.e., IANA_FOO_URL_With_REV). It may also point to an
+    authoritative event triggering the update to the YANG module. In all
+    cases, this event is cited from the underlying IANA registry. If the
+    update is triggered by an RFC, that RFC must also be included in
+    the "reference" substatement.
+  </t>
 
-      <t>
-        IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
-        sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:</t>
-        <blockquote>
-          <t indent="0">
-         When this registry is modified, the YANG module "iana-algo-types"
+  <t>
+    IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
+    sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:
+  </t>
+  <blockquote>
+    <t indent="0">
+      When this registry is modified, the YANG module "iana-igp-algo-types"
          <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
-         </t>
-       </blockquote>
-      </section>
+    </t>
+  </blockquote>
+  </section>
 
-      <section numbered="true" toc="default">
-        <name slugifiedName="name-iana-metric-types-module">IANA IGP Metric-Type Module</name>
-        <t>This document defines the initial version of the IANA-maintained
-          "iana-metric-types" YANG module (<xref target="iana-metric-types"/>).
+  <section numbered="true" toc="default">
+    <name slugifiedName="name-iana-metric-types-module">IANA IGP Metric-Type Module</name>
+       <t>This document defines the initial version of the IANA-maintained
+          "iana-igp-metric-types" YANG module (<xref target="iana-metric-types"/>).
           The most recent version of the YANG module is available from the "YANG Parameters"
           registry <xref target="IANA-YANG-Parameters"/>.
          </t>
@@ -1994,12 +1999,14 @@ module ietf-ospf-flex-algo {
           IANA is requested to add this note to the registry:
          </t>
         <blockquote>
-          <t indent="0">New values must not be directly added to the "iana-metric-types" YANG
-            module. They must instead be added to the "IGP Metric-Type" registry in the "Interior Gateway Protocol (IGP) Parameters" registry group.</t>
+          <t indent="0">New values must not be directly added to the "iana-igp-metric-types" YANG
+          module. They must instead be added to the "IGP Metric-Type" registry in the
+          "Interior Gateway Protocol (IGP) Parameters" registry group.
+          </t>
         </blockquote>
         <t>
           When a value is added to the "IGP Metric-Type" registry, a new "identity"
-          statement needs to be added to the "iana-metric-types" YANG module. The name
+          statement needs to be added to the "iana-igp-metric-types" YANG module. The name
           of the "identity" MUST be the name as provided in the registry.
           The "identity" statement should have the following
           sub-statements defined:
@@ -2013,38 +2020,111 @@ module ietf-ospf-flex-algo {
 
 
   <t>
-  When the "iana-metric-types" YANG module is updated, a new "revision"
-  statement with a unique revision date must be added in front of the
-  existing revision statements. The "revision" statement MUST contain
-  both "description" and "reference" substatements as follows.</t>
+    When the "iana-igp--metric-types" YANG module is updated, a new "revision"
+    statement with a unique revision date must be added in front of the
+    existing revision statements. The "revision" statement MUST contain
+    both "description" and "reference" substatements as follows.
+  </t>
 
   <t>
-  The "description" substatement captures what changed in the
-  revised version. Typically, the description enumerates the changes
-  such as udpates to existing entries (e.g., update a description or
-  a reference) or notes which identities were added or had their status
-  changed (e.g., deprecated, discouraged, or obsoleted).</t>
-
+    The "description" substatement captures what changed in the
+    revised version. Typically, the description enumerates the changes
+    such as udpates to existing entries (e.g., update a description or
+    a reference) or notes which identities were added or had their status
+    changed (e.g., deprecated, discouraged, or obsoleted).
+  </t>
   <t>
-  The "reference" substatement points specifically to the published
-  module (i.e., IANA_FOO_URL_With_REV). It may also point to an
-  authoritative event triggering the update to the YANG module. In all
-  cases, this event is cited from the underlying IANA registry. If the
-  update is triggered by an RFC, that RFC must also be included in
-  the "reference" substatement.</t>
+    The "reference" substatement points specifically to the published
+    module (i.e., IANA_FOO_URL_With_REV). It may also point to an
+    authoritative event triggering the update to the YANG module. In all
+    cases, this event is cited from the underlying IANA registry. If the
+    update is triggered by an RFC, that RFC must also be included in
+    the "reference" substatement.
+  </t>
 
       <t>
-      IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:</t>
+        IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default"
+        sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
+      </t>
         <blockquote>
           <t indent="0">
-         When this registry is modified, the YANG module "iana-metric-types"
-         <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
+            When this registry is modified, the YANG module "iana-metric-types"
+            <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
          </t>
        </blockquote>
 
       </section>
 
-    </section>
+   <section numbered="true" toc="default">
+       <name slugifiedName="name-iana-igp-link-attribute-applications-module">IANA IGP Link Attribute Applications Module</name>
+       <t>
+         This document defines the initial version of the IANA-maintained
+         "iana-igp-link-attr-apps" YANG module (<xref target="IANA-Link-Attr-Apps"/>).
+         The most recent version of the YANG module is available from the "YANG Parameters"
+         registry <xref target="IANA-YANG-Parameters"/>.
+       </t>
+       <t>
+         IANA is requested to add this note to the registry:
+       </t>
+        <blockquote>
+          <t indent="0">
+            New values must not be directly added to the "iana-igp-link-attr-apps" YANG
+            module. They must instead be added to the "Link Attribute Application IDs" registry in the
+            "Interior Gateway Protocol (IGP) Parameters" registry group.
+          </t>
+        </blockquote>
+        <t>
+          When a value is added to the "Link Attribute Application IDs" registry, a new "identity"
+          statement needs to be added to the "iana-igp-link-attr-apps" YANG module. The name
+          of the "identity" MUST be the name as provided in the registry.
+          The "identity" statement should have the following
+          sub-statements defined:
+        </t>
+  <artwork>
+  "base":          contains "igp-link-attr-app".
+  "description":   Replicates the description from the registry.
+  "reference":     Replicates the reference(s) from the registry with
+                   the title of the document(s) added.
+  </artwork>
+
+
+  <t>
+    When the "iana-igp-link-attr-apps" YANG module is updated, a new "revision"
+    statement with a unique revision date must be added in front of the
+    existing revision statements. The "revision" statement MUST contain
+    both "description" and "reference" substatements as follows.
+  </t>
+
+  <t>
+    The "description" substatement captures what changed in the
+    revised version. Typically, the description enumerates the changes
+    such as udpates to existing entries (e.g., update a description or
+    a reference) or notes which identities were added or had their status
+    changed (e.g., deprecated, discouraged, or obsoleted).
+  </t>
+
+  <t>
+    The "reference" substatement points specifically to the published
+    module (i.e., IANA_FOO_URL_With_REV). It may also point to an
+    authoritative event triggering the update to the YANG module. In all
+    cases, this event is cited from the underlying IANA registry. If the
+    update is triggered by an RFC, that RFC must also be included in
+    the "reference" substatement.
+  </t>
+
+  <t>
+    IANA is requested to add this note to <xref target="IANA-Link-Attr-Apps"
+    format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
+  </t>
+    <blockquote>
+      <t indent="0">
+        When this registry is modified, the YANG module "iana-igp-link-attr-apps"
+        <xref target="IANA-Link-Attr-Apps"/> must be updated as defined in RFC XXXX.
+      </t>
+    </blockquote>
+   </section>
+
+ </section>
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
       <t>
@@ -2130,7 +2210,7 @@ module ietf-ospf-flex-algo {
             <date/>
           </front>
         </reference>
-        <reference anchor="IANA-Link-Attribute-Apps" target="https://www.iana.org/assignments/igp-parameters"
+        <reference anchor="IANA-Link-Attr-Apps" target="https://www.iana.org/assignments/igp-parameters"
                    quoteTitle="true" derivedAnchor="IANA-Link-Attribute-Application-Identifiers">
           <front>
             <title>Link Attribute Application Identifiers</title>

@@ -195,7 +195,7 @@ module ietf-ospf-link-attr {
     description
       "This augments OSPF interface configuration
        with Application Specific Link Attributes (ASLA).";
-    container OSPF-asla {
+    container ospf-asla {
       list interface-asla {
         key "link-attr-app";
         leaf link-attr-app {

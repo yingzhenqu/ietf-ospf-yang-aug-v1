@@ -496,7 +496,7 @@ module: ietf-ospf-link-attr
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:areas
             /ospf:area/ospf:interfaces/ospf:interface:
-    +--rw OSPF-asla
+    +--rw ospf-asla
        +--rw interface-asla* [link-attr-app]
           +--rw link-attr-app    identityref
           +--rw te-metric?       uint32
@@ -744,7 +744,7 @@ module ietf-ospf-link-attr {
     description
       "This augments OSPF interface configuration
        with Application Specific Link Attributes (ASLA).";
-    container OSPF-asla {
+    container ospf-asla {
       list interface-asla {
         key "link-attr-app";
         leaf link-attr-app {

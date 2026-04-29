@@ -481,13 +481,13 @@ module iana-igp-link-attr-apps {
         <xref target="RFC9350"/>, <xref target="RFC9492"/>, and <xref target="RFC9587"/> .
       </t>
 
-      <artwork align="left" name="" type="" alt=""><![CDATA[
+<artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-link-attr
 
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf:
     +--rw ospf-link-attr
-       +--rw (link-attr-op-mode)
+       +--rw (link-attr-op-mode)?
           +--:(legacy)
           |  +--rw legacy?         empty
           +--:(transition)
@@ -545,6 +545,7 @@ module: ietf-ospf-link-attr
                    +--ro type?     uint16
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
+      
 ]]></artwork>
 <sourcecode name="ietf-ospf-link-attr@2026-04-29.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
@@ -708,7 +709,7 @@ module ietf-ospf-link-attr {
        with application-specific link attributes.";
     container ospf-link-attr {
       choice link-attr-op-mode {
-        mandatory true;
+        default 'legacy';
         leaf legacy {
           type empty;
           description
@@ -726,7 +727,8 @@ module ietf-ospf-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode";
+          "Link attributes mode. Default to legacy mode for
+           backward compatibility.";
       }
       description
         "Link attributes operation mode.";

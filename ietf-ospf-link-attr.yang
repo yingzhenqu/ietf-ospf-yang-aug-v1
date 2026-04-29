@@ -159,7 +159,7 @@ module ietf-ospf-link-attr {
        with application-specific link attributes.";
     container ospf-link-attr {
       choice link-attr-op-mode {
-        mandatory true;
+        default 'legacy';
         leaf legacy {
           type empty;
           description
@@ -177,7 +177,8 @@ module ietf-ospf-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode";
+          "Link attributes mode. Default to legacy mode for
+           backward compatibility.";
       }
       description
         "Link attributes operation mode.";

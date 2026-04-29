@@ -59,7 +59,7 @@ module ietf-ospf-link-attr {
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
-  revision 2026-04-14 {
+  revision 2026-04-29 {
     description
       "Initial version";
     reference
@@ -188,7 +188,9 @@ module ietf-ospf-link-attr {
         + "rt:control-plane-protocol/ospf:ospf/"
         + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') " {
+       + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') or "
+       + "derived-from(/rt:routing/rt:control-plane-protocols/"
+      + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
         "This augments the OSPF interfaces.";
     }

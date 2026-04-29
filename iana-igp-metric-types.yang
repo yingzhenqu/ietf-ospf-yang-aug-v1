@@ -97,7 +97,7 @@ module iana-igp-metric-types {
       "Bandwidth metric.";
     reference
       "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
-                 Metrics, and Constraints";
+       Metrics, and Constraints, Sections 4 and 5";
 
   }
 }

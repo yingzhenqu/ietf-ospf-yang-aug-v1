@@ -89,7 +89,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-30 {
+  revision 2026-04-29 {
     description
       "Initial Version";
     reference
@@ -587,8 +587,8 @@ module ietf-ospf-flex-algo {
         + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external/"
         + "ospfv3-e-lsa:e-external-tlvs/"
         + "ospfv3-e-lsa:external-prefix-tlv" {
-    when "'ospf:../../../../../../../../../"
-       + "rt:type' = 'ospf:ospfv3'" {
+    when "../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
       description
         "This augmentation is only valid for OSPFv3.";
     }

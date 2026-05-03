@@ -12,7 +12,9 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-07" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-08"
+     ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
+     symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-07"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-08"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -219,7 +221,7 @@ module iana-igp-algo-types {
         there is any change to the registry.</t>
       <t>
         This document defines the initial version of the IANA-maintained YANG
-        module for Algorithm Types that mirrors the IANA "IGP Metric-Type" registry
+        module for IGP metric types that mirrors the IANA "IGP Metric-Type" registry
         <xref target="IANA-IGP-Metric-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>.
       </t>
       <t>
@@ -338,7 +340,8 @@ module iana-igp-metric-types {
       <t>
         IANA has created a registry titled "Link Attribute Application Identifiers"
         under the "Interior Gateway Protocol (IGP) Parameters" registry group to
-        identify Algorithm Types.  Module iana-igp-link-attr-apps is an IANA-maintained
+        identify IGP application types with application-specific link attributes.
+        Module iana-igp-link-attr-apps is an IANA-maintained
         module, which defines the identities for the link attribute application IDs
         as in the IANA "Link Attribute Application Identifiers" registry.</t>
       <t>
@@ -347,7 +350,8 @@ module iana-igp-metric-types {
       </t>
       <t>
         This document defines the initial version of the IANA-maintained YANG
-        module for Algorithm Types that mirrors the IANA "Link Attribute Application Identifiers" registry
+        module for IGP application types that mirrors the
+        IANA "Link Attribute Application Identifiers" registry
         <xref target="IANA-Link-Attr-Apps" format="default" sectionFormat="of"
               derivedContent="IANA-IGP-Link-Attribute-Apps"/>.
       </t>
@@ -470,16 +474,23 @@ module iana-igp-link-attr-apps {
       <t>This document defined a YANG module for OSPF Application-Specific Link Attributes (ASLA)
         as defined in <xref target="RFC9492"/>.</t>
 
-      <t>The module augments OSPF router configuration with support for
-        the ASLA operation mode, enabling interoperability during the
-        transition from legacy advertisements to ASLA. In addition,
-        both OSPFv2 and OSPFv3 LSAs are augmented to
-        include the TLVs defined in<xref target="RFC9492"/>.
-      </t>
-      <t>
-        This YANG module references <xref target="RFC8349"/>, <xref target="RFC9129"/>,
-        <xref target="RFC9350"/>, <xref target="RFC9492"/>, and <xref target="RFC9587"/> .
-      </t>
+        <t>
+          The module augments OSPF router configuration with support for
+          the ASLA operation mode, enabling interoperability during the
+          transition from legacy advertisements to ASLA. In addition,
+          both OSPFv2 and OSPFv3 LSAs are augmented to
+          include the TLVs defined in<xref target="RFC9492"/>. 
+        </t>
+        <t>
+          As far as whether or not an application-specific link atttribute is
+          included, only legacy attributes that are defined in <xref target="RFC9129"/>
+          are included. Additional atttributes will be included in these TLVs when the
+          augmentations for the corresponding legacy attributes are added.
+        </t>  
+        <t>
+          This YANG module references <xref target="RFC8349"/>, <xref target="RFC9129"/>,
+          <xref target="RFC9350"/>, <xref target="RFC9492"/>, and <xref target="RFC9587"/> .
+        </t>
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-link-attr

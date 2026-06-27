@@ -9,6 +9,11 @@ module ietf-ospf-link-attr {
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
+  import ietf-te-types {
+    prefix te-types;
+    reference
+      "RFC 8776: Common YANG Data Types for Traffic Engineering.";
+  }
   import ietf-ospf {
     prefix ospf;
     reference
@@ -59,11 +64,11 @@ module ietf-ospf-link-attr {
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.";
 
-  revision 2026-04-29 {
+  revision 2026-06-27 {
     description
       "Initial version";
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -72,7 +77,7 @@ module ietf-ospf-link-attr {
       "OSPF Application-Specific Link Attributes (ASLA)
        inherited from the base OSPF TE attributes";
     leaf te-metric {
-      type uint32;
+      type te-types:te-metric;
       description
         "TE metric.";
       reference
@@ -159,11 +164,12 @@ module ietf-ospf-link-attr {
        with application-specific link attributes.";
     container ospf-link-attr {
       choice link-attr-op-mode {
-        default 'legacy';
+        default "app-specific";
         leaf legacy {
           type empty;
           description
-            "Only send legacy advertisements.";
+            "Only send legacy advertisements, and no ASLA
+             advertisement.";
         }
         leaf transition {
           type empty;
@@ -177,11 +183,16 @@ module ietf-ospf-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode. Default to legacy mode for
-           backward compatibility.";
+          "Link attributes mode. Default to app-specific mode for
+           consistent with implementations. This is the enablement
+           knob for ASLA advertisement at the protocol level.
+           Please refer to Section 12.3 of RFC9492 for details.";
       }
       description
         "Link attributes operation mode.";
+      reference
+        "RFC 9492 - OSPF Application-Specific Link Attributes,
+         Section 12.3.";
     }
   }
 

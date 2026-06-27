@@ -18,7 +18,7 @@ module ietf-ospf-flex-algo {
   import ietf-te-types {
     prefix te-types;
     reference
-      "RFC8776: Common YANG Data Types for Traffic Engineering.";
+      "RFC 8776: Common YANG Data Types for Traffic Engineering.";
   }
   import ietf-ospf {
     prefix ospf;
@@ -32,12 +32,6 @@ module ietf-ospf-flex-algo {
       "RFC 9587: YANG Data Model for OSPFv3 Extended Link
        State Advertisements (LSAs)";
   }
-  import ietf-te {
-    prefix te;
-    reference
-      "RFC XXXX: A YANG Data Model for Traffic Engineering
-                 Tunnels, Label Switched Paths, and Interfaces";
-  }
   import iana-igp-algo-types {
     prefix iana-algo-types;
     reference
@@ -47,7 +41,7 @@ module ietf-ospf-flex-algo {
   import iana-igp-metric-types {
     prefix iana-metric-type;
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -56,7 +50,6 @@ module ietf-ospf-flex-algo {
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
      WG List:  <mailto:lsr@ietf.org>
-
 
      Author:    Yingzhen Qu
                <mailto:yingzhen.ietf@gmail.com>
@@ -89,11 +82,11 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-04-29 {
+  revision 2026-06-27 {
     description
       "Initial Version";
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -165,8 +158,8 @@ module ietf-ospf-flex-algo {
             "Priority of the advertisement.";
         }
         container fa-ex-ag-sub-tlv {
-          leaf-list extended-admin-groups {
-            type uint32;
+          leaf extended-admin-group {
+            type te-types:extended-admin-group;
             description
               "Extended administrative group as defined in
                RFC 7308.";
@@ -175,8 +168,8 @@ module ietf-ospf-flex-algo {
             "The flex-algo exclude admin group sub-tlv.";
         }
         container fa-in-any-ag-sub-tlv {
-          leaf-list extended-admin-groups {
-            type uint32;
+          leaf extended-admin-group {
+            type te-types:extended-admin-group;
             description
               "Extended administrative group as defined in
                RFC 7308.";
@@ -185,8 +178,8 @@ module ietf-ospf-flex-algo {
             "The flex-algo include-any admin group sub-tlv.";
         }
         container fa-in-all-ag-sub-tlv {
-          leaf-list extended-admin-groups {
-            type uint32;
+          leaf extended-admin-group {
+            type te-types:extended-admin-group;
             description
               "Extended administrative group as defined in
                RFC 7308.";
@@ -207,7 +200,7 @@ module ietf-ospf-flex-algo {
         }
         container fa-ex-srlg-sub-tlv {
           leaf-list srlgs {
-            type uint32;
+            type te-types:srlg;
             description
               "SRLG value as defined in RFC 4203.";
           }
@@ -316,31 +309,21 @@ module ietf-ospf-flex-algo {
             "Enable to advertise the flex-algo definition.";
         }
         container admin-groups {
-          if-feature "te-types:extended-admin-groups";
           if-feature "te-types:named-extended-admin-groups";
           leaf-list exclude-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
           leaf-list include-any-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
           leaf-list include-all-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo
                path computation.";
@@ -349,11 +332,7 @@ module ietf-ospf-flex-algo {
             "Specify links for the flex-algo path computation.";
         }
         leaf-list exclude-srlgs {
-          if-feature "te-types:named-srlg-groups";
-          type leafref {
-            path "/te:te/te:globals/te:named-srlgs/te:named-srlg/"
-               + "te:name";
-          }
+          type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";

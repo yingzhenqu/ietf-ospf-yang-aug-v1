@@ -1999,15 +1999,15 @@ module ietf-ospf-flex-algo {
           When a value is added to the "IGP Algorithm Types" registry, a new "identity"
           statement needs to be added to the "iana-igp-algo-types" YANG module. The name
           of the "identity" is a lowercase version of the name as provided in the registry
-          with the space replaced with "-" and begin with "algo-".
+          with spaces replaced with hyphens, i.e.,  "-"s, and beginning with "algo-".
           The "identity" statement should have the following
           sub-statements defined:
         </t>
   <artwork>
   "base":          contains "algo-type".
   "description":   Replicates the description from the registry.
-  "reference":     Replicates the reference(s) from the registry with
-                   the title of the document(s) added.
+  "reference":     Replicates the reference(s) from the registry
+                   with the title of the document(s) added.
   </artwork>
 
   <t>
@@ -2080,15 +2080,15 @@ module ietf-ospf-flex-algo {
           When a value is added to the "IGP Metric-Type" registry, a new "identity"
           statement needs to be added to the "iana-igp-metric-types" YANG module. The name
           of the "identity" is a lowercase version of the name as provided in the registry
-          with the space replaced with "-".
+          with the spaces replaced with hyphens, i.e., "-"s.
           The "identity" statement should have the following
           sub-statements defined:
   </t>
   <artwork>
   "base":          contains "metric-type".
   "description":   Replicates the description from the registry.
-  "reference":     Replicates the reference(s) from the registry with
-                   the title of the document(s) added.
+  "reference":     Replicates the reference(s) from the registry
+                   with the title of the document(s) added.
   </artwork>
 
 
@@ -2186,16 +2186,20 @@ module ietf-ospf-flex-algo {
         <t>
           When a value is added to the "Link Attribute Application Identifiers" registry, a new "identity"
           statement needs to be added to the "iana-igp-link-attr-apps" YANG module. The name
-          of the "identity" is a lowercase version of the name as provided in the registry
-          with the space replaced with "-" and end with "-app".
+          of the "identity" is a lowercase version of the application description as provided in the
+          registry with spaces replaced with hyphens, i.e., "-"s. and
+          ending with "-app". In order to form the YANG
+          "identity", the name of the application is taken from the beginning the registry
+          description, not including text in parenthesis.
           The "identity" statement should have the following
           sub-statements defined:
         </t>
   <artwork>
   "base":          contains "igp-link-attr-app".
-  "description":   Replicates the description text when a new value is added.
-  "reference":     Replicates the reference(s) from the registry with
-                   the title of the document(s) added.
+  "description":   Replicates the description text when a new value
+                   is added.
+  "reference":     Replicates the reference(s) from the registry
+                   with the title of the document(s) added.
   </artwork>
 
 

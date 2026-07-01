@@ -35,14 +35,14 @@ module ietf-ospf-flex-algo {
   import iana-igp-algo-types {
     prefix iana-algo-types;
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
+      "IANA IGP Algorithm Types registry,
+       <https://www.iana.org/assignments/igp-parameters>.";
   }
   import iana-igp-metric-types {
     prefix iana-metric-type;
     reference
-      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
+      "IANA IGP Metric-Type registry,
+       <https://www.iana.org/assignments/igp-parameters>.";
   }
 
   organization
@@ -52,16 +52,13 @@ module ietf-ospf-flex-algo {
      WG List:  <mailto:lsr@ietf.org>
 
      Author:    Yingzhen Qu
-               <mailto:yingzhen.ietf@gmail.com>
+                <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
-               <mailto:acee.ietf@gmail.com>
+                <mailto:acee.ietf@gmail.com>
     ";
   description
     "The YANG module defines the configuration and operational
      state for OSPF Flexible Algorithm as defined in RFC 9350.
-
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
 
      Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -82,7 +79,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-27 {
+  revision 2026-06-30 {
     description
       "Initial Version";
     reference
@@ -96,17 +93,19 @@ module ietf-ospf-flex-algo {
     description
       "Base identity for OSPF FAD flags.";
     reference
-      "RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 7";
   }
 
-  identity m-bit {
+  identity m-flag {
     base fad-flags;
     description
-      "M bit, when set, the flex-algo specific prefix and ASBR
-       metric MUST be used for inter-area and external prefix
-       calculation.";
+      "M-flag in the Flex-Algorithm Definition (FAD) flags sub-TLV.
+       When this flag is present in the fad-flags leaf-list, the
+       Flex-Algorithm-specific prefix metric is used for inter-area
+       and external prefix calculation.  Note that this flag is not
+       applicable to prefixes advertised as SRv6 locators.";
     reference
-      "RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 7.4";
   }
 
   identity fapm-flags {
@@ -134,7 +133,8 @@ module ietf-ospf-flex-algo {
           type uint8;
           description
             "Flex-algo number - A value not in the inclusive range
-             of 128-255 is an invalid FAD TLV specification.";
+             of 128-255 is an invalid FAD TLV specification. There
+             should only be a single FAD TLV per algorithm number.";
         }
         leaf metric-type {
           type identityref {
@@ -279,7 +279,7 @@ module ietf-ospf-flex-algo {
       "RFC 9350: IGP Flexible Algorithm";
   }
 
-  /* Configurations */
+  /* Management */
 
   augment "/rt:routing/rt:control-plane-protocols"
         + "/rt:control-plane-protocol/ospf:ospf" {
@@ -310,23 +310,25 @@ module ietf-ospf-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:named-extended-admin-groups";
-          leaf-list exclude-admin-groups {
+          leaf exclude-admin-group {
             type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
-          leaf-list include-any-admin-groups {
+          leaf include-any-admin-group {
             type te-types:extended-admin-group;
             description
-              "Include-any rule used during the flex-algo
-               path computation.";
+              "The flex-algo include-any admin group. Note that the
+               presence of more than one Include-Any Extended Admin
+              Group will result in an invalid FAD TLV.";
           }
-          leaf-list include-all-admin-groups {
+          leaf include-all-admin-group {
             type te-types:extended-admin-group;
             description
-              "Include-all rule used during the flex-algo
-               path computation.";
+              "The flex-algo include-all admin group. Note that the
+               presence of more than one Include-All Extended Admin
+               Group will result in an invalid FAD TLV.";
           }
           description
             "Specify links for the flex-algo path computation.";
@@ -633,7 +635,7 @@ module ietf-ospf-flex-algo {
       "OSPFv3 Area-Scoped Inter-Area-Router TLV.";
   }
 
-  /* notification */
+  /* Notification */
 
   notification flex-algo-not-supported {
     leaf routing-protocol-name {

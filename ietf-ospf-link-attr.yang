@@ -62,9 +62,16 @@ module ietf-ospf-link-attr {
      (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
-     see the RFC itself for full legal notices.";
+     see the RFC itself for full legal notices.
 
-  revision 2026-06-27 {
+      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+
+  revision 2026-06-30 {
     description
       "Initial version";
     reference
@@ -85,7 +92,7 @@ module ietf-ospf-link-attr {
          to OSPFv2";
     }
     leaf admin-group {
-      type uint32;
+      type te-types:admin-group;
       description
         "Administrative Group / Resource Class/Color.";
       reference
@@ -106,41 +113,41 @@ module ietf-ospf-link-attr {
       description
         "Application-Specific Link Attributes sub-TLV.";
       list asla-sub-tlvs {
-        leaf sabm-length {
-          type uint8;
-          description
-            "Standard Application Identifier Bit Mask Length in
-             octets.";
-        }
-        leaf udabm-length {
-          type uint8;
-          description
-            "User Defined Application Identifier Bit Mask Length
-             in octets.";
-        }
         container sabm {
-          leaf-list sabm-bits {
+          leaf-list sabm-bit {
             type identityref {
               base iana-link-attr-apps:igp-link-attr-app;
             }
             description
-              "SABM bits list. This list will contain identities
-               for the applications which are set in the SABA bits.";
+              "Standard Application Identifier Bit Mask bits. This
+              leaf-list contains identities for the bits which are
+              set to 1 in the SABM field.";
           }
           description
             "Standard Application Identifier Bit Mask.";
+          reference
+            "RFC 9492: OSPF Application-Specific Link Attributes,
+             Section 5";
         }
         container udabm {
           description
-            "User Defined Application Identifier Bit Mask.
-             This container is to be augmented by user defined
-             applications.";
+            "User Defined Application Identifier Bit Mask (UDABM).
+             This container is intended to be augmented by documents
+             defining user-defined application identifiers.  Each
+             such augmentation SHOULD add a leaf-list of identityref
+             type whose base identity represents the user-defined
+             application, following the same pattern as the
+             'sabm-bit' leaf-list.  Refer to RFC 9479, Section 3
+             for the on-wire encoding of the UDABM field.";
+          reference
+            "RFC 9492: OSPF Application-Specific Link Attributes,
+             Section 5";
         }
-        container link-attributes-sub-sub-tlvs {
+        container link-attributes-sub-tlvs {
           uses ospf-te-link-attrs;
           uses ospf:unknown-tlvs;
           description
-            "Link Attributes sub-sub-TLVs.";
+            "Link Attributes sub-TLVs.";
         }
         description
           "List of application-Specific Link Attributes sub-TLVs.";
@@ -204,7 +211,7 @@ module ietf-ospf-link-attr {
        + "derived-from(/rt:routing/rt:control-plane-protocols/"
       + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
-        "This augments the OSPF interfaces.";
+        "This augments the OSPF interface configuration.";
     }
     description
       "This augments OSPF interface configuration

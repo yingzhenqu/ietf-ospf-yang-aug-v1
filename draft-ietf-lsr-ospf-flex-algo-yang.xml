@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-08"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-09"
      ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
      symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
@@ -27,8 +27,8 @@
     <!-- The abbreviated title is used in the page header - it is only necessary if the
          full title is longer than 39 characters -->
 
-  <title abbrev="OSPF ASLA and Flex-Algo YANG">YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-08"/>
+  <title abbrev="OSPF ASLA and Flex-Algo YANG">A YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-09"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -96,6 +96,10 @@
         Attribute Application types.
         The fourth module is to support OSPF Application-Specific Link Attributes,
         and the fifth module augments the IETF OSPF YANG data model to support OSPF Flex Algorithm.
+      </t>
+      <t>
+        The meanings of the symbols in the YANG tree diagrams are defined in
+        <xref target="RFC8340"/>.
       </t>
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -479,14 +483,14 @@ module iana-igp-link-attr-apps {
           the ASLA operation mode, enabling interoperability during the
           transition from legacy advertisements to ASLA. In addition,
           both OSPFv2 and OSPFv3 LSAs are augmented to
-          include the TLVs defined in<xref target="RFC9492"/>. 
+          include the TLVs defined in<xref target="RFC9492"/>.
         </t>
         <t>
           As far as whether or not an application-specific link atttribute is
           included, only legacy attributes that are defined in <xref target="RFC9129"/>
           are included. Additional atttributes will be included in these TLVs when the
           augmentations for the corresponding legacy attributes are added.
-        </t>  
+        </t>
         <t>
           This YANG module references <xref target="RFC8349"/>, <xref target="RFC9129"/>,
           <xref target="RFC9350"/>, <xref target="RFC9492"/>, and <xref target="RFC9587"/> .
@@ -511,8 +515,8 @@ module: ietf-ospf-link-attr
     +--rw ospf-asla
        +--rw interface-asla* [link-attr-app]
           +--rw link-attr-app    identityref
-          +--rw te-metric?       uint32
-          +--rw admin-group?     uint32
+          +--rw te-metric?       te-types:te-metric
+          +--rw admin-group?     te-types:admin-group
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:areas
             /ospf:area/ospf:database/ospf:area-scope-lsa-type
@@ -521,14 +525,12 @@ module: ietf-ospf-link-attr
             /ospf:extended-link-opaque/ospf:extended-link-tlv:
     +--ro app-specific-link-attr-sub-tlvs
        +--ro asla-sub-tlvs* []
-          +--ro sabm-length?                    uint8
-          +--ro udabm-length?                   uint8
           +--ro sabm
-          |  +--ro sabm-bits*   identityref
+          |  +--ro sabm-bit*   identityref
           +--ro udabm
-          +--ro link-attributes-sub-sub-tlvs
-             +--ro te-metric?      uint32
-             +--ro admin-group?    uint32
+          +--ro link-attributes-sub-tlvs
+             +--ro te-metric?      te-types:te-metric
+             +--ro admin-group?    te-types:admin-group
              +--ro unknown-tlvs
                 +--ro unknown-tlv* []
                    +--ro type?     uint16
@@ -543,22 +545,19 @@ module: ietf-ospf-link-attr
             /ospfv3-e-lsa:link-tlv:
     +--ro app-specific-link-attr-sub-tlvs
        +--ro asla-sub-tlvs* []
-          +--ro sabm-length?                    uint8
-          +--ro udabm-length?                   uint8
           +--ro sabm
-          |  +--ro sabm-bits*   identityref
+          |  +--ro sabm-bit*   identityref
           +--ro udabm
-          +--ro link-attributes-sub-sub-tlvs
-             +--ro te-metric?      uint32
-             +--ro admin-group?    uint32
+          +--ro link-attributes-sub-tlvs
+             +--ro te-metric?      te-types:te-metric
+             +--ro admin-group?    te-types:admin-group
              +--ro unknown-tlvs
                 +--ro unknown-tlv* []
                    +--ro type?     uint16
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
-      
 ]]></artwork>
-<sourcecode name="ietf-ospf-link-attr@2026-04-29.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-link-attr@2026-06-03.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -569,6 +568,11 @@ module ietf-ospf-link-attr {
     reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
+  }
+  import ietf-te-types {
+    prefix te-types;
+    reference
+      "RFC 8776: Common YANG Data Types for Traffic Engineering.";
   }
   import ietf-ospf {
     prefix ospf;
@@ -618,13 +622,20 @@ module ietf-ospf-link-attr {
      (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
-     see the RFC itself for full legal notices.";
+     see the RFC itself for full legal notices.
 
-  revision 2026-04-29 {
+      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+
+  revision 2026-06-30 {
     description
       "Initial version";
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -633,7 +644,7 @@ module ietf-ospf-link-attr {
       "OSPF Application-Specific Link Attributes (ASLA)
        inherited from the base OSPF TE attributes";
     leaf te-metric {
-      type uint32;
+      type te-types:te-metric;
       description
         "TE metric.";
       reference
@@ -641,7 +652,7 @@ module ietf-ospf-link-attr {
          to OSPFv2";
     }
     leaf admin-group {
-      type uint32;
+      type te-types:admin-group;
       description
         "Administrative Group / Resource Class/Color.";
       reference
@@ -662,41 +673,41 @@ module ietf-ospf-link-attr {
       description
         "Application-Specific Link Attributes sub-TLV.";
       list asla-sub-tlvs {
-        leaf sabm-length {
-          type uint8;
-          description
-            "Standard Application Identifier Bit Mask Length in
-             octets.";
-        }
-        leaf udabm-length {
-          type uint8;
-          description
-            "User Defined Application Identifier Bit Mask Length
-             in octets.";
-        }
         container sabm {
-          leaf-list sabm-bits {
+          leaf-list sabm-bit {
             type identityref {
               base iana-link-attr-apps:igp-link-attr-app;
             }
             description
-              "SABM bits list. This list will contain identities
-               for the applications which are set in the SABA bits.";
+              "Standard Application Identifier Bit Mask bits. This
+              leaf-list contains identities for the bits which are
+              set to 1 in the SABM field.";
           }
           description
             "Standard Application Identifier Bit Mask.";
+          reference
+            "RFC 9492: OSPF Application-Specific Link Attributes,
+             Section 5";
         }
         container udabm {
           description
-            "User Defined Application Identifier Bit Mask.
-             This container is to be augmented by user defined
-             applications.";
+            "User Defined Application Identifier Bit Mask (UDABM).
+             This container is intended to be augmented by documents
+             defining user-defined application identifiers.  Each
+             such augmentation SHOULD add a leaf-list of identityref
+             type whose base identity represents the user-defined
+             application, following the same pattern as the
+             'sabm-bit' leaf-list.  Refer to RFC 9479, Section 3
+             for the on-wire encoding of the UDABM field.";
+          reference
+            "RFC 9492: OSPF Application-Specific Link Attributes,
+             Section 5";
         }
-        container link-attributes-sub-sub-tlvs {
+        container link-attributes-sub-tlvs {
           uses ospf-te-link-attrs;
           uses ospf:unknown-tlvs;
           description
-            "Link Attributes sub-sub-TLVs.";
+            "Link Attributes sub-TLVs.";
         }
         description
           "List of application-Specific Link Attributes sub-TLVs.";
@@ -720,11 +731,12 @@ module ietf-ospf-link-attr {
        with application-specific link attributes.";
     container ospf-link-attr {
       choice link-attr-op-mode {
-        default 'legacy';
+        default "app-specific";
         leaf legacy {
           type empty;
           description
-            "Only send legacy advertisements.";
+            "Only send legacy advertisements, and no ASLA
+             advertisement.";
         }
         leaf transition {
           type empty;
@@ -738,11 +750,16 @@ module ietf-ospf-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode. Default to legacy mode for
-           backward compatibility.";
+          "Link attributes mode. Default to app-specific mode for
+           consistent with implementations. This is the enablement
+           knob for ASLA advertisement at the protocol level.
+           Please refer to Section 12.3 of RFC9492 for details.";
       }
       description
         "Link attributes operation mode.";
+      reference
+        "RFC 9492 - OSPF Application-Specific Link Attributes,
+         Section 12.3.";
     }
   }
 
@@ -754,7 +771,7 @@ module ietf-ospf-link-attr {
        + "derived-from(/rt:routing/rt:control-plane-protocols/"
       + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
       description
-        "This augments the OSPF interfaces.";
+        "This augments the OSPF interface configuration.";
     }
     description
       "This augments OSPF interface configuration
@@ -835,9 +852,9 @@ module ietf-ospf-link-attr {
       </t>
       <t>
         This YANG module references <xref target="RFC8349"/>, <xref target="RFC9129"/>,
-        <xref target="RFC9350"/>, <xref target="RFC9587"/>, and <xref target="I-D.ietf-yang-te"/>.
+        <xref target="RFC9350"/>, <xref target="RFC9587"/>, and <xref target="I-D.ietf-teas-yang-te"/>.
       </t>
-      <artwork align="left" name="" type="" alt=""><![CDATA[
+<artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-flex-algo
 
   augment /rt:routing/rt:control-plane-protocols
@@ -847,14 +864,14 @@ module: ietf-ospf-flex-algo
           +--rw algo-number             uint8
           +--rw advertise-definition?   boolean
           +--rw admin-groups
-          |       {te-types:extended-admin-groups,
-          |        te-types:named-extended-admin-groups}?
-          |  +--rw exclude-admin-groups*       leafref
-          |  +--rw include-any-admin-groups*   leafref
-          |  +--rw include-all-admin-groups*   leafref
-          +--rw exclude-srlgs*
-          |       -> /te:te/globals/named-srlgs/named-srlg/name
-          |       {te-types:named-srlg-groups}?
+          |       {te-types:named-extended-admin-groups}?
+          |  +--rw exclude-admin-group?
+          |  |       te-types:extended-admin-group
+          |  +--rw include-any-admin-group?
+          |  |       te-types:extended-admin-group
+          |  +--rw include-all-admin-group?
+          |          te-types:extended-admin-group
+          +--rw exclude-srlgs*          te-types:srlg
           +--rw calc-type?              identityref
           +--rw metric-type?            identityref
           +--rw prefix-metric!
@@ -873,15 +890,18 @@ module: ietf-ospf-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -900,15 +920,18 @@ module: ietf-ospf-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -926,15 +949,18 @@ module: ietf-ospf-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -954,15 +980,18 @@ module: ietf-ospf-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -981,15 +1010,18 @@ module: ietf-ospf-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -1007,15 +1039,18 @@ module: ietf-ospf-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-groups*   uint32
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -1120,7 +1155,7 @@ module: ietf-ospf-flex-algo
        +--ro routing-protocol-name?   leafref
        +--ro algo-number?             uint8
 ]]></artwork>
-<sourcecode name="ietf-ospf-flex-algo@2026-04-29.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-flex-algo@2026-06-30.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo";
@@ -1141,7 +1176,7 @@ module ietf-ospf-flex-algo {
   import ietf-te-types {
     prefix te-types;
     reference
-      "RFC8776: Common YANG Data Types for Traffic Engineering.";
+      "RFC 8776: Common YANG Data Types for Traffic Engineering.";
   }
   import ietf-ospf {
     prefix ospf;
@@ -1155,23 +1190,17 @@ module ietf-ospf-flex-algo {
       "RFC 9587: YANG Data Model for OSPFv3 Extended Link
        State Advertisements (LSAs)";
   }
-  import ietf-te {
-    prefix te;
-    reference
-      "RFC XXXX: A YANG Data Model for Traffic Engineering
-                 Tunnels, Label Switched Paths, and Interfaces";
-  }
   import iana-igp-algo-types {
     prefix iana-algo-types;
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
+      "IANA IGP Algorithm Types registry,
+       <https://www.iana.org/assignments/igp-parameters>.";
   }
   import iana-igp-metric-types {
     prefix iana-metric-type;
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
+      "IANA IGP Metric-Type registry,
+       <https://www.iana.org/assignments/igp-parameters>.";
   }
 
   organization
@@ -1180,18 +1209,14 @@ module ietf-ospf-flex-algo {
     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
      WG List:  <mailto:lsr@ietf.org>
 
-
      Author:    Yingzhen Qu
-               <mailto:yingzhen.ietf@gmail.com>
+                <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
-               <mailto:acee.ietf@gmail.com>
+                <mailto:acee.ietf@gmail.com>
     ";
   description
     "The YANG module defines the configuration and operational
      state for OSPF Flexible Algorithm as defined in RFC 9350.
-
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
 
      Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -1212,11 +1237,11 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-04-29 {
+  revision 2026-06-30 {
     description
       "Initial Version";
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -1226,17 +1251,19 @@ module ietf-ospf-flex-algo {
     description
       "Base identity for OSPF FAD flags.";
     reference
-      "RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 7";
   }
 
-  identity m-bit {
+  identity m-flag {
     base fad-flags;
     description
-      "M bit, when set, the flex-algo specific prefix and ASBR
-       metric MUST be used for inter-area and external prefix
-       calculation.";
+      "M-flag in the Flex-Algorithm Definition (FAD) flags sub-TLV.
+       When this flag is present in the fad-flags leaf-list, the
+       Flex-Algorithm-specific prefix metric is used for inter-area
+       and external prefix calculation.  Note that this flag is not
+       applicable to prefixes advertised as SRv6 locators.";
     reference
-      "RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 7.4";
   }
 
   identity fapm-flags {
@@ -1264,7 +1291,8 @@ module ietf-ospf-flex-algo {
           type uint8;
           description
             "Flex-algo number - A value not in the inclusive range
-             of 128-255 is an invalid FAD TLV specification.";
+             of 128-255 is an invalid FAD TLV specification. There
+             should only be a single FAD TLV per algorithm number.";
         }
         leaf metric-type {
           type identityref {
@@ -1288,8 +1316,8 @@ module ietf-ospf-flex-algo {
             "Priority of the advertisement.";
         }
         container fa-ex-ag-sub-tlv {
-          leaf-list extended-admin-groups {
-            type uint32;
+          leaf extended-admin-group {
+            type te-types:extended-admin-group;
             description
               "Extended administrative group as defined in
                RFC 7308.";
@@ -1298,8 +1326,8 @@ module ietf-ospf-flex-algo {
             "The flex-algo exclude admin group sub-tlv.";
         }
         container fa-in-any-ag-sub-tlv {
-          leaf-list extended-admin-groups {
-            type uint32;
+          leaf extended-admin-group {
+            type te-types:extended-admin-group;
             description
               "Extended administrative group as defined in
                RFC 7308.";
@@ -1308,8 +1336,8 @@ module ietf-ospf-flex-algo {
             "The flex-algo include-any admin group sub-tlv.";
         }
         container fa-in-all-ag-sub-tlv {
-          leaf-list extended-admin-groups {
-            type uint32;
+          leaf extended-admin-group {
+            type te-types:extended-admin-group;
             description
               "Extended administrative group as defined in
                RFC 7308.";
@@ -1330,7 +1358,7 @@ module ietf-ospf-flex-algo {
         }
         container fa-ex-srlg-sub-tlv {
           leaf-list srlgs {
-            type uint32;
+            type te-types:srlg;
             description
               "SRLG value as defined in RFC 4203.";
           }
@@ -1409,7 +1437,7 @@ module ietf-ospf-flex-algo {
       "RFC 9350: IGP Flexible Algorithm";
   }
 
-  /* Configurations */
+  /* Management */
 
   augment "/rt:routing/rt:control-plane-protocols"
         + "/rt:control-plane-protocol/ospf:ospf" {
@@ -1439,44 +1467,32 @@ module ietf-ospf-flex-algo {
             "Enable to advertise the flex-algo definition.";
         }
         container admin-groups {
-          if-feature "te-types:extended-admin-groups";
           if-feature "te-types:named-extended-admin-groups";
-          leaf-list exclude-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+          leaf exclude-admin-group {
+            type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
-          leaf-list include-any-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+          leaf include-any-admin-group {
+            type te-types:extended-admin-group;
             description
-              "Include-any rule used during the flex-algo
-               path computation.";
+              "The flex-algo include-any admin group. Note that the
+               presence of more than one Include-Any Extended Admin
+              Group will result in an invalid FAD TLV.";
           }
-          leaf-list include-all-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+          leaf include-all-admin-group {
+            type te-types:extended-admin-group;
             description
-              "Include-all rule used during the flex-algo
-               path computation.";
+              "The flex-algo include-all admin group. Note that the
+               presence of more than one Include-All Extended Admin
+               Group will result in an invalid FAD TLV.";
           }
           description
             "Specify links for the flex-algo path computation.";
         }
         leaf-list exclude-srlgs {
-          if-feature "te-types:named-srlg-groups";
-          type leafref {
-            path "/te:te/te:globals/te:named-srlgs/te:named-srlg/"
-               + "te:name";
-          }
+          type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";
@@ -1777,7 +1793,7 @@ module ietf-ospf-flex-algo {
       "OSPFv3 Area-Scoped Inter-Area-Router TLV.";
   }
 
-  /* notification */
+  /* Notification */
 
   notification flex-algo-not-supported {
     leaf routing-protocol-name {
@@ -1801,16 +1817,17 @@ module ietf-ospf-flex-algo {
   }
 }
 ]]></sourcecode>
-    </section>
+</section>
 
-    <section anchor="Security" numbered="true" toc="default">
-      <name>Security Considerations</name>
- <t>   The YANG modules defined in this document are
+<section anchor="Security" numbered="true" toc="default"> <name>Security Considerations</name>
+ <t>
+   The YANG modules defined in this document are
    designed to be accessed via YANG-based management protocols, such as
    NETCONF <xref target="RFC6241"/> and RESTCONF <xref target="RFC8040"/>.
    These protocols have to use a secure transport layer (e.g., SSH
-   <xref target="RFC4252"/>, TLS <xref target="RFC8446"/>, and
-   QUIC <xref target="RFC9000"/>) and have to use mutual authentication.</t>
+   <xref target="RFC4252"/>,  TLS <xref target="I-D.ietf-tls-rfc8446bis"/>, and
+   QUIC <xref target="RFC9000"/>) and have to use mutual authentication.
+ </t>
 
  <t>
     The Network Configuration Access Control Model (NACM) <xref target="RFC8341"/>
@@ -1838,6 +1855,11 @@ module ietf-ospf-flex-algo {
     could be used to mount a DoS attack. For example, changing of
     calc-type may result in routing loops.
    </li>
+   <li>
+     /ospf:area/ospf:interfaces/ospf:interface/ospf-asla/ - Modification to
+     the ASLA link attributes could result in the disruption or rerouting of
+     traiffic.
+   </li>
   </ul>
 
   <t>
@@ -1856,8 +1878,13 @@ module ietf-ospf-flex-algo {
     routers in the OSPF domain. These attacks are documented in <xref target="RFC9129"/>.
    </li>
   </ul>
-    </section>
-    <section numbered="true" toc="default">
+  <t>
+    The YANG modules defined in this document do not include any RPC or
+    action operations. Hence, there are no security considerations associated
+    with these YANG constructs.
+  </t>
+</section>
+<section numbered="true" toc="default">
       <name>IANA Considerations</name>
       <section numbered="true" toc="default">
         <name slugifiedName="name-registering-yang-modules">Registering YANG Modules</name>
@@ -2181,35 +2208,21 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3630.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5305.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7471.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8570.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8665.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9492.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9129.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9587.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9843.xml"/>
-      <reference anchor="I-D.ietf-yang-te">
-        <front>
-          <title>YANG Data Model for Traffic Engineering</title>
-          <author>
-            <organization>IETF</organization>
-          </author>
-          <date/>
-        </front>
-        <seriesInfo name="Internet-Draft" value="draft-ietf-yang-te"/>
-      </reference>
+      <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-teas-yang-te-44.xml'/>
       <reference anchor="IANA-IGP-ALGO-Types" target="https://www.iana.org/assignments/igp-parameters" quoteTitle="true" derivedAnchor="IANA-IGP-ALGO-Types">
           <front>
             <title>IGP Algorithm Types</title>
@@ -2249,7 +2262,13 @@ module ietf-ospf-flex-algo {
         </reference>
     </references>
     <references title="Informative References">
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8340.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8792.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
+      <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-tls-rfc8446bis-14.xml'/>
     </references>
   </references>
     <section numbered="false" toc="default">

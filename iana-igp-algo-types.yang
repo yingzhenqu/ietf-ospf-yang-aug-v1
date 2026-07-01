@@ -46,7 +46,7 @@ module iana-igp-algo-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-03-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -63,7 +63,12 @@ module iana-igp-algo-types {
   identity algo-spf {
     base algo-type;
     description
-      "Shortest Path First (SPF) algorithm based on link metric.";
+      "Shortest Path First (SPF) algorithm based on link metric.
+      This is the standard shortest path algorithm as computed by
+      the IGP protocol. Consistent with the deployed practice for
+      link-state protocols, Algorithm 0 permits any node to 
+      overwrite the SPF path with a different path based on its
+      local policy.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing";
   }
@@ -71,8 +76,12 @@ module iana-igp-algo-types {
   identity algo-strict-spf {
     base algo-type;
     description
-      "Strict Shortest Path First (SPF) algorithm based on link
-       metric.";
+      "Strict Shortest Path First (SPF) algorithm based on
+      link metric. The algorithm is identical to Algorithm 0 but
+      Algorithm 1 requires that all nodes along the path will
+      honor the SPF routing decision. Local policy at the node
+      claiming support for Algorithm 1 MUST NOT alter the SPF
+      paths computed by Algorithm 1.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing";
   }

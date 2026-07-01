@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-09"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-10"
      ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
      symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
@@ -28,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">A YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-09"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-10"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -130,7 +130,7 @@
       <t>
         This YANG module references <xref target="RFC8665"/>.
       </t>
-<sourcecode name="iana-igp-algo-types@2026-03-30.yang" type="yang" markers="true">
+<sourcecode name="iana-igp-algo-types@2026-07-01.yang" type="yang" markers="true">
 module iana-igp-algo-types {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:iana-igp-algo-types";
@@ -179,7 +179,7 @@ module iana-igp-algo-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-03-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -196,7 +196,12 @@ module iana-igp-algo-types {
   identity algo-spf {
     base algo-type;
     description
-      "Shortest Path First (SPF) algorithm based on link metric.";
+      "Shortest Path First (SPF) algorithm based on link metric.
+      This is the standard shortest path algorithm as computed by
+      the IGP protocol. Consistent with the deployed practice for
+      link-state protocols, Algorithm 0 permits any node to 
+      overwrite the SPF path with a different path based on its
+      local policy.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing";
   }
@@ -204,8 +209,12 @@ module iana-igp-algo-types {
   identity algo-strict-spf {
     base algo-type;
     description
-      "Strict Shortest Path First (SPF) algorithm based on link
-       metric.";
+      "Strict Shortest Path First (SPF) algorithm based on
+      link metric. The algorithm is identical to Algorithm 0 but
+      Algorithm 1 requires that all nodes along the path will
+      honor the SPF routing decision. Local policy at the node
+      claiming support for Algorithm 1 MUST NOT alter the SPF
+      paths computed by Algorithm 1.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing";
   }
@@ -233,7 +242,7 @@ module iana-igp-algo-types {
         <xref target="RFC7471"/>, <xref target="RFC8570"/>, <xref target="RFC9350"/>, and
         <xref target="RFC9843"/>.
       </t>
-<sourcecode name="iana-igp-metric-types@2026-03-30.yang" type="yang" markers="true">
+<sourcecode name="iana-igp-metric-types@2026-07-01.yang" type="yang" markers="true">
 module iana-igp-metric-types {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:iana-igp-metric-types";
@@ -282,11 +291,11 @@ module iana-igp-metric-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-03-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -301,7 +310,7 @@ module iana-igp-metric-types {
     description
       "IGP Metric.";
     reference
-      "RFC9350: IGP Flexible Algorithm";
+      "RFC9350: IGP Flexible Algorithm, Section 5.1";
   }
 
   identity min-unidirectional-link-delay {
@@ -310,9 +319,7 @@ module iana-igp-metric-types {
       "Min Unidirectional Link Delay as defined in RFC 8570
        and Section 4.2 and RFC 7471 Section 4.2.";
     reference
-      "RFC 7471: OSPF Traffic Engineering (TE) Metric Extensions
-       RFC 8570: IS-IS Traffic Engineering (TE) Metric Extensions
-       RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
   }
 
   identity te-default-metric {
@@ -322,9 +329,7 @@ module iana-igp-metric-types {
        Section 3.7 and Traffic Engineering Metric as defined in
        RFC3630, Section 2.5.5.";
     reference
-      "RFC 3630: OSPF Traffic Engineering
-       RFC 5305: IS-IS Traffic Engineering
-       RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
   }
 
   identity bandwidth-metric {
@@ -333,7 +338,7 @@ module iana-igp-metric-types {
       "Bandwidth metric.";
     reference
       "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
-       Metrics, and Constraints, Sections 4 and 5";
+       Metrics, and Constraints";
 
   }
 }
@@ -362,11 +367,11 @@ module iana-igp-metric-types {
       <t>
         This YANG module references <xref target="RFC9492"/>.
       </t>
-<sourcecode name="iana-igp-link-attr-apps@2026-04-14.yang" type="yang" markers="true">
+<sourcecode name="iana-igp-link-attr-apps@2026-07-01.yang" type="yang" markers="true">
 module iana-igp-link-attr-apps {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps";
-  prefix iana-link-attr-app;
+  prefix iana-link-attr-apps;
 
   organization
     "Internet Assigned Numbers Authority (IANA)";
@@ -411,7 +416,7 @@ module iana-igp-link-attr-apps {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-04-14 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -433,34 +438,30 @@ module iana-igp-link-attr-apps {
        corresponds to Bit 0 (R-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
-      "RFC 3630: Traffic Engineering (TE) for OSPFv2
-       RFC 5329: Traffic Engineering Extensions to OSPFv3";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
-  identity sr-policy-app {
+  identity segment-routing-policy-app {
     base igp-link-attr-app;
     description
       "Segment Routing (SR) Policy Application - This
        corresponds to Bit 1 (S-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing
-       RFC 8666: OSPFv3 Extensions for Segment Routing";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
-  identity lfa-app {
+  identity loop-free-alternate-app {
     base igp-link-attr-app;
     description
       "Loop-Free Alternative (LFA) Application - This
        corresponds to Bit 2 (F-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
-      "RFC 8102: Remote-LFA Node Protection and Manageability
-       RFC 9855: Topology Independent Fast Reroute Using
-                 Segment Routing";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
-  identity flex-algo-app {
+  identity flexible-algorithm-app {
     base igp-link-attr-app;
     description
       "Flexible Algorithm Application - This
@@ -1983,10 +1984,22 @@ module ietf-ospf-flex-algo {
      "Interior Gateway Protocol (IGP) Parameters" registry group.
      </t>
    </blockquote>
+   <t>
+    IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
+    sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:
+   </t>
+   <blockquote>
+     <t indent="0">
+      When this registry is modified, the YANG module "iana-igp-algo-types"
+         <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
+     </t>
+   </blockquote>
+   
         <t>
           When a value is added to the "IGP Algorithm Types" registry, a new "identity"
           statement needs to be added to the "iana-igp-algo-types" YANG module. The name
-          of the "identity" MUST be the name as provided in the registry.
+          of the "identity" is a lowercase version of the name as provided in the registry
+          with the space replaced with "-" and begin with "algo-".
           The "identity" statement should have the following
           sub-statements defined:
         </t>
@@ -2001,36 +2014,40 @@ module ietf-ospf-flex-algo {
     When the "iana-igp-algo-types" YANG module is updated, a new "revision"
     statement with a unique revision date must be added in front of the
     existing revision statements. The "revision" statement MUST contain
-    both "description" and "reference" substatements as follows.
+    both "description" and "reference" substatements.
   </t>
 
   <t>
-    The "description" substatement captures what changed in the
-    revised version. Typically, the description enumerates the changes
-    such as updpates to existing entries (e.g., update a description or
-    a reference) or notes which identities were added or had their status
-    changed (e.g., deprecated, discouraged, or obsoleted).
+    IANA is requested to add a "Name" column to the "IGP Algorithm Types" registry.
+    The values for the "Name" column for existing Algorithm Types are:
   </t>
+    <table anchor="tab-1" align="center" pn="table-1">
+      <thead>
+        <tr>
+          <th align="left" colspan="1" rowspan="1">Value</th>
+          <th align="left" colspan="1" rowspan="1">Name</th>
+          <th align="left" colspan="1" rowspan="1">Description</th>
+          <th align="left" colspan="1" rowspan="1">Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">0</td>
+          <td align="left" colspan="1" rowspan="1">SPF</td>
+          <td align="left" colspan="1" rowspan="1">Shortest Path First (SPF) algorithm based on link metric. This is the standard shortest path algorithm as computed by the IGP protocol. Consistent with the deployed practice for link-state protocols, Algorithm 0 permits any node to overwrite the SPF path with a different path based on its local policy.</td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC8665" format="default" sectionFormat="of" derivedContent="RFC8665"/></td>
+        </tr>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">1</td>
+          <td align="left" colspan="1" rowspan="1">Strict SPF</td>
+          <td align="left" colspan="1" rowspan="1">Strict Shortest Path First (SPF) algorithm based on link metric. The algorithm is identical to Algorithm 0 but Algorithm 1 requires that all nodes along the path will honor the SPF routing decision. Local policy at the node claiming support for Algorithm 1 MUST NOT alter the SPF paths computed by Algorithm 1.</td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC8665" format="default" sectionFormat="of" derivedContent="RFC8665"/></td>
+        </tr>
+        </tbody>
+    </table>
 
-  <t>
-    The "reference" substatement points specifically to the published
-    module (i.e., IANA_FOO_URL_With_REV). It may also point to an
-    authoritative event triggering the update to the YANG module. In all
-    cases, this event is cited from the underlying IANA registry. If the
-    update is triggered by an RFC, that RFC must also be included in
-    the "reference" substatement.
-  </t>
-
-  <t>
-    IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
-    sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:
-  </t>
-  <blockquote>
-    <t indent="0">
-      When this registry is modified, the YANG module "iana-igp-algo-types"
-         <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
-    </t>
-  </blockquote>
   </section>
 
   <section numbered="true" toc="default">
@@ -2049,10 +2066,21 @@ module ietf-ospf-flex-algo {
           "Interior Gateway Protocol (IGP) Parameters" registry group.
           </t>
         </blockquote>
+      <t>
+        IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default"
+        sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
+      </t>
+        <blockquote>
+          <t indent="0">
+            When this registry is modified, the YANG module "iana-metric-types"
+            <xref target="iana-metric-types"/> must be updated as defined in RFC XXXX.
+         </t>
+       </blockquote>
         <t>
           When a value is added to the "IGP Metric-Type" registry, a new "identity"
           statement needs to be added to the "iana-igp-metric-types" YANG module. The name
-          of the "identity" MUST be the name as provided in the registry.
+          of the "identity" is a lowercase version of the name as provided in the registry
+          with the space replaced with "-".
           The "identity" statement should have the following
           sub-statements defined:
   </t>
@@ -2068,35 +2096,60 @@ module ietf-ospf-flex-algo {
     When the "iana-igp-metric-types" YANG module is updated, a new "revision"
     statement with a unique revision date must be added in front of the
     existing revision statements. The "revision" statement MUST contain
-    both "description" and "reference" substatements as follows.
+    both "description" and "reference" substatements.
   </t>
 
   <t>
-    The "description" substatement captures what changed in the
-    revised version. Typically, the description enumerates the changes
-    such as updpates to existing entries (e.g., update a description or
-    a reference) or notes which identities were added or had their status
-    changed (e.g., deprecated, discouraged, or obsoleted).
-  </t>
-  <t>
-    The "reference" substatement points specifically to the published
-    module (i.e., IANA_FOO_URL_With_REV). It may also point to an
-    authoritative event triggering the update to the YANG module. In all
-    cases, this event is cited from the underlying IANA registry. If the
-    update is triggered by an RFC, that RFC must also be included in
-    the "reference" substatement.
+    IANA is requested to add a "Name" column to the "IGP Metric-Type" registry.
+    The values for the "Name" column for existing Algorithm Types are:
   </t>
 
-      <t>
-        IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default"
-        sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
-      </t>
-        <blockquote>
-          <t indent="0">
-            When this registry is modified, the YANG module "iana-metric-types"
-            <xref target="iana-metric-types"/> must be updated as defined in RFC XXXX.
-         </t>
-       </blockquote>
+    <table anchor="tab-2" align="center" pn="table-2">
+      <thead>
+        <tr>
+          <th align="left" colspan="1" rowspan="1">Type</th>
+          <th align="left" colspan="1" rowspan="1">Name</th>
+          <th align="left" colspan="1" rowspan="1">Description</th>
+          <th align="left" colspan="1" rowspan="1">Reference</th>
+          <th align="left" colspan="1" rowspan="1">Allowed in Generic-Metric</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">0</td>
+          <td align="left" colspan="1" rowspan="1">IGP Metric</td>
+          <td align="left" colspan="1" rowspan="1">IGP Metric</td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC9350" section="5.1" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc9350#section-5.1" derivedContent="RFC9350"/></td>
+          <td align="left" colspan="1" rowspan="1">No</td>
+        </tr>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">1</td>
+          <td align="left" colspan="1" rowspan="1">Min Unidirectional Link Delay</td>
+          <td align="left" colspan="1" rowspan="1">Min Unidirectional Link Delay as defined in <xref target="RFC8570" section="4.2" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc8570#section-4.2" derivedContent="RFC8570"/> and <xref target="RFC7471" section="4.2" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc7471#section-4.2" derivedContent="RFC7471"/></td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC9350" section="5.1" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc9350#section-5.1" derivedContent="RFC9350"/></td>
+          <td align="left" colspan="1" rowspan="1">No</td>
+        </tr>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">2</td>
+          <td align="left" colspan="1" rowspan="1">TE Default Metric</td>
+          <td align="left" colspan="1" rowspan="1">Traffic Engineering Default Metric as defined in <xref target="RFC5305" section="3.7" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc5305#section-3.7" derivedContent="RFC5305"/>  and Traffic Engineering Metric as defined in <xref target="RFC3630" section="2.5.5" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc8570#section-2.5.5" derivedContent="RFC3630"/> </td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC9350" section="5.1" sectionFormat="comma" format="default" derivedLink="https://rfc-editor.org/rfc/rfc9350#section-5.1" derivedContent="RFC9350"/></td>
+          <td align="left" colspan="1" rowspan="1">No</td>
+        </tr>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">3</td>
+          <td align="left" colspan="1" rowspan="1">Bandwidth Metric</td>
+          <td align="left" colspan="1" rowspan="1">Bandwidth Metric</td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC9843" section="5.1" sectionFormat="comma" derivedContent="RFC9843"/></td>
+          <td align="left" colspan="1" rowspan="1">Yes</td>
+        </tr>
+        </tbody>
+    </table>
+
 
       </section>
 
@@ -2114,50 +2167,12 @@ module ietf-ospf-flex-algo {
         <blockquote>
           <t indent="0">
             New values must not be directly added to the "iana-igp-link-attr-apps" YANG
-            module. They must instead be added to the "Link Attribute Application IDs" registry in the
+            module. They must instead be added to the "Link Attribute Application Identifiers" registry in the
             "Interior Gateway Protocol (IGP) Parameters" registry group.
           </t>
         </blockquote>
-        <t>
-          When a value is added to the "Link Attribute Application IDs" registry, a new "identity"
-          statement needs to be added to the "iana-igp-link-attr-apps" YANG module. The name
-          of the "identity" MUST be the name as provided in the registry.
-          The "identity" statement should have the following
-          sub-statements defined:
-        </t>
-  <artwork>
-  "base":          contains "igp-link-attr-app".
-  "description":   Replicates the description from the registry.
-  "reference":     Replicates the reference(s) from the registry with
-                   the title of the document(s) added.
-  </artwork>
 
-
-  <t>
-    When the "iana-igp-link-attr-apps" YANG module is updated, a new "revision"
-    statement with a unique revision date must be added in front of the
-    existing revision statements. The "revision" statement MUST contain
-    both "description" and "reference" substatements as follows.
-  </t>
-
-  <t>
-    The "description" substatement captures what changed in the
-    revised version. Typically, the description enumerates the changes
-    such as updpates to existing entries (e.g., update a description or
-    a reference) or notes which identities were added or had their status
-    changed (e.g., deprecated, discouraged, or obsoleted).
-  </t>
-
-  <t>
-    The "reference" substatement points specifically to the published
-    module (i.e., IANA_FOO_URL_With_REV). It may also point to an
-    authoritative event triggering the update to the YANG module. In all
-    cases, this event is cited from the underlying IANA registry. If the
-    update is triggered by an RFC, that RFC must also be included in
-    the "reference" substatement.
-  </t>
-
-  <t>
+    <t>
     IANA is requested to add this note to <xref target="IANA-Link-Attr-Apps"
     format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
   </t>
@@ -2167,6 +2182,30 @@ module ietf-ospf-flex-algo {
         must be updated as defined in RFC XXXX <xref target="iana-link-attrib-apps"/> .
       </t>
     </blockquote>
+
+        <t>
+          When a value is added to the "Link Attribute Application Identifiers" registry, a new "identity"
+          statement needs to be added to the "iana-igp-link-attr-apps" YANG module. The name
+          of the "identity" is a lowercase version of the name as provided in the registry
+          with the space replaced with "-" and end with "-app".
+          The "identity" statement should have the following
+          sub-statements defined:
+        </t>
+  <artwork>
+  "base":          contains "igp-link-attr-app".
+  "description":   Replicates the description text when a new value is added.
+  "reference":     Replicates the reference(s) from the registry with
+                   the title of the document(s) added.
+  </artwork>
+
+
+  <t>
+    When the "iana-igp-link-attr-apps" YANG module is updated, a new "revision"
+    statement with a unique revision date must be added in front of the
+    existing revision statements. The "revision" statement MUST contain
+    both "description" and "reference" substatements.
+  </t>
+
    </section>
 
  </section>
@@ -2181,6 +2220,10 @@ module ietf-ospf-flex-algo {
       <t>
         Thanks to Renato Westphal for his review and comments.
       </t>
+      <t>
+        Thanks to Med Boucadair and Mahesh Jethanandani for extensive review
+   and comments.
+ </t>
 
     </section>
   </middle>

@@ -46,11 +46,11 @@ module iana-igp-metric-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-03-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
                  Link Attributes and Flexible Algorithm";
   }
 
@@ -65,7 +65,7 @@ module iana-igp-metric-types {
     description
       "IGP Metric.";
     reference
-      "RFC9350: IGP Flexible Algorithm";
+      "RFC9350: IGP Flexible Algorithm, Section 5.1";
   }
 
   identity min-unidirectional-link-delay {
@@ -74,9 +74,7 @@ module iana-igp-metric-types {
       "Min Unidirectional Link Delay as defined in RFC 8570
        and Section 4.2 and RFC 7471 Section 4.2.";
     reference
-      "RFC 7471: OSPF Traffic Engineering (TE) Metric Extensions
-       RFC 8570: IS-IS Traffic Engineering (TE) Metric Extensions
-       RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
   }
 
   identity te-default-metric {
@@ -86,9 +84,7 @@ module iana-igp-metric-types {
        Section 3.7 and Traffic Engineering Metric as defined in
        RFC3630, Section 2.5.5.";
     reference
-      "RFC 3630: OSPF Traffic Engineering
-       RFC 5305: IS-IS Traffic Engineering
-       RFC 9350: IGP Flexible Algorithm";
+      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
   }
 
   identity bandwidth-metric {
@@ -97,7 +93,7 @@ module iana-igp-metric-types {
       "Bandwidth metric.";
     reference
       "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
-       Metrics, and Constraints, Sections 4 and 5";
+       Metrics, and Constraints";
 
   }
 }

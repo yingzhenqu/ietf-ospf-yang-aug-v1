@@ -46,7 +46,7 @@ module iana-igp-link-attr-apps {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
-  revision 2026-04-14 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -68,34 +68,30 @@ module iana-igp-link-attr-apps {
        corresponds to Bit 0 (R-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
-      "RFC 3630: Traffic Engineering (TE) for OSPFv2
-       RFC 5329: Traffic Engineering Extensions to OSPFv3";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
-  identity sr-policy-app {
+  identity segment-routing-policy-app {
     base igp-link-attr-app;
     description
       "Segment Routing (SR) Policy Application - This
        corresponds to Bit 1 (S-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing
-       RFC 8666: OSPFv3 Extensions for Segment Routing";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
-  identity lfa-app {
+  identity loop-free-alternate-app {
     base igp-link-attr-app;
     description
       "Loop-Free Alternative (LFA) Application - This
        corresponds to Bit 2 (F-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
-      "RFC 8102: Remote-LFA Node Protection and Manageability
-       RFC 9855: Topology Independent Fast Reroute Using
-                 Segment Routing";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
-  identity flex-algo-app {
+  identity flexible-algorithm-app {
     base igp-link-attr-app;
     description
       "Flexible Algorithm Application - This

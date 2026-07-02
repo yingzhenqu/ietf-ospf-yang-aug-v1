@@ -71,7 +71,7 @@ module ietf-ospf-link-attr {
      they appear in all capitals, as shown here.";
 
 
-  revision 2026-06-30 {
+  revision 2026-07-01 {
     description
       "Initial version";
     reference
@@ -209,7 +209,7 @@ module ietf-ospf-link-attr {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') or "
        + "derived-from(/rt:routing/rt:control-plane-protocols/"
-      + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
       description
         "This augments the OSPF interface configuration.";
     }

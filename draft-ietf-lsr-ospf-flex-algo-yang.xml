@@ -317,7 +317,7 @@ module iana-igp-metric-types {
     base metric-type;
     description
       "Min Unidirectional Link Delay as defined in RFC 8570
-       and Section 4.2 and RFC 7471 Section 4.2.";
+       and RFC 7471 Section 4.2.";
     reference
       "RFC 9350: IGP Flexible Algorithm, Section 5.1";
   }
@@ -428,7 +428,7 @@ module iana-igp-link-attr-apps {
     description
       "Base identity for Standard Applications";
     reference
-      "RFC 9492: OSPF Application-Specific Link Attributes";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
   identity rsvp-te-app {
@@ -454,7 +454,7 @@ module iana-igp-link-attr-apps {
   identity loop-free-alternate-app {
     base igp-link-attr-app;
     description
-      "Loop-Free Alternative (LFA) Application - This
+      "Loop-Free Alternate (LFA) Application - This
        corresponds to Bit 2 (F-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference
@@ -487,9 +487,9 @@ module iana-igp-link-attr-apps {
           include the TLVs defined in<xref target="RFC9492"/>.
         </t>
         <t>
-          As far as whether or not an application-specific link atttribute is
+          As far as whether or not an application-specific link attribute is
           included, only legacy attributes that are defined in <xref target="RFC9129"/>
-          are included. Additional atttributes will be included in these TLVs when the
+          are included. Additional attributes will be included in these TLVs when the
           augmentations for the corresponding legacy attributes are added.
         </t>
         <t>
@@ -558,7 +558,7 @@ module: ietf-ospf-link-attr
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
 ]]></artwork>
-<sourcecode name="ietf-ospf-link-attr@2026-06-03.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-link-attr@2026-07-01.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -632,7 +632,7 @@ module ietf-ospf-link-attr {
      they appear in all capitals, as shown here.";
 
 
-  revision 2026-06-30 {
+  revision 2026-07-01 {
     description
       "Initial version";
     reference
@@ -770,7 +770,7 @@ module ietf-ospf-link-attr {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2') or "
        + "derived-from(/rt:routing/rt:control-plane-protocols/"
-      + "rt:control-plane-protocol/rt:type, 'ospf:ospfv2')" {
+      + "rt:control-plane-protocol/rt:type, 'ospf:ospfv3')" {
       description
         "This augments the OSPF interface configuration.";
     }
@@ -1156,7 +1156,7 @@ module: ietf-ospf-flex-algo
        +--ro routing-protocol-name?   leafref
        +--ro algo-number?             uint8
 ]]></artwork>
-<sourcecode name="ietf-ospf-flex-algo@2026-06-30.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-flex-algo@2026-07-01.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo";
@@ -1238,7 +1238,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -1504,7 +1504,7 @@ module ietf-ospf-flex-algo {
           }
           default "iana-algo-types:algo-spf";
           description
-            "Calcuation-type. Value from 0-127 inclusive from the
+            "Calculation-type. Value from 0-127 inclusive from the
              IANA 'IGP Algorithm Types' registry defined under the
              'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
@@ -1817,6 +1817,7 @@ module ietf-ospf-flex-algo {
        support this flex-algo.";
   }
 }
+
 ]]></sourcecode>
 </section>
 
@@ -1945,7 +1946,7 @@ module ietf-ospf-flex-algo {
    ]]></artwork>
 
       <artwork name="" type="" align="left" alt=""><![CDATA[
-   name: iana-igp-link-attr-app
+   name: iana-igp-link-attr-apps
    Maintained by IANA?  Y
    namespace: urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps
    prefix: iana-link-attr-app
@@ -2226,8 +2227,8 @@ module ietf-ospf-flex-algo {
       </t>
       <t>
         Thanks to Med Boucadair and Mahesh Jethanandani for extensive review
-   and comments.
- </t>
+        and comments.
+      </t>
 
     </section>
   </middle>

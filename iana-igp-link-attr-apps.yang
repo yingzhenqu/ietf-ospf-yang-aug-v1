@@ -58,7 +58,7 @@ module iana-igp-link-attr-apps {
     description
       "Base identity for Standard Applications";
     reference
-      "RFC 9492: OSPF Application-Specific Link Attributes";
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
   }
 
   identity rsvp-te-app {
@@ -84,7 +84,7 @@ module iana-igp-link-attr-apps {
   identity loop-free-alternate-app {
     base igp-link-attr-app;
     description
-      "Loop-Free Alternative (LFA) Application - This
+      "Loop-Free Alternate (LFA) Application - This
        corresponds to Bit 2 (F-BIT) in the Standard Application
        Bit Mask (SABM).";
     reference

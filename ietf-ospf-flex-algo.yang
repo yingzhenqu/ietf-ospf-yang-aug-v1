@@ -79,7 +79,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -345,7 +345,7 @@ module ietf-ospf-flex-algo {
           }
           default "iana-algo-types:algo-spf";
           description
-            "Calcuation-type. Value from 0-127 inclusive from the
+            "Calculation-type. Value from 0-127 inclusive from the
              IANA 'IGP Algorithm Types' registry defined under the
              'Interior Gateway Protocol (IGP) Parameters' registry.";
         }

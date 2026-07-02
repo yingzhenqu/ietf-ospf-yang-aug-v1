@@ -46,6 +46,11 @@ module iana-igp-metric-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#igp-metric-type)";
+
   revision 2026-07-01 {
     description
       "Initial Version";

@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-10"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-11"
      ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
      symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
@@ -28,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">A YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-10"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-11"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -120,9 +120,6 @@
         module, which defines the identities for the Algorithm Types as in the IANA
         "IGP Algorithm Types" registry.</t>
       <t>
-        This module is maintained by IANA and will be updated if and when
-        there is any change to the registry.</t>
-      <t>
         This document defines the initial version of the IANA-maintained YANG
         module for Algorithm Types that mirrors the IANA "IGP Algorithm Types" registry
         <xref target="IANA-IGP-ALGO-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>.
@@ -179,6 +176,11 @@ module iana-igp-algo-types {
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
 
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#igp-algorithm-types)";
+
   revision 2026-07-01 {
     description
       "Initial Version";
@@ -229,9 +231,6 @@ module iana-igp-algo-types {
         identify Metric Types.  Module iana-igp-metric-types is an IANA-maintained
         module, which defines the identities for the Metric Types as in the IANA
         "IGP Metric-Type" registry.</t>
-      <t>
-        This module is maintained by IANA and will be updated if and when
-        there is any change to the registry.</t>
       <t>
         This document defines the initial version of the IANA-maintained YANG
         module for IGP metric types that mirrors the IANA "IGP Metric-Type" registry
@@ -290,6 +289,11 @@ module iana-igp-metric-types {
 
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
+
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#igp-metric-type)";
 
   revision 2026-07-01 {
     description
@@ -354,10 +358,6 @@ module iana-igp-metric-types {
         module, which defines the identities for the link attribute application IDs
         as in the IANA "Link Attribute Application Identifiers" registry.</t>
       <t>
-        This module is maintained by IANA and will be updated if and when
-        there is any change to the registry.
-      </t>
-      <t>
         This document defines the initial version of the IANA-maintained YANG
         module for IGP application types that mirrors the
         IANA "Link Attribute Application Identifiers" registry
@@ -415,6 +415,11 @@ module iana-igp-link-attr-apps {
 
      The latest version of this YANG module is available at
      https://www.iana.org/assignments/yang-parameters.";
+
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#link-attribute-application-identifiers)";
 
   revision 2026-07-01 {
     description
@@ -2012,13 +2017,6 @@ module ietf-ospf-flex-algo {
   </artwork>
 
   <t>
-    When the "iana-igp-algo-types" YANG module is updated, a new "revision"
-    statement with a unique revision date must be added in front of the
-    existing revision statements. The "revision" statement MUST contain
-    both "description" and "reference" substatements.
-  </t>
-
-  <t>
     IANA is requested to add a "Name" column to the "IGP Algorithm Types" registry.
     The values for the "Name" column for existing Algorithm Types are:
   </t>
@@ -2091,14 +2089,6 @@ module ietf-ospf-flex-algo {
   "reference":     Replicates the reference(s) from the registry
                    with the title of the document(s) added.
   </artwork>
-
-
-  <t>
-    When the "iana-igp-metric-types" YANG module is updated, a new "revision"
-    statement with a unique revision date must be added in front of the
-    existing revision statements. The "revision" statement MUST contain
-    both "description" and "reference" substatements.
-  </t>
 
   <t>
     IANA is requested to add a "Name" column to the "IGP Metric-Type" registry.
@@ -2202,14 +2192,6 @@ module ietf-ospf-flex-algo {
   "reference":     Replicates the reference(s) from the registry
                    with the title of the document(s) added.
   </artwork>
-
-
-  <t>
-    When the "iana-igp-link-attr-apps" YANG module is updated, a new "revision"
-    statement with a unique revision date must be added in front of the
-    existing revision statements. The "revision" statement MUST contain
-    both "description" and "reference" substatements.
-  </t>
 
    </section>
 

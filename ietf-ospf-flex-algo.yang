@@ -70,6 +70,10 @@ module ietf-ospf-flex-algo {
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
+
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.
 
@@ -79,7 +83,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial Version";
     reference
@@ -137,16 +141,12 @@ module ietf-ospf-flex-algo {
              should only be a single FAD TLV per algorithm number.";
         }
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
+          type iana-metric-type:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type identityref {
-            base iana-algo-types:algo-type;
-          }
+          type iana-algo-types:algo-type;
           description
             "IGP algorithm types, value from 0 to 127 as
              defined under 'Interior Gateway Protocol (IGP)
@@ -188,7 +188,7 @@ module ietf-ospf-flex-algo {
             "The flex-algo include-all admin group sub-tlv.";
         }
         container fad-flags-sub-tlv {
-          leaf-list fad-flags {
+          leaf-list fad-flag {
             type identityref {
               base fad-flags;
             }
@@ -199,7 +199,7 @@ module ietf-ospf-flex-algo {
             "OSPF flex-algo definition flags.";
         }
         container fa-ex-srlg-sub-tlv {
-          leaf-list srlgs {
+          leaf-list srlg {
             type te-types:srlg;
             description
               "SRLG value as defined in RFC 4203.";
@@ -229,7 +229,7 @@ module ietf-ospf-flex-algo {
             "Flex-algo number - A value not in the inclusive range
              of 128-255 is an invalid FAD TLV specification.";
         }
-        leaf-list fapm-flags {
+        leaf-list fapm-flag {
           type identityref {
             base fapm-flags;
           }
@@ -333,27 +333,21 @@ module ietf-ospf-flex-algo {
           description
             "Specify links for the flex-algo path computation.";
         }
-        leaf-list exclude-srlgs {
+        leaf-list exclude-srlg {
           type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";
         }
         leaf calc-type {
-          type identityref {
-            base iana-algo-types:algo-type;
-          }
-          default "iana-algo-types:algo-spf";
+          type iana-algo-types:algo-type;
           description
             "Calculation-type. Value from 0-127 inclusive from the
              IANA 'IGP Algorithm Types' registry defined under the
              'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
-          default "iana-metric-type:igp-metric";
+          type iana-metric-type:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }

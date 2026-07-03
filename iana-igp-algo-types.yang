@@ -16,8 +16,8 @@ module iana-igp-algo-types {
      Tel:    +1 310 301 5800
       &lt;mailto:iana@iana.org&gt;";
   description
-    "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Algorithm Types.
+    "The YANG module defines the YANG data types for IANA-registered
+     Interior Gateway Protocol (IGP) Algorithm Types.
 
      This YANG module is maintained by IANA and reflects the 'IGP
      Algorithm Types' registry.
@@ -44,14 +44,20 @@ module iana-igp-algo-types {
        this note
 
      The latest version of this YANG module is available at
-     https://www.iana.org/assignments/yang-parameters.";
+     https://www.iana.org/assignments/yang-parameters.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
 
   reference
     "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
      (https://www.iana.org/assignments/igp-parameters/
       igp-parameters.xhtml#igp-algorithm-types)";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial Version";
     reference
@@ -59,35 +65,38 @@ module iana-igp-algo-types {
                  Link Attributes and Flexible Algorithm";
   }
 
-  identity algo-type {
-    description
-      "Base identity for IGP Algorithm Type. The algorithm types
-       are defined in IANA IGP Algorithm Types registry.";
-  }
+  typedef algo-type {
+    type enumeration {
+      enum algo-spf {
+        value 0;
+        description
+          "Shortest Path First (SPF) algorithm based on link metric.
+          This is the standard shortest path algorithm as computed by
+          the IGP protocol. Consistent with the deployed practice for
+          link-state protocols, Algorithm 0 permits any node to 
+          overwrite the SPF path with a different path based on its
+          local policy.";
+        reference
+          "RFC 8665: OSPF Extensions for Segment Routing";
+      }    
 
-  identity algo-spf {
-    base algo-type;
-    description
-      "Shortest Path First (SPF) algorithm based on link metric.
-      This is the standard shortest path algorithm as computed by
-      the IGP protocol. Consistent with the deployed practice for
-      link-state protocols, Algorithm 0 permits any node to 
-      overwrite the SPF path with a different path based on its
-      local policy.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
-  }
+      enum algo-strict-spf {
+        value 1;
+        description
+          "Strict Shortest Path First (SPF) algorithm based on
+          link metric. The algorithm is identical to Algorithm 0 but
+          Algorithm 1 requires that all nodes along the path will
+          honor the SPF routing decision. Local policy at the node
+          claiming support for Algorithm 1 MUST NOT alter the SPF
+          paths computed by Algorithm 1.";
+        reference
+          "RFC 8665: OSPF Extensions for Segment Routing";
+      }
 
-  identity algo-strict-spf {
-    base algo-type;
+    }
+    default "algo-spf";
     description
-      "Strict Shortest Path First (SPF) algorithm based on
-      link metric. The algorithm is identical to Algorithm 0 but
-      Algorithm 1 requires that all nodes along the path will
-      honor the SPF routing decision. Local policy at the node
-      claiming support for Algorithm 1 MUST NOT alter the SPF
-      paths computed by Algorithm 1.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
+      "IGP Algorithm Type. The algorithm types are defined in IANA
+       IGP Algorithm Types registry";
   }
 }

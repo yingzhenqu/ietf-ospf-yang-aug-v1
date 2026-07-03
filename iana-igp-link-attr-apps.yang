@@ -16,8 +16,9 @@ module iana-igp-link-attr-apps {
      Tel:    +1 310 301 5800
       &lt;mailto:iana@iana.org&gt;";
   description
-    "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Application IDs used for Link Attributes.
+    "The YANG module defines the YANG data types for IANA-registered
+     Interior Gateway Protocol (IGP) Application IDs used for Link
+     Attributes.
 
      This YANG module is maintained by IANA and reflects the 'Link
      Attribute Application Identifiers' registry.
@@ -51,7 +52,7 @@ module iana-igp-link-attr-apps {
      (https://www.iana.org/assignments/igp-parameters/
       igp-parameters.xhtml#link-attribute-application-identifiers)";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial Version";
     reference
@@ -59,50 +60,44 @@ module iana-igp-link-attr-apps {
                  Link Attributes and Flexible Algorithm";
   }
 
-  identity igp-link-attr-app {
+  typedef igp-link-attr-app {
+    type enumeration {
+      enum rsvp-te-app {
+        value 0;
+        description
+          "RSVP-TE (R-bit).";
+        reference
+          "RFC 9479: IS-IS Application-Specific Link Attributes";
+      }    
+
+      enum segment-routing-policy-app {
+        value 1;
+        description
+          "Segment Routing Policy (S-bit).";
+        reference
+          "RFC 9479: IS-IS Application-Specific Link Attributes";
+      }    
+
+      enum loop-free-alternate-app {
+        value 2;
+        description
+          "Loop-Free Alternate (F-bit).";
+        reference
+          "RFC 9479: IS-IS Application-Specific Link Attributes";
+      }    
+
+      enum flexible-algorithm-app {
+        value 3;
+        description
+          "Flexible Algorithm (X-bit).";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 12.";
+      }
+    }
     description
-      "Base identity for Standard Applications";
+      "Application IDs used for Link Attributes, which are defined
+      in the IANA Link Attribute Application Identifiers registry.";
     reference
       "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity rsvp-te-app {
-    base igp-link-attr-app;
-    description
-      "RSVP Traffic Engineering (TE) Application - This
-       corresponds to Bit 0 (R-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity segment-routing-policy-app {
-    base igp-link-attr-app;
-    description
-      "Segment Routing (SR) Policy Application - This
-       corresponds to Bit 1 (S-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity loop-free-alternate-app {
-    base igp-link-attr-app;
-    description
-      "Loop-Free Alternate (LFA) Application - This
-       corresponds to Bit 2 (F-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity flexible-algorithm-app {
-    base igp-link-attr-app;
-    description
-      "Flexible Algorithm Application - This
-       corresponds to Bit 3 (X-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 12.";
   }
 }

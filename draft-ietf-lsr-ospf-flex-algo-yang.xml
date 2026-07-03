@@ -12,8 +12,8 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-11"
-     ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-flex-algo-yang-12"
+     ipr="trust200902" obsoletes="" updates="8665, 9350, 9843" submissionType="IETF" xml:lang="en" tocInclude="true"
      symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
@@ -28,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF ASLA and Flex-Algo YANG">A YANG Data Model for OSPF Application-Specific Link Attributes and Flexible Algorithm </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-11"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-flex-algo-yang-12"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -76,8 +76,9 @@
     <abstract>
       <t>This document defines a YANG data model to support OSPF Application-Specific
         Link Attributes and Flexible Algorithm.
-        It also specifies the initial version of IANA-maintained YANG modules for IGP
+        It also creates the initial version of IANA-maintained YANG modules for IGP
         Algorithm Types, IGP Metric-Types, and IGP Link Attribute Applications.</t>
+      <t>This document updates RFCs 8665, 9350, and 9843.</t>
     </abstract>
   </front>
   <middle>
@@ -90,13 +91,13 @@
       OSPF Application-Specific Link Attributes as defined in <xref target="RFC9492"/>.
       </t>
       <t>
-        Five YANG modules are defined in this document. The first is the initial version of the IANA-maintained YANG module for IGP
+        There are three IANA-maintained YANG modules defined in this document as well. The first is the initial version of the IANA-maintained YANG module for IGP
         Algorithm Types. The second module is the initial version of the IANA-maintained YANG
-        module for IGP Metric-Type. The third module is the initial version of the IANA-maintained YANG module for IGP Link
-        Attribute Application types.
-        The fourth module is to support OSPF Application-Specific Link Attributes,
-        and the fifth module augments the IETF OSPF YANG data model to support OSPF Flex Algorithm.
+        module for IGP Metric-Type. The third module is the initial version of the IANA-maintained YANG module for IGP Link Attribute Application types.
       </t>
+      <t>
+        This document updates <xref target="RFC8665"/>, <xref target="RFC9350"/>,
+        and <xref target="RFC9843"/>.</t>
       <t>
         The meanings of the symbols in the YANG tree diagrams are defined in
         <xref target="RFC8340"/>.
@@ -112,372 +113,6 @@
       </section>
     </section>
 
-    <section anchor="iana-algo-types" numbered="true" toc="default">
-      <name>IANA IGP Algorithm Types Module</name>
-      <t>IANA has created a registry titled "IGP Algorithm Types" under the
-        "Interior Gateway Protocol (IGP) Parameters" registry group to
-        identify Algorithm Types.  Module iana-igp-algo-types is an IANA-maintained
-        module, which defines the identities for the Algorithm Types as in the IANA
-        "IGP Algorithm Types" registry.</t>
-      <t>
-        This document defines the initial version of the IANA-maintained YANG
-        module for Algorithm Types that mirrors the IANA "IGP Algorithm Types" registry
-        <xref target="IANA-IGP-ALGO-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>.
-      </t>
-      <t>
-        This YANG module references <xref target="RFC8665"/>.
-      </t>
-<sourcecode name="iana-igp-algo-types@2026-07-01.yang" type="yang" markers="true">
-module iana-igp-algo-types {
-  yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:iana-igp-algo-types";
-  prefix iana-algo-types;
-
-  organization
-    "Internet Assigned Numbers Authority (IANA)";
-  contact
-    "Internet Assigned Numbers Authority
-
-     ICANN
-     12025 Waterfront Drive, Suite 300
-     Los Angeles, CA 90094-2536
-     United States of America
-
-     Tel:    +1 310 301 5800
-      &lt;mailto:iana@iana.org&gt;";
-  description
-    "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Algorithm Types.
-
-     This YANG module is maintained by IANA and reflects the 'IGP
-     Algorithm Types' registry.
-
-     Copyright (c) 2026 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
-
-     Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject to
-     the license terms contained in, the Revised BSD License set
-     forth in Section 4.c of the IETF Trust's Legal Provisions
-     Relating to IETF Documents
-     (https://trustee.ietf.org/license-info).
-
-     All revisions of IETF and IANA published modules can be found
-     at the YANG Parameters registry group
-     (https://www.iana.org/assignments/yang-parameters).
-
-     This initial version of this YANG module is part of RFC XXXX
-     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
-     for full legal notices.
-
-     //RFC Ed.: replace XXXX with actual RFC number and remove
-       this note
-
-     The latest version of this YANG module is available at
-     https://www.iana.org/assignments/yang-parameters.";
-
-  reference
-    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
-     (https://www.iana.org/assignments/igp-parameters/
-      igp-parameters.xhtml#igp-algorithm-types)";
-
-  revision 2026-07-01 {
-    description
-      "Initial Version";
-    reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
-  }
-
-  identity algo-type {
-    description
-      "Base identity for IGP Algorithm Type. The algorithm types
-       are defined in IANA IGP Algorithm Types registry.";
-  }
-
-  identity algo-spf {
-    base algo-type;
-    description
-      "Shortest Path First (SPF) algorithm based on link metric.
-      This is the standard shortest path algorithm as computed by
-      the IGP protocol. Consistent with the deployed practice for
-      link-state protocols, Algorithm 0 permits any node to 
-      overwrite the SPF path with a different path based on its
-      local policy.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
-  }
-
-  identity algo-strict-spf {
-    base algo-type;
-    description
-      "Strict Shortest Path First (SPF) algorithm based on
-      link metric. The algorithm is identical to Algorithm 0 but
-      Algorithm 1 requires that all nodes along the path will
-      honor the SPF routing decision. Local policy at the node
-      claiming support for Algorithm 1 MUST NOT alter the SPF
-      paths computed by Algorithm 1.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
-  }
-}
-</sourcecode>
-    </section>
-
-    <section anchor="iana-metric-types" numbered="true" toc="default">
-      <name>IANA IGP Metric Types Module</name>
-      <t>IANA has created a registry titled "IGP Metric-Type" under the
-        "Interior Gateway Protocol (IGP) Parameters" registry group to
-        identify Metric Types.  Module iana-igp-metric-types is an IANA-maintained
-        module, which defines the identities for the Metric Types as in the IANA
-        "IGP Metric-Type" registry.</t>
-      <t>
-        This document defines the initial version of the IANA-maintained YANG
-        module for IGP metric types that mirrors the IANA "IGP Metric-Type" registry
-        <xref target="IANA-IGP-Metric-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>.
-      </t>
-      <t>
-        This YANG module references <xref target="RFC3630"/>, <xref target="RFC5305"/>,
-        <xref target="RFC7471"/>, <xref target="RFC8570"/>, <xref target="RFC9350"/>, and
-        <xref target="RFC9843"/>.
-      </t>
-<sourcecode name="iana-igp-metric-types@2026-07-01.yang" type="yang" markers="true">
-module iana-igp-metric-types {
-  yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:iana-igp-metric-types";
-  prefix iana-metric-types;
-
-  organization
-    "Internet Assigned Numbers Authority (IANA)";
-  contact
-    "Internet Assigned Numbers Authority
-
-     ICANN
-     12025 Waterfront Drive, Suite 300
-     Los Angeles, CA 90094-2536
-     United States of America
-
-     Tel:    +1 310 301 5800
-      &lt;mailto:iana@iana.org&gt;";
-  description
-    "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Metric-Types.
-
-     This YANG module is maintained by IANA and reflects the 'IGP
-     Metric-Type' registry.
-
-     Copyright (c) 2026 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
-
-     Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject to
-     the license terms contained in, the Revised BSD License set
-     forth in Section 4.c of the IETF Trust's Legal Provisions
-     Relating to IETF Documents
-     (https://trustee.ietf.org/license-info).
-
-     All revisions of IETF and IANA published modules can be found
-     at the YANG Parameters registry group
-     (https://www.iana.org/assignments/yang-parameters).
-
-     This initial version of this YANG module is part of RFC XXXX
-     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
-     for full legal notices.
-
-     //RFC Ed.: replace XXXX with actual RFC number and remove
-       this note
-
-     The latest version of this YANG module is available at
-     https://www.iana.org/assignments/yang-parameters.";
-
-  reference
-    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
-     (https://www.iana.org/assignments/igp-parameters/
-      igp-parameters.xhtml#igp-metric-type)";
-
-  revision 2026-07-01 {
-    description
-      "Initial Version";
-    reference
-      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
-  }
-
-  identity metric-type {
-    description
-      "Base identity for IGP Metric-Type. The metric types
-       are defined in IANA IGP Metric-Type registry.";
-  }
-
-  identity igp-metric {
-    base metric-type;
-    description
-      "IGP Metric.";
-    reference
-      "RFC9350: IGP Flexible Algorithm, Section 5.1";
-  }
-
-  identity min-unidirectional-link-delay {
-    base metric-type;
-    description
-      "Min Unidirectional Link Delay as defined in RFC 8570
-       and RFC 7471 Section 4.2.";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
-  }
-
-  identity te-default-metric {
-    base metric-type;
-    description
-      "Traffic Engineering Default Metric as defined in RFC 5305
-       Section 3.7 and Traffic Engineering Metric as defined in
-       RFC3630, Section 2.5.5.";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
-  }
-
-  identity bandwidth-metric {
-    base metric-type;
-    description
-      "Bandwidth metric.";
-    reference
-      "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
-       Metrics, and Constraints";
-
-  }
-}
-</sourcecode>
-</section>
-    <section anchor="iana-link-attrib-apps" numbered="true" toc="default">
-      <name>IANA IGP Link Attribute Applications Module</name>
-      <t>
-        IANA has created a registry titled "Link Attribute Application Identifiers"
-        under the "Interior Gateway Protocol (IGP) Parameters" registry group to
-        identify IGP application types with application-specific link attributes.
-        Module iana-igp-link-attr-apps is an IANA-maintained
-        module, which defines the identities for the link attribute application IDs
-        as in the IANA "Link Attribute Application Identifiers" registry.</t>
-      <t>
-        This document defines the initial version of the IANA-maintained YANG
-        module for IGP application types that mirrors the
-        IANA "Link Attribute Application Identifiers" registry
-        <xref target="IANA-Link-Attr-Apps" format="default" sectionFormat="of"
-              derivedContent="IANA-IGP-Link-Attribute-Apps"/>.
-      </t>
-      <t>
-        This YANG module references <xref target="RFC9492"/>.
-      </t>
-<sourcecode name="iana-igp-link-attr-apps@2026-07-01.yang" type="yang" markers="true">
-module iana-igp-link-attr-apps {
-  yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps";
-  prefix iana-link-attr-apps;
-
-  organization
-    "Internet Assigned Numbers Authority (IANA)";
-  contact
-    "Internet Assigned Numbers Authority
-
-     ICANN
-     12025 Waterfront Drive, Suite 300
-     Los Angeles, CA 90094-2536
-     United States of America
-
-     Tel:    +1 310 301 5800
-      &lt;mailto:iana@iana.org&gt;";
-  description
-    "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Application IDs used for Link Attributes.
-
-     This YANG module is maintained by IANA and reflects the 'Link
-     Attribute Application Identifiers' registry.
-
-     Copyright (c) 2026 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
-
-     Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject to
-     the license terms contained in, the Revised BSD License set
-     forth in Section 4.c of the IETF Trust's Legal Provisions
-     Relating to IETF Documents
-     (https://trustee.ietf.org/license-info).
-
-     All revisions of IETF and IANA published modules can be found
-     at the YANG Parameters registry group
-     (https://www.iana.org/assignments/yang-parameters).
-
-     This initial version of this YANG module is part of RFC XXXX
-     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
-     for full legal notices.
-
-     //RFC Ed.: replace XXXX with actual RFC number and remove
-       this note
-
-     The latest version of this YANG module is available at
-     https://www.iana.org/assignments/yang-parameters.";
-
-  reference
-    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
-     (https://www.iana.org/assignments/igp-parameters/
-      igp-parameters.xhtml#link-attribute-application-identifiers)";
-
-  revision 2026-07-01 {
-    description
-      "Initial Version";
-    reference
-      "RFC XXXX: YANG Data Model for OSPF Application-Specific
-                 Link Attributes and Flexible Algorithm";
-  }
-
-  identity igp-link-attr-app {
-    description
-      "Base identity for Standard Applications";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity rsvp-te-app {
-    base igp-link-attr-app;
-    description
-      "RSVP Traffic Engineering (TE) Application - This
-       corresponds to Bit 0 (R-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity segment-routing-policy-app {
-    base igp-link-attr-app;
-    description
-      "Segment Routing (SR) Policy Application - This
-       corresponds to Bit 1 (S-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity loop-free-alternate-app {
-    base igp-link-attr-app;
-    description
-      "Loop-Free Alternate (LFA) Application - This
-       corresponds to Bit 2 (F-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9479: IS-IS Application-Specific Link Attributes";
-  }
-
-  identity flexible-algorithm-app {
-    base igp-link-attr-app;
-    description
-      "Flexible Algorithm Application - This
-       corresponds to Bit 3 (X-BIT) in the Standard Application
-       Bit Mask (SABM).";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 12.";
-  }
-}
-</sourcecode>
-    </section>
 
     <section numbered="true" toc="default">
       <name>YANG Module for OSPF Application-Specific Link Attributes</name>
@@ -516,23 +151,24 @@ module: ietf-ospf-link-attr
           +--:(app-specific)
              +--rw app-specific?   empty
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:interfaces/ospf:interface:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface:
     +--rw ospf-asla
        +--rw interface-asla* [link-attr-app]
-          +--rw link-attr-app    identityref
+          +--rw link-attr-app
+          |       iana-link-attr-apps:igp-link-attr-app
           +--rw te-metric?       te-types:te-metric
           +--rw admin-group?     te-types:admin-group
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
             /ospf:extended-link-opaque/ospf:extended-link-tlv:
     +--ro app-specific-link-attr-sub-tlvs
-       +--ro asla-sub-tlvs* []
+       +--ro asla-sub-tlv* []
           +--ro sabm
-          |  +--ro sabm-bit*   identityref
+          |  +--ro sabm-bit*   iana-link-attr-apps:igp-link-attr-app
           +--ro udabm
           +--ro link-attributes-sub-tlvs
              +--ro te-metric?      te-types:te-metric
@@ -543,16 +179,15 @@ module: ietf-ospf-link-attr
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-            /ospf:ospfv3/ospf:ospfv3/ospf:body
-            /ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
-            /ospfv3-e-lsa:link-tlv:
+            /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+            /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv:
     +--ro app-specific-link-attr-sub-tlvs
-       +--ro asla-sub-tlvs* []
+       +--ro asla-sub-tlv* []
           +--ro sabm
-          |  +--ro sabm-bit*   identityref
+          |  +--ro sabm-bit*   iana-link-attr-apps:igp-link-attr-app
           +--ro udabm
           +--ro link-attributes-sub-tlvs
              +--ro te-metric?      te-types:te-metric
@@ -563,7 +198,7 @@ module: ietf-ospf-link-attr
                    +--ro length?   uint16
                    +--ro value?    yang:hex-string
 ]]></artwork>
-<sourcecode name="ietf-ospf-link-attr@2026-07-01.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-link-attr@2026-07-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-link-attr";
@@ -614,9 +249,6 @@ module ietf-ospf-link-attr {
      state for OSPF application specific link attributes feature
      as defined in RFC 9492.
 
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
-
      Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
@@ -626,6 +258,10 @@ module ietf-ospf-link-attr {
      forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
+
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
 
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.
@@ -637,7 +273,7 @@ module ietf-ospf-link-attr {
      they appear in all capitals, as shown here.";
 
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial version";
     reference
@@ -678,15 +314,13 @@ module ietf-ospf-link-attr {
     container app-specific-link-attr-sub-tlvs {
       description
         "Application-Specific Link Attributes sub-TLV.";
-      list asla-sub-tlvs {
+      list asla-sub-tlv {
         container sabm {
           leaf-list sabm-bit {
-            type identityref {
-              base iana-link-attr-apps:igp-link-attr-app;
-            }
+            type iana-link-attr-apps:igp-link-attr-app;
             description
               "Standard Application Identifier Bit Mask bits. This
-              leaf-list contains identities for the bits which are
+              leaf-list contains enums for the bits which are
               set to 1 in the SABM field.";
           }
           description
@@ -786,9 +420,7 @@ module ietf-ospf-link-attr {
       list interface-asla {
         key "link-attr-app";
         leaf link-attr-app {
-          type identityref {
-            base iana-link-attr-apps:igp-link-attr-app;
-          }
+          type iana-link-attr-apps:igp-link-attr-app;
           description
             "Application-specific attributes. Note that
              when encoded, applications with identical
@@ -869,31 +501,29 @@ module: ietf-ospf-flex-algo
        +--rw flex-algo* [algo-number]
           +--rw algo-number             uint8
           +--rw advertise-definition?   boolean
-          +--rw admin-groups
-          |       {te-types:named-extended-admin-groups}?
+          +--rw admin-groups {te-types:named-extended-admin-groups}?
           |  +--rw exclude-admin-group?
           |  |       te-types:extended-admin-group
           |  +--rw include-any-admin-group?
           |  |       te-types:extended-admin-group
           |  +--rw include-all-admin-group?
           |          te-types:extended-admin-group
-          +--rw exclude-srlgs*          te-types:srlg
-          +--rw calc-type?              identityref
-          +--rw metric-type?            identityref
+          +--rw exclude-srlg*           te-types:srlg
+          +--rw calc-type?              iana-algo-types:algo-type
+          +--rw metric-type?            iana-metric-type:metric-type
           +--rw prefix-metric!
           +--rw priority?               uint8
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:interfaces/ospf:interface
-            /ospf:database/ospf:link-scope-lsa-type
-            /ospf:link-scope-lsas/ospf:link-scope-lsa/ospf:version
-            /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
-            /ospf:ri-opaque:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface/ospf:database
+            /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+            /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:ri-opaque:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
-          +--ro metric-type?            identityref
-          +--ro calc-type?              identityref
+          +--ro metric-type?            iana-metric-type:metric-type
+          +--ro calc-type?              iana-algo-types:algo-type
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-group?
@@ -905,25 +535,25 @@ module: ietf-ospf-flex-algo
           |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
-          |  +--ro fad-flags*   identityref
+          |  +--ro fad-flag*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   te-types:srlg
+          |  +--ro srlg*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
                 +--ro length?   uint16
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
             /ospf:ri-opaque:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
-          +--ro metric-type?            identityref
-          +--ro calc-type?              identityref
+          +--ro metric-type?            iana-metric-type:metric-type
+          +--ro calc-type?              iana-algo-types:algo-type
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-group?
@@ -935,9 +565,9 @@ module: ietf-ospf-flex-algo
           |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
-          |  +--ro fad-flags*   identityref
+          |  +--ro fad-flag*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   te-types:srlg
+          |  +--ro srlg*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -946,13 +576,13 @@ module: ietf-ospf-flex-algo
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:database
             /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-            /ospf:as-scope-lsa/ospf:version/ospf:ospfv2
-            /ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque:
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:ri-opaque:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
-          +--ro metric-type?            identityref
-          +--ro calc-type?              identityref
+          +--ro metric-type?            iana-metric-type:metric-type
+          +--ro calc-type?              iana-algo-types:algo-type
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-group?
@@ -964,26 +594,25 @@ module: ietf-ospf-flex-algo
           |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
-          |  +--ro fad-flags*   identityref
+          |  +--ro fad-flag*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   te-types:srlg
+          |  +--ro srlg*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
                 +--ro length?   uint16
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:interfaces/ospf:interface
-            /ospf:database/ospf:link-scope-lsa-type
-            /ospf:link-scope-lsas/ospf:link-scope-lsa/ospf:version
-            /ospf:ospfv3/ospf:ospfv3/ospf:body
-            /ospf:router-information:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface/ospf:database
+            /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+            /ospf:link-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+            /ospf:body/ospf:router-information:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
-          +--ro metric-type?            identityref
-          +--ro calc-type?              identityref
+          +--ro metric-type?            iana-metric-type:metric-type
+          +--ro calc-type?              iana-algo-types:algo-type
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-group?
@@ -995,25 +624,25 @@ module: ietf-ospf-flex-algo
           |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
-          |  +--ro fad-flags*   identityref
+          |  +--ro fad-flag*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   te-types:srlg
+          |  +--ro srlg*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
                 +--ro length?   uint16
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv3/ospf:ospfv3/ospf:body
             /ospf:router-information:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
-          +--ro metric-type?            identityref
-          +--ro calc-type?              identityref
+          +--ro metric-type?            iana-metric-type:metric-type
+          +--ro calc-type?              iana-algo-types:algo-type
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-group?
@@ -1025,9 +654,9 @@ module: ietf-ospf-flex-algo
           |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
-          |  +--ro fad-flags*   identityref
+          |  +--ro fad-flag*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   te-types:srlg
+          |  +--ro srlg*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -1036,13 +665,13 @@ module: ietf-ospf-flex-algo
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:database
             /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-            /ospf:as-scope-lsa/ospf:version/ospf:ospfv3
-            /ospf:ospfv3/ospf:body/ospf:router-information:
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+            /ospf:body/ospf:router-information:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
-          +--ro metric-type?            identityref
-          +--ro calc-type?              identityref
+          +--ro metric-type?            iana-metric-type:metric-type
+          +--ro calc-type?              iana-algo-types:algo-type
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-group?
@@ -1054,51 +683,51 @@ module: ietf-ospf-flex-algo
           |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
-          |  +--ro fad-flags*   identityref
+          |  +--ro fad-flag*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   te-types:srlg
+          |  +--ro srlg*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
                 +--ro length?   uint16
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:interfaces/ospf:interface
-            /ospf:database/ospf:link-scope-lsa-type
-            /ospf:link-scope-lsas/ospf:link-scope-lsa/ospf:version
-            /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
-            /ospf:extended-prefix-opaque/ospf:extended-prefix-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface/ospf:database
+            /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+            /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:extended-prefix-opaque
+            /ospf:extended-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro fapm-flags*    identityref
+          +--ro fapm-flag*     identityref
           +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
             /ospf:extended-prefix-opaque/ospf:extended-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro fapm-flags*    identityref
+          +--ro fapm-flag*     identityref
           +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:database
             /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-            /ospf:as-scope-lsa/ospf:version/ospf:ospfv2
-            /ospf:ospfv2/ospf:body/ospf:opaque
-            /ospf:extended-prefix-opaque/ospf:extended-prefix-tlv:
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:extended-prefix-opaque
+            /ospf:extended-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro fapm-flags*    identityref
+          +--ro fapm-flag*     identityref
           +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv3/ospf:ospfv3/ospf:body
             /ospfv3-e-lsa:e-inter-area-prefix
@@ -1107,23 +736,23 @@ module: ietf-ospf-flex-algo
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro fapm-flags*    identityref
+          +--ro fapm-flag*     identityref
           +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:database
             /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-            /ospf:as-scope-lsa/ospf:version/ospf:ospfv3
-            /ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+            /ospf:body/ospfv3-e-lsa:e-as-external
             /ospfv3-e-lsa:e-external-tlvs
             /ospfv3-e-lsa:external-prefix-tlv:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro fapm-flags*    identityref
+          +--ro fapm-flag*     identityref
           +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque:
     +--ro eia-asbr-opaque
@@ -1144,8 +773,8 @@ module: ietf-ospf-flex-algo
              +--ro length?   uint16
              +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-            /rt:control-plane-protocol/ospf:ospf/ospf:areas
-            /ospf:area/ospf:database/ospf:area-scope-lsa-type
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
             /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
             /ospf:ospfv3/ospf:ospfv3/ospf:body
             /ospfv3-e-lsa:e-inter-area-router
@@ -1161,7 +790,7 @@ module: ietf-ospf-flex-algo
        +--ro routing-protocol-name?   leafref
        +--ro algo-number?             uint8
 ]]></artwork>
-<sourcecode name="ietf-ospf-flex-algo@2026-07-01.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-ospf-flex-algo@2026-07-02.yang" type="" markers="true"><![CDATA[
 module ietf-ospf-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo";
@@ -1234,6 +863,10 @@ module ietf-ospf-flex-algo {
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
+
      This version of this YANG module is part of RFC XXXX;
      see the RFC itself for full legal notices.
 
@@ -1243,7 +876,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial Version";
     reference
@@ -1301,16 +934,12 @@ module ietf-ospf-flex-algo {
              should only be a single FAD TLV per algorithm number.";
         }
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
+          type iana-metric-type:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type identityref {
-            base iana-algo-types:algo-type;
-          }
+          type iana-algo-types:algo-type;
           description
             "IGP algorithm types, value from 0 to 127 as
              defined under 'Interior Gateway Protocol (IGP)
@@ -1352,7 +981,7 @@ module ietf-ospf-flex-algo {
             "The flex-algo include-all admin group sub-tlv.";
         }
         container fad-flags-sub-tlv {
-          leaf-list fad-flags {
+          leaf-list fad-flag {
             type identityref {
               base fad-flags;
             }
@@ -1363,7 +992,7 @@ module ietf-ospf-flex-algo {
             "OSPF flex-algo definition flags.";
         }
         container fa-ex-srlg-sub-tlv {
-          leaf-list srlgs {
+          leaf-list srlg {
             type te-types:srlg;
             description
               "SRLG value as defined in RFC 4203.";
@@ -1393,7 +1022,7 @@ module ietf-ospf-flex-algo {
             "Flex-algo number - A value not in the inclusive range
              of 128-255 is an invalid FAD TLV specification.";
         }
-        leaf-list fapm-flags {
+        leaf-list fapm-flag {
           type identityref {
             base fapm-flags;
           }
@@ -1497,27 +1126,21 @@ module ietf-ospf-flex-algo {
           description
             "Specify links for the flex-algo path computation.";
         }
-        leaf-list exclude-srlgs {
+        leaf-list exclude-srlg {
           type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";
         }
         leaf calc-type {
-          type identityref {
-            base iana-algo-types:algo-type;
-          }
-          default "iana-algo-types:algo-spf";
+          type iana-algo-types:algo-type;
           description
             "Calculation-type. Value from 0-127 inclusive from the
              IANA 'IGP Algorithm Types' registry defined under the
              'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
-          default "iana-metric-type:igp-metric";
+          type iana-metric-type:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
@@ -1822,11 +1445,14 @@ module ietf-ospf-flex-algo {
        support this flex-algo.";
   }
 }
-
 ]]></sourcecode>
 </section>
 
 <section anchor="Security" numbered="true" toc="default"> <name>Security Considerations</name>
+  <t>
+    This section is modeled after the template described in
+<xref target="RFC9907" section="3.7.1" format="default" sectionFormat="of" derivedLink="https://rfc-editor.org/rfc/rfc9907#section-3.7.1" derivedContent="RFC9907"/>.
+ </t>
  <t>
    The YANG modules defined in this document are
    designed to be accessed via YANG-based management protocols, such as
@@ -1975,47 +1601,10 @@ module ietf-ospf-flex-algo {
  </section>
 
  <section numbered="true" toc="default">
-   <name slugifiedName="name-iana-algo-types-module">IANA IGP Algorithm Types Module</name>
-   <t>This document defines the initial version of the IANA-maintained
-   "iana-igp-algo-types" YANG module (<xref target="iana-algo-types"/>).
-   The most recent version of the YANG module is available from the "YANG Parameters"
-   registry <xref target="IANA-YANG-Parameters"/>.
-   </t>
-   <t>
-     IANA is requested to add this note to the registry:
-   </t>
-   <blockquote>
-     <t indent="0">New values must not be directly added to the "iana-algo-types" YANG
-     module.  They must instead be added to the "IGP Algorithm Types" registry in the
-     "Interior Gateway Protocol (IGP) Parameters" registry group.
-     </t>
-   </blockquote>
-   <t>
-    IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
-    sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:
-   </t>
-   <blockquote>
-     <t indent="0">
-      When this registry is modified, the YANG module "iana-igp-algo-types"
-         <xref target="iana-algo-types"/> must be updated as defined in RFC XXXX.
-     </t>
-   </blockquote>
-   
-        <t>
-          When a value is added to the "IGP Algorithm Types" registry, a new "identity"
-          statement needs to be added to the "iana-igp-algo-types" YANG module. The name
-          of the "identity" is a lowercase version of the name as provided in the registry
-          with spaces replaced with hyphens, i.e.,  "-"s, and beginning with "algo-".
-          The "identity" statement should have the following
-          sub-statements defined:
-        </t>
-  <artwork>
-  "base":          contains "algo-type".
-  "description":   Replicates the description from the registry.
-  "reference":     Replicates the reference(s) from the registry
-                   with the title of the document(s) added.
-  </artwork>
+   <name slugifiedName="update-iana-registry">Updates to Existing IANA Registries</name>
 
+   <section numbered="true" toc="default">
+   <name slugifiedName="update-algo-type-registry">IGP Algorithm Types registry</name>
   <t>
     IANA is requested to add a "Name" column to the "IGP Algorithm Types" registry.
     The values for the "Name" column for existing Algorithm Types are:
@@ -2046,50 +1635,10 @@ module ietf-ospf-flex-algo {
         </tr>
         </tbody>
     </table>
-
   </section>
 
-  <section numbered="true" toc="default">
-    <name slugifiedName="name-iana-metric-types-module">IANA IGP Metric-Type Module</name>
-       <t>This document defines the initial version of the IANA-maintained
-          "iana-igp-metric-types" YANG module (<xref target="iana-metric-types"/>).
-          The most recent version of the YANG module is available from the "YANG Parameters"
-          registry <xref target="IANA-YANG-Parameters"/>.
-         </t>
-         <t>
-          IANA is requested to add this note to the registry:
-         </t>
-        <blockquote>
-          <t indent="0">New values must not be directly added to the "iana-igp-metric-types" YANG
-          module. They must instead be added to the "IGP Metric-Type" registry in the
-          "Interior Gateway Protocol (IGP) Parameters" registry group.
-          </t>
-        </blockquote>
-      <t>
-        IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default"
-        sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
-      </t>
-        <blockquote>
-          <t indent="0">
-            When this registry is modified, the YANG module "iana-metric-types"
-            <xref target="iana-metric-types"/> must be updated as defined in RFC XXXX.
-         </t>
-       </blockquote>
-        <t>
-          When a value is added to the "IGP Metric-Type" registry, a new "identity"
-          statement needs to be added to the "iana-igp-metric-types" YANG module. The name
-          of the "identity" is a lowercase version of the name as provided in the registry
-          with the spaces replaced with hyphens, i.e., "-"s.
-          The "identity" statement should have the following
-          sub-statements defined:
-  </t>
-  <artwork>
-  "base":          contains "metric-type".
-  "description":   Replicates the description from the registry.
-  "reference":     Replicates the reference(s) from the registry
-                   with the title of the document(s) added.
-  </artwork>
-
+   <section numbered="true" toc="default">
+   <name slugifiedName="update-metric-type-registry">IGP Metric-Type registry</name>
   <t>
     IANA is requested to add a "Name" column to the "IGP Metric-Type" registry.
     The values for the "Name" column for existing Algorithm Types are:
@@ -2138,17 +1687,115 @@ module ietf-ospf-flex-algo {
             <xref target="RFC9843" section="5.1" sectionFormat="comma" derivedContent="RFC9843"/></td>
           <td align="left" colspan="1" rowspan="1">Yes</td>
         </tr>
+        <tr>
+          <td align="left" colspan="1" rowspan="1">128-255</td>
+          <td align="left" colspan="1" rowspan="1">Reserved</td>
+          <td align="left" colspan="1" rowspan="1">Reserved for User-Defined Metric</td>
+          <td align="left" colspan="1" rowspan="1">
+            <xref target="RFC9843" section="5.1" sectionFormat="comma" derivedContent="RFC9843"/></td>
+          <td align="left" colspan="1" rowspan="1">Yes</td>
+        </tr>
         </tbody>
     </table>
+  </section>
+
+ </section>
+
+ <section numbered="true" toc="default">
+   <name slugifiedName="name-iana-algo-types-module">IANA IGP Algorithm Types Module</name>
+   <t>This document creates the initial version of the IANA-maintained
+   "iana-igp-algo-types" YANG module.
+   The most recent version of the YANG module is available from the "YANG Parameters"
+   registry <xref target="IANA-YANG-Parameters"/>.
+   </t>
+   <t>
+     IANA is requested to add this note to the registry:
+   </t>
+   <blockquote>
+     <t indent="0">New values must not be directly added to the "iana-algo-types" YANG
+     module.  They must instead be added to the "IGP Algorithm Types" registry in the
+     "Interior Gateway Protocol (IGP) Parameters" registry group.
+     </t>
+   </blockquote>
+   <t>
+    IANA is requested to add this note to <xref target="IANA-IGP-ALGO-Types" format="default"
+    sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>:
+   </t>
+   <blockquote>
+     <t indent="0">
+      When this registry is modified, the YANG module "iana-igp-algo-types"
+         <xref target="IANA-YANG-Parameters"/> must be updated as defined in RFC XXXX.
+     </t>
+   </blockquote>
+   
+        <t>
+          When a value is added to the "IGP Algorithm Types" registry, a new "enum"
+          statement needs to be added to the "iana-igp-algo-types" YANG module. The name
+          of the "enum" is a lowercase version of the name as provided in the registry
+          with spaces replaced with hyphens, i.e.,  "-"s, and beginning with "algo-".
+          The "enum" statement should have the following
+          sub-statements defined:
+        </t>
+  <artwork>
+  "value":         Contains the decimal value of the IANA-assigned
+                   value.
+  "description":   Replicates the description from the registry.
+  "reference":     Replicates the reference(s) from the registry
+                   with the title of the document(s) added.
+  </artwork>
 
 
-      </section>
+  </section>
+
+  <section numbered="true" toc="default">
+    <name slugifiedName="name-iana-metric-types-module">IANA IGP Metric-Type Module</name>
+       <t>This document creates the initial version of the IANA-maintained
+          "iana-igp-metric-types" YANG module.
+          The most recent version of the YANG module is available from the "YANG Parameters"
+          registry <xref target="IANA-YANG-Parameters"/>.
+         </t>
+         <t>
+          IANA is requested to add this note to the registry:
+         </t>
+        <blockquote>
+          <t indent="0">New values must not be directly added to the "iana-igp-metric-types" YANG
+          module. They must instead be added to the "IGP Metric-Type" registry in the
+          "Interior Gateway Protocol (IGP) Parameters" registry group.
+          </t>
+        </blockquote>
+      <t>
+        IANA is requested to add this note to <xref target="IANA-IGP-Metric-Types" format="default"
+        sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
+      </t>
+        <blockquote>
+          <t indent="0">
+            When this registry is modified, the YANG module "iana-metric-types"
+            <xref target="IANA-YANG-Parameters"/> must be updated as defined in RFC XXXX.
+         </t>
+       </blockquote>
+        <t>
+          When a value is added to the "IGP Metric-Type" registry, a new "enum"
+          statement needs to be added to the "iana-igp-metric-types" YANG module. The name
+          of the "enum" is a lowercase version of the name as provided in the registry
+          with the spaces replaced with hyphens, i.e., "-"s.
+          The "enum" statement should have the following
+          sub-statements defined:
+  </t>
+  <artwork>
+  "value":         Contains the decimal value of the IANA-assigned
+                   value.
+  "description":   Replicates the description from the registry.
+  "reference":     Replicates the reference(s) from the registry
+                   with the title of the document(s) added.
+  </artwork>
+
+ </section>
 
    <section numbered="true" toc="default">
        <name slugifiedName="name-iana-igp-link-attribute-applications-module">IANA IGP Link Attribute Applications Module</name>
        <t>
-         This document defines the initial version of the IANA-maintained
-         "iana-igp-link-attr-apps" YANG module (<xref target="iana-link-attrib-apps"/>).
+         This document creates the initial version of the IANA-maintained
+         "iana-igp-link-attr-apps" YANG module.
          The most recent version of the YANG module is available from the "YANG Parameters"
          registry <xref target="IANA-YANG-Parameters"/>.
        </t>
@@ -2164,30 +1811,30 @@ module ietf-ospf-flex-algo {
         </blockquote>
 
     <t>
-    IANA is requested to add this note to <xref target="IANA-Link-Attr-Apps"
-    format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>:
+    IANA is requested to add this note to <xref target="IANA-Link-Attr-Apps"/>:
   </t>
     <blockquote>
       <t indent="0">
-        When this registry is modified, the YANG module "iana-igp-link-attr-apps"
-        must be updated as defined in RFC XXXX <xref target="iana-link-attrib-apps"/> .
+        When this registry is modified, the YANG module "iana-igp-link-attr-apps" <xref target="IANA-YANG-Parameters"/>
+        must be updated as defined in RFC XXXX  .
       </t>
     </blockquote>
 
         <t>
-          When a value is added to the "Link Attribute Application Identifiers" registry, a new "identity"
+          When a value is added to the "Link Attribute Application Identifiers" registry, a new "enum"
           statement needs to be added to the "iana-igp-link-attr-apps" YANG module. The name
-          of the "identity" is a lowercase version of the application description as provided in the
+          of the "enum" is a lowercase version of the Name field as provided in the
           registry with spaces replaced with hyphens, i.e., "-"s. and
           ending with "-app". In order to form the YANG
-          "identity", the name of the application is taken from the beginning the registry
+          "enum", the name of the application is taken from the beginning the registry
           description, not including text in parenthesis.
-          The "identity" statement should have the following
+          The "enum" statement should have the following
           sub-statements defined:
         </t>
   <artwork>
-  "base":          contains "igp-link-attr-app".
-  "description":   Replicates the description text when a new value
+  "value":         Contains the decimal value of the IANA-assigned
+                   value.
+  "description":   Replicates the Name text when a new value
                    is added.
   "reference":     Replicates the reference(s) from the registry
                    with the title of the document(s) added.
@@ -2299,6 +1946,7 @@ module ietf-ospf-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8792.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-tls-rfc8446bis-14.xml'/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/>
     </references>
   </references>
     <section numbered="false" toc="default">
@@ -2309,18 +1957,8 @@ module ietf-ospf-flex-algo {
       </t>
       <t>
         Note: '\' line wrapping per <xref target="RFC8792"/>.</t>
-      <artwork name="Example IS-IS Flex-Algo Configuration" type="xml" align="left" alt=""><![CDATA[
+      <artwork name="Example OSPF Flex-Algo Configuration" type="xml" align="left" alt=""><![CDATA[
 <?xml version='1.0' encoding='UTF-8'?>
-  <te xmlns="urn:ietf:params:xml:ns:yang:ietf-te">
-    <enable>true</enable>
-    <globals>
-      <named-admin-groups>
-        <named-admin-group>
-          <name>blue</name>
-        </named-admin-group>
-      </named-admin-groups>
-    </globals>
-  </te>
   <routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
     <router-id>1.1.1.1</router-id>
     <control-plane-protocols>
@@ -2336,22 +1974,21 @@ module ietf-ospf-flex-algo {
              </areas>
           <ospf-flex-algo xmlns="urn:ietf:params:xml:ns:yang:\
             ietf-ospf-flex-algo">
-            <flex-algo>
+            <flex-algo> 
               <algo-number>200</algo-number>
               <admin-groups>
-                <exclude-admin-groups>blue</exclude-admin-groups>
+                <exclude-admin-group>AA:BB</exclude-admin-group>
               </admin-groups>
-              <metric-type xmlns:iana-metric-types=\
-                "urn:ietf:params:xml:ns:yang:iana-igp-metric-types">\
-                iana-metric-types:igp-metric</metric-type>
-              <calc-type xmlns:iana-algo-types=\
-                "urn:ietf:params:xml:ns:yang:iana-igp-algo-types">\
-                iana-algo-types:algo-spf</calc-type>
+              <metric-type xmlns:iana-metric-types="urn:ietf:params:\
+                xml:ns:yang:iana-igp-metric-types">igp-metric\
+              </metric-type>
+              <calc-type xmlns:iana-algo-types="urn:ietf:params:\
+                xml:ns:yang:\iana-igp-algo-types">algo-spf</calc-type>
               <prefix-metric/>
               <priority>100</priority>
             </flex-algo>
           </ospf-flex-algo>
-        </ospf>
+        </ospf>     
       </control-plane-protocol>
     </control-plane-protocols>
   </routing>
@@ -2367,64 +2004,421 @@ module ietf-ospf-flex-algo {
       </t>
       <artwork name="Example OSPF Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
 {
-  "te": {
-    "enable": "true",
-    "globals": {
-      "named-admin-groups": {
-        "named-admin-group": {
-          "name": "blue"
-        }
-      }
-    },
-    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-te"
-  }
-}
-{
-  "routing": {
+  "ietf-routing:routing": {
     "router-id": "1.1.1.1",
     "control-plane-protocols": {
-      "control-plane-protocol": {
-        "type": {
-          "_xmlns:ospf": "urn:ietf:params:xml:ns:yang:ietf-ospf",
-          "__text": "ospf:ospfv2"
-        },
-        "name": "OSPFv2",
-        "ospf": {
-          "areas": {
-            "area": {
-              "area-id": "0.0.0.0"
-            }
-          },
-          "ospf-flex-algo": {
-            "flex-algo": {
-              "algo-number": "200",
-              "admin-groups": {
-                "exclude-admin-groups": "blue"
-              },
-              "metric-type": {
-                "_xmlns:iana-metric-types": "urn:ietf:params:xml:ns:\
-                yang:iana-igp-metric-types",
-                "__text": "iana-metric-types:igp-metric"
-              },
-              "calc-type": {
-                "_xmlns:iana-algo-types": "urn:ietf:params:xml:ns:\
-                yang:iana-igp-algo-types",
-                "__text": "iana-algo-types:algo-spf"
-              },
-              "prefix-metric": "",
-              "priority": "100"
+      "control-plane-protocol": [
+        {
+          "type": "ietf-ospf:ospfv2",
+          "name": "OSPFv2",
+          "ietf-ospf:ospf": {
+            "areas": {
+              "area": [
+                {
+                  "area-id": "0.0.0.0"
+                }
+              ]
             },
-            "_xmlns": "urn:ietf:params:xml:ns:yang:\
-            ietf-ospf-flex-algo"
-          },
-          "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf"
+            "ietf-ospf-flex-algo:ospf-flex-algo": {
+              "flex-algo": [
+                {
+                  "algo-number": 200,
+                  "admin-groups": {
+                    "exclude-admin-group": "AA:BB"
+                  },
+                  "calc-type": "algo-spf",
+                  "metric-type": "igp-metric",
+                  "prefix-metric": {},
+                  "priority": 100
+                }
+              ]
+            }
+          }
         }
-      }
-    },
-    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-routing"
+      ]
+    }
   }
 }
       ]]></artwork>
     </section>
+
+    <section anchor="iana-algo-types" numbered="false" toc="default">
+      <name>Appendix C. IANA IGP Algorithm Types Module</name>
+      <t>//RFC Editor: please remove the Appendix C before publication and replace
+        XXXX with the RFC number that is assigned to the document.</t>
+      <t>IANA has created a registry titled "IGP Algorithm Types" under the
+        "Interior Gateway Protocol (IGP) Parameters" registry group to
+        identify Algorithm Types.  Module iana-igp-algo-types is an IANA-maintained
+        module, which defines the identities for the Algorithm Types as in the IANA
+        "IGP Algorithm Types" registry.</t>
+      <t>
+        This document defines the initial version of the IANA-maintained YANG
+        module for Algorithm Types that mirrors the IANA "IGP Algorithm Types" registry
+        <xref target="IANA-IGP-ALGO-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-ALGO-Types"/>.
+      </t>
+      <t>
+        This YANG module references <xref target="RFC8665"/>.
+      </t>
+<sourcecode name="iana-igp-algo-types@2026-07-02.yang" type="yang" markers="true">
+module iana-igp-algo-types {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:iana-igp-algo-types";
+  prefix iana-algo-types;
+
+  organization
+    "Internet Assigned Numbers Authority (IANA)";
+  contact
+    "Internet Assigned Numbers Authority
+
+     ICANN
+     12025 Waterfront Drive, Suite 300
+     Los Angeles, CA 90094-2536
+     United States of America
+
+     Tel:    +1 310 301 5800
+      &lt;mailto:iana@iana.org&gt;";
+  description
+    "The YANG module defines the YANG data types for IANA-registered
+     Interior Gateway Protocol (IGP) Algorithm Types.
+
+     This YANG module is maintained by IANA and reflects the 'IGP
+     Algorithm Types' registry.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
+
+     This initial version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     //RFC Ed.: replace XXXX with actual RFC number and remove
+       this note
+
+     The latest version of this YANG module is available at
+     https://www.iana.org/assignments/yang-parameters.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#igp-algorithm-types)";
+
+  revision 2026-07-02 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
+  }
+
+  typedef algo-type {
+    type enumeration {
+      enum algo-spf {
+        value 0;
+        description
+          "Shortest Path First (SPF) algorithm based on link metric.
+          This is the standard shortest path algorithm as computed by
+          the IGP protocol. Consistent with the deployed practice for
+          link-state protocols, Algorithm 0 permits any node to 
+          overwrite the SPF path with a different path based on its
+          local policy.";
+        reference
+          "RFC 8665: OSPF Extensions for Segment Routing";
+      }    
+
+      enum algo-strict-spf {
+        value 1;
+        description
+          "Strict Shortest Path First (SPF) algorithm based on
+          link metric. The algorithm is identical to Algorithm 0 but
+          Algorithm 1 requires that all nodes along the path will
+          honor the SPF routing decision. Local policy at the node
+          claiming support for Algorithm 1 MUST NOT alter the SPF
+          paths computed by Algorithm 1.";
+        reference
+          "RFC 8665: OSPF Extensions for Segment Routing";
+      }
+
+    }
+    default "algo-spf";
+    description
+      "IGP Algorithm Type. The algorithm types are defined in IANA
+       IGP Algorithm Types registry";
+  }
+}
+</sourcecode>
+    </section>
+
+    <section anchor="iana-metric-types" numbered="false" toc="default">
+      <name>Appendix D. IANA IGP Metric Types Module</name>
+      <t>//RFC Editor: please remove the Appendix D before publication and replace
+        XXXX with the RFC number that is assigned to the document.</t>
+      <t>IANA has created a registry titled "IGP Metric-Type" under the
+        "Interior Gateway Protocol (IGP) Parameters" registry group to
+        identify Metric Types.  Module iana-igp-metric-types is an IANA-maintained
+        module, which defines the identities for the Metric Types as in the IANA
+        "IGP Metric-Type" registry.</t>
+      <t>
+        This document defines the initial version of the IANA-maintained YANG
+        module for IGP metric types that mirrors the IANA "IGP Metric-Type" registry
+        <xref target="IANA-IGP-Metric-Types" format="default" sectionFormat="of" derivedContent="IANA-IGP-Metric-Types"/>.
+      </t>
+      <t>
+        This YANG module references <xref target="RFC3630"/>, <xref target="RFC5305"/>,
+        <xref target="RFC7471"/>, <xref target="RFC8570"/>, <xref target="RFC9350"/>, and
+        <xref target="RFC9843"/>.
+      </t>
+<sourcecode name="iana-igp-metric-types@2026-07-02.yang" type="yang" markers="true">
+module iana-igp-metric-types {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:iana-igp-metric-types";
+  prefix iana-metric-types;
+
+  organization
+    "Internet Assigned Numbers Authority (IANA)";
+  contact
+    "Internet Assigned Numbers Authority
+
+     ICANN
+     12025 Waterfront Drive, Suite 300
+     Los Angeles, CA 90094-2536
+     United States of America
+
+     Tel:    +1 310 301 5800
+      &lt;mailto:iana@iana.org&gt;";
+  description
+    "The YANG module defines the YANG data types for IANA-registered
+     Interior Gateway Protocol (IGP) Metric-Types.
+
+     This YANG module is maintained by IANA and reflects the 'IGP
+     Metric-Type' registry.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
+
+     This initial version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     //RFC Ed.: replace XXXX with actual RFC number and remove
+       this note
+
+     The latest version of this YANG module is available at
+     https://www.iana.org/assignments/yang-parameters.";
+
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#igp-metric-type)";
+
+  revision 2026-07-02 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX: A YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
+  }
+
+  typedef metric-type {
+    type enumeration {
+      enum igp-metric {
+        value 0;
+        description
+          "IGP Metric.";
+        reference
+          "RFC9350: IGP Flexible Algorithm, Section 5.1";
+      }    
+
+      enum min-unidirectional-link-delay {
+        value 1;
+        description
+          "Min Unidirectional Link Delay as defined in RFC 8570
+           and RFC 7471 Section 4.2.";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 5.1";
+      }    
+
+      enum te-default-metric {
+        value 2;
+        description
+          "Traffic Engineering Default Metric as defined in RFC 5305
+           Section 3.7 and Traffic Engineering Metric as defined in
+           RFC3630, Section 2.5.5.";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 5.1";
+      }    
+
+      enum bandwidth-metric {
+        value 3;
+        description
+          "Bandwidth metric.";
+        reference
+          "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
+           Metrics, and Constraints";    
+      }     
+    }
+    default "igp-metric";
+    description
+      "IGP Metric-Type. The metric types
+       are defined in IANA IGP Metric-Type registry.";
+  }
+}
+</sourcecode>
+</section>
+    <section anchor="iana-link-attrib-apps" numbered="false" toc="default">
+      <name>Appendix E. IANA IGP Link Attribute Applications Module</name>
+      <t>//RFC Editor: please remove the Appendix E before publication and replace
+        XXXX with the RFC number that is assigned to the document.</t>
+      <t>
+        IANA has created a registry titled "Link Attribute Application Identifiers"
+        under the "Interior Gateway Protocol (IGP) Parameters" registry group to
+        identify IGP application types with application-specific link attributes.
+        Module iana-igp-link-attr-apps is an IANA-maintained
+        module, which defines the identities for the link attribute application IDs
+        as in the IANA "Link Attribute Application Identifiers" registry.</t>
+      <t>
+        This document defines the initial version of the IANA-maintained YANG
+        module for IGP application types that mirrors the
+        IANA "Link Attribute Application Identifiers" registry
+        <xref target="IANA-Link-Attr-Apps" format="default" sectionFormat="of"
+              derivedContent="IANA-IGP-Link-Attribute-Apps"/>.
+      </t>
+      <t>
+        This YANG module references <xref target="RFC9492"/>.
+      </t>
+<sourcecode name="iana-igp-link-attr-apps@2026-07-02.yang" type="yang" markers="true">
+module iana-igp-link-attr-apps {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:iana-igp-link-attr-apps";
+  prefix iana-link-attr-apps;
+
+  organization
+    "Internet Assigned Numbers Authority (IANA)";
+  contact
+    "Internet Assigned Numbers Authority
+
+     ICANN
+     12025 Waterfront Drive, Suite 300
+     Los Angeles, CA 90094-2536
+     United States of America
+
+     Tel:    +1 310 301 5800
+      &lt;mailto:iana@iana.org&gt;";
+  description
+    "The YANG module defines the YANG data types for IANA-registered
+     Interior Gateway Protocol (IGP) Application IDs used for Link
+     Attributes.
+
+     This YANG module is maintained by IANA and reflects the 'Link
+     Attribute Application Identifiers' registry.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     All revisions of IETF and IANA published modules can be found
+     at the YANG Parameters registry group
+     (https://www.iana.org/assignments/yang-parameters).
+
+     This initial version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     //RFC Ed.: replace XXXX with actual RFC number and remove
+       this note
+
+     The latest version of this YANG module is available at
+     https://www.iana.org/assignments/yang-parameters.";
+
+  reference
+    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+     (https://www.iana.org/assignments/igp-parameters/
+      igp-parameters.xhtml#link-attribute-application-identifiers)";
+
+  revision 2026-07-02 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
+  }
+
+  typedef igp-link-attr-app {
+    type enumeration {
+      enum rsvp-te-app {
+        value 0;
+        description
+          "RSVP-TE (R-bit).";
+        reference
+          "RFC 9479: IS-IS Application-Specific Link Attributes";
+      }    
+
+      enum segment-routing-policy-app {
+        value 1;
+        description
+          "Segment Routing Policy (S-bit).";
+        reference
+          "RFC 9479: IS-IS Application-Specific Link Attributes";
+      }    
+
+      enum loop-free-alternate-app {
+        value 2;
+        description
+          "Loop-Free Alternate (F-bit).";
+        reference
+          "RFC 9479: IS-IS Application-Specific Link Attributes";
+      }    
+
+      enum flexible-algorithm-app {
+        value 3;
+        description
+          "Flexible Algorithm (X-bit).";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 12.";
+      }
+    }
+    description
+      "Application IDs used for Link Attributes, which are defined
+      in the IANA Link Attribute Application Identifiers registry.";
+    reference
+      "RFC 9479: IS-IS Application-Specific Link Attributes";
+  }
+}
+</sourcecode>
+    </section>
+
   </back>
 </rfc>

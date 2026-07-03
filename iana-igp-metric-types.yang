@@ -16,8 +16,8 @@ module iana-igp-metric-types {
      Tel:    +1 310 301 5800
       &lt;mailto:iana@iana.org&gt;";
   description
-    "The YANG module defines the identities for Interior Gateway
-     Protocol (IGP) Metric-Types.
+    "The YANG module defines the YANG data types for IANA-registered
+     Interior Gateway Protocol (IGP) Metric-Types.
 
      This YANG module is maintained by IANA and reflects the 'IGP
      Metric-Type' registry.
@@ -51,7 +51,7 @@ module iana-igp-metric-types {
      (https://www.iana.org/assignments/igp-parameters/
       igp-parameters.xhtml#igp-metric-type)";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial Version";
     reference
@@ -59,46 +59,47 @@ module iana-igp-metric-types {
                  Link Attributes and Flexible Algorithm";
   }
 
-  identity metric-type {
+  typedef metric-type {
+    type enumeration {
+      enum igp-metric {
+        value 0;
+        description
+          "IGP Metric.";
+        reference
+          "RFC9350: IGP Flexible Algorithm, Section 5.1";
+      }    
+
+      enum min-unidirectional-link-delay {
+        value 1;
+        description
+          "Min Unidirectional Link Delay as defined in RFC 8570
+           and RFC 7471 Section 4.2.";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 5.1";
+      }    
+
+      enum te-default-metric {
+        value 2;
+        description
+          "Traffic Engineering Default Metric as defined in RFC 5305
+           Section 3.7 and Traffic Engineering Metric as defined in
+           RFC3630, Section 2.5.5.";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 5.1";
+      }    
+
+      enum bandwidth-metric {
+        value 3;
+        description
+          "Bandwidth metric.";
+        reference
+          "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
+           Metrics, and Constraints";    
+      }     
+    }
+    default "igp-metric";
     description
-      "Base identity for IGP Metric-Type. The metric types
+      "IGP Metric-Type. The metric types
        are defined in IANA IGP Metric-Type registry.";
-  }
-
-  identity igp-metric {
-    base metric-type;
-    description
-      "IGP Metric.";
-    reference
-      "RFC9350: IGP Flexible Algorithm, Section 5.1";
-  }
-
-  identity min-unidirectional-link-delay {
-    base metric-type;
-    description
-      "Min Unidirectional Link Delay as defined in RFC 8570
-       and RFC 7471 Section 4.2.";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
-  }
-
-  identity te-default-metric {
-    base metric-type;
-    description
-      "Traffic Engineering Default Metric as defined in RFC 5305
-       Section 3.7 and Traffic Engineering Metric as defined in
-       RFC3630, Section 2.5.5.";
-    reference
-      "RFC 9350: IGP Flexible Algorithm, Section 5.1";
-  }
-
-  identity bandwidth-metric {
-    base metric-type;
-    description
-      "Bandwidth metric.";
-    reference
-      "RFC 9843: IGP Flexible Algorithms: Bandwidth, Delay,
-       Metrics, and Constraints";
-
   }
 }

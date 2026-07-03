@@ -39,7 +39,7 @@ module ietf-ospf-flex-algo {
        <https://www.iana.org/assignments/igp-parameters>.";
   }
   import iana-igp-metric-types {
-    prefix iana-metric-type;
+    prefix iana-metric-types;
     reference
       "IANA IGP Metric-Type registry,
        <https://www.iana.org/assignments/igp-parameters>.";
@@ -83,7 +83,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-07-02 {
+  revision 2026-07-04 {
     description
       "Initial Version";
     reference
@@ -141,7 +141,7 @@ module ietf-ospf-flex-algo {
              should only be a single FAD TLV per algorithm number.";
         }
         leaf metric-type {
-          type iana-metric-type:metric-type;
+          type iana-metric-types:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
@@ -347,7 +347,7 @@ module ietf-ospf-flex-algo {
              'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
         leaf metric-type {
-          type iana-metric-type:metric-type;
+          type iana-metric-types:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }

@@ -103,7 +103,7 @@ module ietf-ospf-flex-algo-bw-con {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2026-01-08 {
+  revision 2026-07-04 {
     description
       "Initial Version";
     reference
@@ -195,9 +195,7 @@ module ietf-ospf-flex-algo-bw-con {
     container generic-metric-sub-tlvs {
       list generic-metric-sub-tlv {
         leaf metric-type {
-          type identityref {
-            base iana-metric-types:metric-type;
-          }
+          type iana-metric-types:metric-type;
             description
               "Type of metric to be used during the calculation.";
         }
@@ -330,9 +328,7 @@ module ietf-ospf-flex-algo-bw-con {
       list generic-metric {
         key "metric-type";
         leaf metric-type {
-          type identityref {
-            base iana-metric-types:metric-type;
-          }
+          type iana-metric-types:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }

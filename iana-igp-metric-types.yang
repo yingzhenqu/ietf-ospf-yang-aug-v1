@@ -47,11 +47,11 @@ module iana-igp-metric-types {
      https://www.iana.org/assignments/yang-parameters.";
 
   reference
-    "Interior Gateway Protocol (IGP) Parameters, IGP Algorithm Types
+    "Interior Gateway Protocol (IGP) Parameters, IGP Metric-Type
      (https://www.iana.org/assignments/igp-parameters/
       igp-parameters.xhtml#igp-metric-type)";
 
-  revision 2026-07-02 {
+  revision 2026-07-09 {
     description
       "Initial Version";
     reference

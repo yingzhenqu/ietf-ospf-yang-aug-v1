@@ -83,7 +83,7 @@ module ietf-ospf-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-07-04 {
+  revision 2026-07-09 {
     description
       "Initial Version";
     reference
@@ -283,8 +283,8 @@ module ietf-ospf-flex-algo {
 
   augment "/rt:routing/rt:control-plane-protocols"
         + "/rt:control-plane-protocol/ospf:ospf" {
-    when "../rt:type = 'ospf:ospfv2' or "
-       + "../rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../rt:type, 'ospf:ospfv2') or "
+       + "derived-from-or-self(../rt:type, 'ospf:ospfv3')" {
       description
         "This augments the OSPF routing protocol when used.";
     }
@@ -378,8 +378,8 @@ module ietf-ospf-flex-algo {
         + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque" {
-    when "../../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../../../.."
+       + "/../rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -395,8 +395,8 @@ module ietf-ospf-flex-algo {
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque" {
-    when "../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -411,8 +411,8 @@ module ietf-ospf-flex-algo {
         + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
         + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque" {
-    when "../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../rt:type,"
+       + " 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -428,8 +428,8 @@ module ietf-ospf-flex-algo {
         + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv3/"
         + "ospf:ospfv3/ospf:body/ospf:router-information" {
-    when "../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../../../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv3')" {
       description
         "This augmentation is only valid for OSPFv3.";
     }
@@ -446,8 +446,8 @@ module ietf-ospf-flex-algo {
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
         + "ospf:ospfv3/ospf:body/ospf:router-information" {
-    when "../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../../../../../../../../../../"
+       + "rt:type, 'ospf:ospfv3')" {
       description
         "This augmentation is only valid for OSPFv3.";
     }
@@ -463,8 +463,8 @@ module ietf-ospf-flex-algo {
         + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
         + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
         + "ospf:ospfv3/ospf:body/ospf:router-information" {
-    when "../../../../../../../../"
-       + "rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../../../../../../../../rt:type, "
+       + "'ospf:ospfv3')" {
       description
         "This augmentation is only valid for OSPFv3.";
     }
@@ -481,8 +481,8 @@ module ietf-ospf-flex-algo {
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
         + "ospf:extended-prefix-opaque/ospf:extended-prefix-tlv" {
-    when "../../../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../../../.."
+       + "/../../rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -500,8 +500,8 @@ module ietf-ospf-flex-algo {
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
         + "ospf:extended-prefix-opaque/ospf:extended-prefix-tlv" {
-    when "../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -519,8 +519,8 @@ module ietf-ospf-flex-algo {
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
         + "ospf:extended-prefix-opaque/"
         + "ospf:extended-prefix-tlv" {
-    when "../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -541,8 +541,8 @@ module ietf-ospf-flex-algo {
         + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-inter-area-prefix/"
         + "ospfv3-e-lsa:e-inter-prefix-tlvs/"
         + "ospfv3-e-lsa:inter-prefix-tlv" {
-    when "../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../../../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv3')" {
       description
         "This augmentation is only valid for OSPFv3
          E-Router LSAs";
@@ -562,8 +562,8 @@ module ietf-ospf-flex-algo {
         + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external/"
         + "ospfv3-e-lsa:e-external-tlvs/"
         + "ospfv3-e-lsa:external-prefix-tlv" {
-    when "../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv3')" {
       description
         "This augmentation is only valid for OSPFv3.";
     }
@@ -581,8 +581,8 @@ module ietf-ospf-flex-algo {
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv2'" {
+    when "derived-from-or-self(../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv2')" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
@@ -618,8 +618,8 @@ module ietf-ospf-flex-algo {
         + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-inter-area-router/"
         + "ospfv3-e-lsa:e-inter-router-tlvs/"
         + "ospfv3-e-lsa:inter-router-tlv" {
-    when "../../../../../../../../../../../../"
-       + "rt:type = 'ospf:ospfv3'" {
+    when "derived-from-or-self(../../../../../../../../../../../.."
+       + "/rt:type, 'ospf:ospfv3')" {
       description
         "This augmentation is only valid for OSPFv3
          Inter-Area-Router TLV.";

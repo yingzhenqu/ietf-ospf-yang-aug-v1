@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-18" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-ospf-yang-augmentation-v1-19" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.10 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="OSPF YANG Augments V1">OSPF YANG Model Augmentations for Additional Features - Release 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-18"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-ospf-yang-augmentation-v1-19"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -86,16 +86,7 @@
   <middle>
     <section numbered="true" toc="default">
       <name>Overview</name>
-      <t>YANG <xref target="RFC7950" format="default"/> is a
-      data definition language
-      used to define the contents of a conceptual data store
-      that allows networked devices to be managed using NETCONF
-      <xref target="RFC6241" format="default"/>.  YANG is proving relevant beyond its
-      initial confines, as bindings to other interfaces (e.g., ReST) and
-      encodings other than XML (e.g., JSON) are being defined.  Furthermore,
-      YANG data models can be used as the basis for implementation of other
-      interfaces, such as CLI and programmatic APIs.</t>
-      <t>This document defines YANG data modules augmenting the IETF OSPF
+      <t>This document defines YANG <xref target="RFC7950" format="default"/> data modules augmenting the IETF OSPF
       YANG model <xref target="RFC9129" format="default"/>, which itself augments
       <xref target="RFC8349" format="default"/>, to provide support for configuration and
       operational state for the following OSPF features:
@@ -2229,16 +2220,17 @@ module ietf-ospf-l2-bundle {
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-ospf-flex-algo-bw-con
+
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:interfaces/ospf:interface:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface:
     +--rw generic-metrics
        +--rw generic-metric* [metric-type]
-          +--rw metric-type     identityref
+          +--rw metric-type     iana-metric-types:metric-type
           +--rw metric-value?   uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf
-          /ospf-flex-algo:ospf-flex-algo/ospf-flex-algo:flex-algo:
+            /rt:control-plane-protocol/ospf:ospf
+            /ospf-flex-algo:ospf-flex-algo/ospf-flex-algo:flex-algo:
     +--rw bandwidth-constraints
     |  +--rw constraint* [constraint-type]
     |     +--rw constraint-type    identityref
@@ -2247,126 +2239,134 @@ module: ietf-ospf-flex-algo-bw-con
     +--rw (metric-derivation-method)?
     |  +--:(reference-bandwidth)
     |  |  +--rw reference-bandwidth
-    |  |     +--rw reference-bandwidth?     rt-types:bandwidth-ieee-float32
-    |  |     +--rw granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    |  |     +--rw reference-bandwidth?
+    |  |     |       rt-types:bandwidth-ieee-float32
+    |  |     +--rw granularity-bandwidth?
+    |  |             rt-types:bandwidth-ieee-float32
     |  +--:(bandwidth-thresholds)
     |     +--rw bandwidth-thresholds
     |        +--rw bandwidth-threshold* [bandwidth-threshold]
-    |           +--rw bandwidth-threshold    rt-types:bandwidth-ieee-float32
+    |           +--rw bandwidth-threshold
+    |           |       rt-types:bandwidth-ieee-float32
     |           +--rw threshold-metric?      uint32
-    +--rw exclude-min-bw?               rt-types:bandwidth-ieee-float32
+    +--rw exclude-min-bw?
+    |       rt-types:bandwidth-ieee-float32
     +--rw exclude-max-delay?            rt-types:uint24
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
-          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
-          /ospf:link-scope-lsa/ospf:version/ospf:ospfv2
-          /ospf:ospfv2/ospf:body/ospf:opaque/ospf:te-opaque
-          /ospf:link-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface/ospf:database
+            /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+            /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:te-opaque/ospf:link-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
-          /ospf-inter-as-te:inter-as-te-v2/ospf-inter-as-te:link-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+            /ospf-inter-as-te:inter-as-te-v2
+            /ospf-inter-as-te:link-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:database
-          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
-          /ospf:version/ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
-          /ospf-inter-as-te:inter-as-te-v2/ospf-inter-as-te:link-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:database
+            /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf-inter-as-te:inter-as-te-v2
+            /ospf-inter-as-te:link-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospf-te:ospfv3-intra-area-te/ospf-te:link-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv3/ospf:ospfv3/ospf:body
+            /ospf-te:ospfv3-intra-area-te/ospf-te:link-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospf-inter-as-te:inter-as-te-v3/ospf-inter-as-te:link-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv3/ospf:ospfv3/ospf:body
+            /ospf-inter-as-te:inter-as-te-v3
+            /ospf-inter-as-te:link-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:database
-          /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
-          /ospf:body/ospf-inter-as-te:inter-as-te-v3
-          /ospf-inter-as-te:link-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:database
+            /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+            /ospf:body/ospf-inter-as-te:inter-as-te-v3
+            /ospf-inter-as-te:link-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
-          /ospf:extended-link-opaque/ospf:extended-link-tlv
-          /ospf-link-attr:app-specific-link-attr-sub-tlvs:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+            /ospf:extended-link-opaque/ospf:extended-link-tlv
+            /ospf-link-attr:app-specific-link-attr-sub-tlvs:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
-          /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
-          /ospf-link-attr:app-specific-link-attr-sub-tlvs:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+            /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
+            /ospf-link-attr:app-specific-link-attr-sub-tlvs:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
-          /ospf:extended-link-opaque/ospf:extended-link-tlv
-          /ospf-l2-bundle:l2-bdl-mbr-attr/ospf-l2-bundle:l2-bdl-mbrs:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+            /ospf:extended-link-opaque/ospf:extended-link-tlv
+            /ospf-l2-bundle:l2-bdl-mbr-attr
+            /ospf-l2-bundle:l2-bdl-mbrs:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
-          /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
-          /ospf-l2-bundle:l2-bdl-mbr-attr/ospf-l2-bundle:l2-bdl-mbrs:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+            /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
+            /ospf-l2-bundle:l2-bdl-mbr-attr
+            /ospf-l2-bundle:l2-bdl-mbrs:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
-          +--ro metric-type?   identityref
+          +--ro metric-type?   iana-metric-types:metric-type
           +--ro value?         uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
-          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
-          /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
-          /ospf:body/ospf:opaque/ospf:ri-opaque
-          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface/ospf:database
+            /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+            /ospf:link-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:ri-opaque
+            /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
@@ -2378,14 +2378,16 @@ module: ietf-ospf-flex-algo-bw-con
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
-          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
-          /ospf:area-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
-          /ospf:body/ospf:opaque/ospf:ri-opaque
-          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv2/ospf:ospfv2/ospf:body/ospf:opaque
+            /ospf:ri-opaque/ospf-flex-algo:fad-tlvs
+            /ospf-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
@@ -2397,14 +2399,15 @@ module: ietf-ospf-flex-algo-bw-con
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:database
-          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
-          /ospf:version/ospf:ospfv2/ospf:ospfv2/ospf:body
-          /ospf:opaque/ospf:ri-opaque/ospf-flex-algo:fad-tlvs
-          /ospf-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:database
+            /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+            /ospf:body/ospf:opaque/ospf:ri-opaque
+            /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
@@ -2416,15 +2419,16 @@ module: ietf-ospf-flex-algo-bw-con
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
-          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
-          /ospf:link-scope-lsa/ospf:version/ospf:ospfv3
-          /ospf:ospfv3/ospf:body/ospf:router-information
-          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:interfaces/ospf:interface/ospf:database
+            /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+            /ospf:link-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+            /ospf:body/ospf:router-information
+            /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
@@ -2436,14 +2440,16 @@ module: ietf-ospf-flex-algo-bw-con
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:database/ospf:area-scope-lsa-type
-          /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospf:router-information
-          /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+            /ospf:database/ospf:area-scope-lsa-type
+            /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
+            /ospf:ospfv3/ospf:ospfv3/ospf:body
+            /ospf:router-information/ospf-flex-algo:fad-tlvs
+            /ospf-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
@@ -2455,14 +2461,15 @@ module: ietf-ospf-flex-algo-bw-con
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:database
-          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
-          /ospf:version/ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospf:router-information/ospf-flex-algo:fad-tlvs
-          /ospf-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/ospf:ospf/ospf:database
+            /ospf:as-scope-lsa-type/ospf:as-scope-lsas
+            /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+            /ospf:body/ospf:router-information
+            /ospf-flex-algo:fad-tlvs/ospf-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
@@ -2474,12 +2481,13 @@ module: ietf-ospf-flex-algo-bw-con
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      uint32
       ]]></artwork>
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
-<CODE BEGINS> file "ietf-ospf-flex-algo-bw-con@2026-01-08.yang"
+<CODE BEGINS> file "ietf-ospf-flex-algo-bw-con@2026-07-04.yang"
 module ietf-ospf-flex-algo-bw-con {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-flex-algo-bw-con";
@@ -2539,7 +2547,7 @@ module ietf-ospf-flex-algo-bw-con {
   }
 
   import iana-igp-metric-types {
-    prefix iana-metric-type;
+    prefix iana-metric-types;
   }
 
   organization
@@ -2585,7 +2593,7 @@ module ietf-ospf-flex-algo-bw-con {
 
   reference "RFC XXXX: YANG Data Model for OSPF Flexible Algorithm.";
 
-  revision 2025-07-06 {
+  revision 2026-07-04 {
     description
       "Initial Version";
     reference
@@ -2677,9 +2685,7 @@ module ietf-ospf-flex-algo-bw-con {
     container generic-metric-sub-tlvs {
       list generic-metric-sub-tlv {
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
+          type iana-metric-types:metric-type;
             description
               "Type of metric to be used during the calculation.";
         }
@@ -2812,9 +2818,7 @@ module ietf-ospf-flex-algo-bw-con {
       list generic-metric {
         key "metric-type";
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
+          type iana-metric-types:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
